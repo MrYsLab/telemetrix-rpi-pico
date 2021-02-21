@@ -661,7 +661,8 @@ class TelemetrixRpiPico(threading.Thread):
         The pin_type for digital input pins with pullups enabled = 11
 
         """
-        self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULLUP, callback)
+        self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULLUP,
+                           callback=callback)
 
     def set_pin_mode_digital_output(self, pin_number):
         """
