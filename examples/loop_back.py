@@ -17,7 +17,7 @@
 
 import time
 import sys
-from telemetrix import telemetrix
+from telemetrix_rpi_pico import telemetrix_rpi_pico
 
 """
 Loopback some data to assure that data can be sent and received between
@@ -51,11 +51,13 @@ def loop_back(my_board, loop_back_data):
         sys.exit(0)
 
 
-board = telemetrix.Telemetrix()
+board = telemetrix_rpi_pico.TelemetrixRpiPico()
 char_list = ['A', 'B', 'Z']
 try:
     loop_back(board, char_list)
-    time.sleep(1)
+    time.sleep(.3)
+    board.shutdown()
+
 except KeyboardInterrupt:
     board.shutdown()
     sys.exit(0)

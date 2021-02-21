@@ -1,5 +1,5 @@
 """
- Copyright (c) 2020 Alan Yorinks All rights reserved.
+ Copyright (c) 2021 Alan Yorinks All rights reserved.
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -15,7 +15,6 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 """
-import socket
 import struct
 import sys
 import threading
@@ -28,24 +27,24 @@ from serial.serialutil import SerialException
 # noinspection PyPackageRequirements
 from serial.tools import list_ports
 
-from telemetrix.private_constants import PrivateConstants
+from telemetrix_rpi_pico.private_constants import PrivateConstants
 
 
 # noinspection PyPep8,PyMethodMayBeStatic
-class Telemetrix(threading.Thread):
+class TelemetrixRpiPico(threading.Thread):
     """
-    This class exposes and implements the telemetrix API.
+    This class exposes and implements a Telemetrix type
+    API for the Raspberry Pi Pico.
     It uses threading to accommodate concurrency.
     It includes the public API methods as well as
     a set of private methods.
 
     """
 
-    # noinspection PyPep8,PyPep8,PyPep8
-    def __init__(self, com_port=None, arduino_instance_id=1,
-                 arduino_wait=4, sleep_tune=0.000001,
+    def __init__(self, com_port=None, pico_instance_id=None,
+                 sleep_tune=0.000001,
                  shutdown_on_exception=True,
-                 ip_address=None, ip_port=31335):
+                 reset_on_shutdown=True):
 
         """
 
@@ -53,11 +52,9 @@ class Telemetrix(threading.Thread):
                          Only use if you wish to bypass auto com port
                          detection.
 
-        :param arduino_instance_id: Match with the value installed on the
-                                    arduino-telemetrix sketch.
-
-        :param arduino_wait: Amount of time to wait for an Arduino to
-                             fully reset itself.
+        :param pico_instance_id: If not specified, than don't do id check.
+                                 Else contains a board' s pico unique ID.
+                                 This is passed as an array.
 
         :param sleep_tune: A tuning parameter (typically not changed by user)
 
@@ -65,9 +62,7 @@ class Telemetrix(threading.Thread):
                                       a RunTimeError exception, or
                                       receiving a KeyboardInterrupt exception
 
-        :param ip_address: ip address of tcp/ip connected device.
-
-        :param ip_port: ip port of tcp/ip connected device
+        :para reset_on_shutdown: Reset the board upon shutdown
         """
 
         # initialize threading parent
@@ -80,15 +75,7 @@ class Telemetrix(threading.Thread):
         self.the_reporter_thread = threading.Thread(target=self._reporter)
         self.the_reporter_thread.daemon = True
 
-        self.ip_address = ip_address
-        self.ip_port = ip_port
-
-        if not self.ip_address:
-            self.the_data_receive_thread = threading.Thread(target=self._serial_receiver)
-        else:
-            self.the_data_receive_thread = threading.Thread(target=self._tcp_receiver)
-
-        self.the_data_receive_thread.daemon = True
+        self.the_data_receive_thread = threading.Thread(target=self._serial_receiver)
 
         # flag to allow the reporter and receive threads to run.
         self.run_event = threading.Event()
@@ -104,12 +91,12 @@ class Telemetrix(threading.Thread):
 
         # save input parameters as instance variables
         self.com_port = com_port
-        self.arduino_instance_id = arduino_instance_id
-        self.arduino_wait = arduino_wait
+        self.pico_instance_id = pico_instance_id
         self.sleep_tune = sleep_tune
         self.shutdown_on_exception = shutdown_on_exception
+        self.reset_on_shutdown = reset_on_shutdown
 
-        # create a deque to receive and process data from the arduino
+        # create a deque to receive and process data from the pico
         self.the_deque = deque()
 
         # The report_dispatch dictionary is used to process
@@ -119,18 +106,31 @@ class Telemetrix(threading.Thread):
         self.report_dispatch = {}
 
         # To add a command to the command dispatch table, append here.
-        self.report_dispatch.update({PrivateConstants.LOOP_COMMAND: self._report_loop_data})
-        self.report_dispatch.update({PrivateConstants.DEBUG_PRINT: self._report_debug_data})
-        self.report_dispatch.update({PrivateConstants.DIGITAL_REPORT: self._digital_message})
-        self.report_dispatch.update({PrivateConstants.ANALOG_REPORT: self._analog_message})
-        self.report_dispatch.update({PrivateConstants.FIRMWARE_REPORT: self._firmware_message})
+        self.report_dispatch.update(
+            {PrivateConstants.LOOP_COMMAND: self._report_loop_data})
+        self.report_dispatch.update(
+            {PrivateConstants.DEBUG_PRINT: self._report_debug_data})
+        self.report_dispatch.update(
+            {PrivateConstants.DIGITAL_REPORT: self._digital_message})
+        self.report_dispatch.update(
+            {PrivateConstants.ANALOG_REPORT: self._analog_message})
+        self.report_dispatch.update(
+            {PrivateConstants.FIRMWARE_REPORT: self._firmware_message})
         self.report_dispatch.update({PrivateConstants.I_AM_HERE_REPORT: self._i_am_here})
-        self.report_dispatch.update({PrivateConstants.SERVO_UNAVAILABLE: self._servo_unavailable})
-        self.report_dispatch.update({PrivateConstants.I2C_READ_REPORT: self._i2c_read_report})
-        self.report_dispatch.update({PrivateConstants.I2C_TOO_FEW_BYTES_RCVD: self._i2c_too_few})
-        self.report_dispatch.update({PrivateConstants.I2C_TOO_MANY_BYTES_RCVD: self._i2c_too_many})
-        self.report_dispatch.update({PrivateConstants.SONAR_DISTANCE: self._sonar_distance_report})
+        self.report_dispatch.update(
+            {PrivateConstants.SERVO_UNAVAILABLE: self._servo_unavailable})
+        self.report_dispatch.update(
+            {PrivateConstants.I2C_READ_REPORT: self._i2c_read_report})
+        self.report_dispatch.update(
+            {PrivateConstants.I2C_TOO_FEW_BYTES_RCVD: self._i2c_too_few})
+        self.report_dispatch.update(
+            {PrivateConstants.I2C_TOO_MANY_BYTES_RCVD: self._i2c_too_many})
+        self.report_dispatch.update(
+            {PrivateConstants.SONAR_DISTANCE: self._sonar_distance_report})
         self.report_dispatch.update({PrivateConstants.DHT_REPORT: self._dht_report})
+
+        # up to 16 pwm pins may be simultaneously active
+        self.pwm_active_count = 0
 
         # dictionaries to store the callbacks for each pin
         self.analog_callbacks = {}
@@ -156,9 +156,6 @@ class Telemetrix(threading.Thread):
         # serial port in use
         self.serial_port = None
 
-        # socket for tcp/ip communications
-        self.sock = None
-
         # flag to indicate we are in shutdown mode
         self.shutdown_flag = False
 
@@ -171,8 +168,8 @@ class Telemetrix(threading.Thread):
         # firmware version to be stored here
         self.firmware_version = []
 
-        # reported arduino instance id
-        self.reported_arduino_id = []
+        # reported pico_id
+        self.reported_pico_id = []
 
         # flag to indicate if i2c was previously enabled
         self.i2c_enabled = False
@@ -180,79 +177,81 @@ class Telemetrix(threading.Thread):
         self.the_reporter_thread.start()
         self.the_data_receive_thread.start()
 
-        print(f"Telemetrix:  Version {PrivateConstants.TELEMETRIX_VERSION}\n\n"
+        print(f"TelemetrixRpiPico:  Version {PrivateConstants.TELEMETRIX_VERSION}\n\n"
               f"Copyright (c) 2020 Alan Yorinks All Rights Reserved.\n")
 
         # using the serial link
-        if not self.ip_address:
-            if not self.com_port:
-                # user did not specify a com_port
-                try:
-                    self._find_arduino()
-                except KeyboardInterrupt:
-                    if self.shutdown_on_exception:
-                        self.shutdown()
-            else:
-                # com_port specified - set com_port and baud rate
-                try:
-                    self._manual_open()
-                except KeyboardInterrupt:
-                    if self.shutdown_on_exception:
-                        self.shutdown()
 
-            if self.serial_port:
-                print(f"Arduino compatible device found and connected to {self.serial_port.port}")
-
-                self.serial_port.reset_input_buffer()
-                self.serial_port.reset_output_buffer()
-
-            # no com_port found - raise a runtime exception
-            else:
+        if not self.com_port:
+            # user did not specify a com_port
+            try:
+                self._find_pico()
+            except KeyboardInterrupt:
                 if self.shutdown_on_exception:
                     self.shutdown()
-                raise RuntimeError('No Arduino Found or User Aborted Program')
         else:
-            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.sock.connect((self.ip_address, self.ip_port))
-            print(f'Successfully connected to: {self.ip_address}:{self.ip_port}')
+            # com_port specified - set com_port and baud rate
+            try:
+                self._manual_open()
+            except KeyboardInterrupt:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+
+        if self.serial_port:
+            print(
+                f"Serial compatible device found and connected to"
+                f" {self.serial_port.port}")
+
+            self.serial_port.reset_input_buffer()
+            self.serial_port.reset_output_buffer()
+
+        # no com_port found - raise a runtime exception
+        else:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError('No pico Found or User Aborted Program')
 
         # allow the threads to run
         self._run_threads()
-        print(f'Waiting for Arduino to reset')
-        print(f'Reset Complete')
 
-        print('Retrieving Arduino ID...')
-        self._get_arduino_id()
-        if self.reported_arduino_id != self.arduino_instance_id:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(f'Incorrect Arduino ID: {self.reported_arduino_id}')
-        print('Valid Arduino ID Found.')
-        # get arduino firmware version and print it
-        print('\nRetrieving Telemetrix4Arduino firmware ID...')
+        print('Retrieving pico ID...')
+        self._get_pico_id()
+        # time.sleep(.2)
+        print(f'Pico Unique ID: {self.reported_pico_id}')
+
+        if self.pico_instance_id:
+            if self.reported_pico_id != self.pico_instance_id:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(f'Incorrect pico ID: {self.reported_pico_id}')
+            else:
+                print('Valid pico ID Found.')
+        # get pico firmware version and print it
+        print('\nRetrieving Telemetrix4pico firmware ID...')
         self._get_firmware_version()
+        # time.sleep(.3)
         if not self.firmware_version:
             if self.shutdown_on_exception:
                 self.shutdown()
-            raise RuntimeError(f'Telemetrix4Arduino firmware version')
+            raise RuntimeError(f'Telemetrix4pico firmware version')
 
         else:
-            print(f'Telemetrix4Arduino firmware version: {self.firmware_version[0]}.'
+            print(f'Telemetrix4pico firmware version: {self.firmware_version[0]}.'
                   f'{self.firmware_version[1]}')
         command = [PrivateConstants.ENABLE_ALL_REPORTS]
         self._send_command(command)
 
         # Have the server reset its data structures
-        command = [PrivateConstants.RESET]
+        command = [PrivateConstants.RESET_DATA]
         self._send_command(command)
 
-    def _find_arduino(self):
+    def _find_pico(self):
         """
-        This method will search all potential serial ports for an Arduino
-        containing a sketch that has a matching arduino_instance_id as
+        This method will search all potential serial ports for an pico
+        containing a sketch that has a matching pico_instance_id as
         specified in the input parameters of this class.
 
-        This is used explicitly with the Telemetrix4Arduino sketch.
+        This is used explicitly with the Telemetrix4pico sketch.
         """
 
         # a list of serial ports to be checked
@@ -269,21 +268,16 @@ class Telemetrix(threading.Thread):
             except SerialException:
                 continue
             # create a list of serial ports that we opened
-            serial_ports.append(self.serial_port)
+            # make sure this is a pico board
+            if port.pid == 10 and port.vid == 11914:
+                serial_ports.append(self.serial_port)
 
-            # display to the user
-            print('\t' + port.device)
+                # display to the user
+                print('\t' + port.device)
 
-            # clear out any possible data in the input buffer
-        # wait for arduino to reset
-        print(f'\nWaiting {self.arduino_wait} seconds(arduino_wait) for Arduino devices to '
-              'reset...')
-        # temporary for testing
-        time.sleep(self.arduino_wait)
-
-        # check for correct arduino device
-        self.serial_port.reset_input_buffer()
-        self.serial_port.reset_output_buffer()
+                # clear out the serial buffers
+                self.serial_port.reset_input_buffer()
+                self.serial_port.reset_output_buffer()
 
     def _manual_open(self):
         """
@@ -296,54 +290,52 @@ class Telemetrix(threading.Thread):
             self.serial_port = serial.Serial(self.com_port, 115200,
                                              timeout=1, writeTimeout=0)
 
-            print(f'\nWaiting {self.arduino_wait} seconds(arduino_wait) for Arduino devices to '
-                  'reset...')
             self._run_threads()
-            time.sleep(self.arduino_wait)
+            # time.sleep(self.pico_wait)
 
-            self._get_arduino_id()
+            self._get_pico_id()
 
-            if self.reported_arduino_id != self.arduino_instance_id:
+            if self.reported_pico_id != self.pico_instance_id:
                 if self.shutdown_on_exception:
                     self.shutdown()
-                raise RuntimeError(f'Incorrect Arduino ID: {self.reported_arduino_id}')
-            print('Valid Arduino ID Found.')
-            # get arduino firmware version and print it
-            print('\nRetrieving Telemetrix4Arduino firmware ID...')
+                raise RuntimeError(f'Incorrect pico ID: {self.reported_pico_id}')
+            print('Valid pico ID Found.')
+            # get pico firmware version and print it
+            print('\nRetrieving Telemetrix4pico firmware ID...')
             self._get_firmware_version()
 
             if not self.firmware_version:
                 if self.shutdown_on_exception:
                     self.shutdown()
-                raise RuntimeError(f'Telemetrix4Arduino Sketch Firmware Version Not Found')
+                raise RuntimeError(f'Telemetrix4pico Sketch Firmware Version Not Found')
 
             else:
-                print(f'Telemetrix4Arduino firmware version: {self.firmware_version[0]}.'
+                print(f'Telemetrix4pico firmware version: {self.firmware_version[0]}.'
                       f'{self.firmware_version[1]}')
         except KeyboardInterrupt:
             if self.shutdown_on_exception:
                 self.shutdown()
             raise RuntimeError('User Hit Control-C')
 
-    def analog_write(self, pin, value):
+    def pwm_write(self, pin, value):
         """
         Set the specified pin to the specified value.
 
-        :param pin: arduino pin number
+        :param pin: pico pin number
 
-        :param value: pin value (maximum 16 bitrs)
+        :param value: pin value (0-255)
 
         """
         value_msb = value >> 8
         value_lsb = value & 0xff
-        command = [PrivateConstants.ANALOG_WRITE, pin, value_msb, value_lsb]
+        command = [PrivateConstants.PWM_WRITE, pin, value_msb, value_lsb]
         self._send_command(command)
 
     def digital_write(self, pin, value):
         """
         Set the specified pin to the specified value.
 
-        :param pin: arduino pin number
+        :param pin: pico pin number
 
         :param value: pin value (1 or 0)
 
@@ -356,7 +348,8 @@ class Telemetrix(threading.Thread):
         """
         Disable reporting for all digital and analog input pins
         """
-        command = [PrivateConstants.MODIFY_REPORTING, PrivateConstants.REPORTING_DISABLE_ALL, 0]
+        command = [PrivateConstants.MODIFY_REPORTING,
+                   PrivateConstants.REPORTING_DISABLE_ALL, 0]
         self._send_command(command)
 
     def disable_analog_reporting(self, pin):
@@ -366,7 +359,8 @@ class Telemetrix(threading.Thread):
         :param pin: Analog pin number. For example for A0, the number is 0.
 
         """
-        command = [PrivateConstants.MODIFY_REPORTING, PrivateConstants.REPORTING_ANALOG_DISABLE, pin]
+        command = [PrivateConstants.MODIFY_REPORTING,
+                   PrivateConstants.REPORTING_ANALOG_DISABLE, pin]
         self._send_command(command)
 
     def disable_digital_reporting(self, pin):
@@ -376,7 +370,8 @@ class Telemetrix(threading.Thread):
         :param pin: Pin number.
 
         """
-        command = [PrivateConstants.MODIFY_REPORTING, PrivateConstants.REPORTING_DIGITAL_DISABLE, pin]
+        command = [PrivateConstants.MODIFY_REPORTING,
+                   PrivateConstants.REPORTING_DIGITAL_DISABLE, pin]
         self._send_command(command)
 
     def enable_analog_reporting(self, pin):
@@ -387,7 +382,8 @@ class Telemetrix(threading.Thread):
 
 
         """
-        command = [PrivateConstants.MODIFY_REPORTING, PrivateConstants.REPORTING_ANALOG_ENABLE, pin]
+        command = [PrivateConstants.MODIFY_REPORTING,
+                   PrivateConstants.REPORTING_ANALOG_ENABLE, pin]
         self._send_command(command)
 
     def enable_digital_reporting(self, pin):
@@ -397,12 +393,13 @@ class Telemetrix(threading.Thread):
         :param pin: Pin number.
         """
 
-        command = [PrivateConstants.MODIFY_REPORTING, PrivateConstants.REPORTING_DIGITAL_ENABLE, pin]
+        command = [PrivateConstants.MODIFY_REPORTING,
+                   PrivateConstants.REPORTING_DIGITAL_ENABLE, pin]
         self._send_command(command)
 
-    def _get_arduino_id(self):
+    def _get_pico_id(self):
         """
-        Retrieve arduino-telemetrix arduino id
+        Retrieve pico-telemetrix pico id
 
         """
         command = [PrivateConstants.ARE_U_THERE]
@@ -413,7 +410,7 @@ class Telemetrix(threading.Thread):
     def _get_firmware_version(self):
         """
         This method retrieves the
-        arduino-telemetrix firmware version
+        pico-telemetrix firmware version
 
         """
         command = [PrivateConstants.GET_FIRMWARE_VERSION]
@@ -476,7 +473,8 @@ class Telemetrix(threading.Thread):
 
         """
 
-        self._i2c_read_request(address, register, number_of_bytes, stop_transmission=False,
+        self._i2c_read_request(address, register, number_of_bytes,
+                               stop_transmission=False,
                                callback=callback, i2c_port=i2c_port)
 
     def _i2c_read_request(self, address, register, number_of_bytes,
@@ -501,13 +499,15 @@ class Telemetrix(threading.Thread):
             if not self.i2c_1_active:
                 if self.shutdown_on_exception:
                     self.shutdown()
-                raise RuntimeError('I2C Read: set_pin_mode i2c never called for i2c port 1.')
+                raise RuntimeError(
+                    'I2C Read: set_pin_mode i2c never called for i2c port 1.')
 
         if i2c_port:
             if not self.i2c_2_active:
                 if self.shutdown_on_exception:
                     self.shutdown()
-                raise RuntimeError('I2C Read: set_pin_mode i2c never called for i2c port 2.')
+                raise RuntimeError(
+                    'I2C Read: set_pin_mode i2c never called for i2c port 2.')
 
         if not callback:
             if self.shutdown_on_exception:
@@ -549,13 +549,15 @@ class Telemetrix(threading.Thread):
             if not self.i2c_1_active:
                 if self.shutdown_on_exception:
                     self.shutdown()
-                raise RuntimeError('I2C Write: set_pin_mode i2c never called for i2c port 1.')
+                raise RuntimeError(
+                    'I2C Write: set_pin_mode i2c never called for i2c port 1.')
 
         if i2c_port:
             if not self.i2c_2_active:
                 if self.shutdown_on_exception:
                     self.shutdown()
-                raise RuntimeError('I2C Write: set_pin_mode i2c never called for i2c port 2.')
+                raise RuntimeError(
+                    'I2C Write: set_pin_mode i2c never called for i2c port 2.')
 
         command = [PrivateConstants.I2C_WRITE, len(args), address, i2c_port]
 
@@ -567,7 +569,7 @@ class Telemetrix(threading.Thread):
     def loop_back(self, start_character, callback=None):
         """
         This is a debugging method to send a character to the
-        Arduino device, and have the device loop it back.
+        pico device, and have the device loop it back.
 
         :param start_character: The character to loop back. It should be
                                 an integer.
@@ -598,7 +600,7 @@ class Telemetrix(threading.Thread):
         """
         Set a pin as a pwm (analog output) pin.
 
-        :param pin_number:arduino pin number
+        :param pin_number:pico pin number
 
         """
         self._set_pin_mode(pin_number, PrivateConstants.AT_OUTPUT)
@@ -607,7 +609,7 @@ class Telemetrix(threading.Thread):
         """
         Set a pin as an analog input.
 
-        :param pin_number: arduino pin number
+        :param pin_number: pico pin number
 
         :param differential: difference in previous to current value before
                              report will be generated
@@ -629,7 +631,7 @@ class Telemetrix(threading.Thread):
         """
         Set a pin as a digital input.
 
-        :param pin_number: arduino pin number
+        :param pin_number: pico pin number
 
         :param callback: callback function
 
@@ -647,7 +649,7 @@ class Telemetrix(threading.Thread):
         """
         Set a pin as a digital input with pullup enabled.
 
-        :param pin_number: arduino pin number
+        :param pin_number: pico pin number
 
         :param callback: callback function
 
@@ -665,14 +667,36 @@ class Telemetrix(threading.Thread):
         """
         Set a pin as a digital output pin.
 
-        :param pin_number: arduino pin number
+        :param pin_number: pico pin number
         """
 
         self._set_pin_mode(pin_number, PrivateConstants.AT_OUTPUT)
 
+    def set_pin_mode_pwm_output(self, pin_number, value_range=255):
+        """
+        Enable a pin as a PWM pin. Maximum number of PWMs is 16.
+
+        :param pin_number: pico pin number
+
+        :param value_range: value range - 16 bits
+        """
+
+        if self.pwm_active_count >= 15:
+            raise RuntimeError(
+                'set_pin_mode_pwm_output: number of active PWM pins is at maximum')
+
+        if value_range > 0xffff:
+            raise RuntimeError(
+                'set_pin_mode_pwm_output: value_range is limited to 16 bits')
+
+        self.pwm_active_count += 1
+
+        self._set_pin_mode(pin_number, PrivateConstants.AT_PWM_OUTPUT,
+                           value_range=value_range)
+
     def set_pin_mode_i2c(self, i2c_port=0):
         """
-        Establish the standard Arduino i2c pins for i2c utilization.
+        Establish the standard pico i2c pins for i2c utilization.
 
         :param i2c_port: 0 = i2c1, 1 = i2c2
 
@@ -728,7 +752,8 @@ class Telemetrix(threading.Thread):
         else:
             if self.shutdown_on_exception:
                 self.shutdown()
-            raise RuntimeError(f'Maximum Number Of DHTs Exceeded - set_pin_mode_dht fails for pin {pin}')
+            raise RuntimeError(
+                f'Maximum Number Of DHTs Exceeded - set_pin_mode_dht fails for pin {pin}')
 
     # noinspection PyRedundantParentheses
     def set_pin_mode_servo(self, pin_number, min_pulse=544, max_pulse=2400):
@@ -778,7 +803,8 @@ class Telemetrix(threading.Thread):
         else:
             if self.shutdown_on_exception:
                 self.shutdown()
-            raise RuntimeError(f'Maximum Number Of Sonars Exceeded - set_pin_mode_sonar fails for pin {trigger_pin}')
+            raise RuntimeError(
+                f'Maximum Number Of Sonars Exceeded - set_pin_mode_sonar fails for pin {trigger_pin}')
 
     def servo_write(self, pin_number, angle):
         """
@@ -803,12 +829,13 @@ class Telemetrix(threading.Thread):
         command = [PrivateConstants.SERVO_DETACH, pin_number]
         self._send_command(command)
 
-    def _set_pin_mode(self, pin_number, pin_state, differential=0, callback=None):
+    def _set_pin_mode(self, pin_number, pin_state, differential=0, value_range=0,
+                      callback=None):
 
         """
         A private method to set the various pin modes.
 
-        :param pin_number: arduino pin number
+        :param pin_number: pico pin number
 
         :param pin_state: INPUT/OUTPUT/ANALOG/PWM/PULLUP
                          For SERVO use: set_pin_mode_servo
@@ -817,6 +844,8 @@ class Telemetrix(threading.Thread):
         :param differential: for analog inputs - threshold
                              value to be achieved for report to
                              be generated
+
+        :param value_range: valid value range
 
         :param callback: A reference to a call back function to be
                          called when pin data value changes
@@ -834,17 +863,27 @@ class Telemetrix(threading.Thread):
                                      'pin state:', pin_state))
 
         if pin_state == PrivateConstants.AT_INPUT:
-            command = [PrivateConstants.SET_PIN_MODE, pin_number, PrivateConstants.AT_INPUT, 1]
+            command = [PrivateConstants.SET_PIN_MODE, pin_number,
+                       PrivateConstants.AT_INPUT, 1]
 
         elif pin_state == PrivateConstants.AT_INPUT_PULLUP:
-            command = [PrivateConstants.SET_PIN_MODE, pin_number, PrivateConstants.AT_INPUT_PULLUP, 1]
+            command = [PrivateConstants.SET_PIN_MODE, pin_number,
+                       PrivateConstants.AT_INPUT_PULLUP, 1]
 
         elif pin_state == PrivateConstants.AT_OUTPUT:
-            command = [PrivateConstants.SET_PIN_MODE, pin_number, PrivateConstants.AT_OUTPUT]
+            command = [PrivateConstants.SET_PIN_MODE, pin_number,
+                       PrivateConstants.AT_OUTPUT]
 
         elif pin_state == PrivateConstants.AT_ANALOG:
-            command = [PrivateConstants.SET_PIN_MODE, pin_number, PrivateConstants.AT_ANALOG,
+            command = [PrivateConstants.SET_PIN_MODE, pin_number,
+                       PrivateConstants.AT_ANALOG,
                        differential >> 8, differential & 0xff, 1]
+
+        elif pin_state == PrivateConstants.AT_PWM_OUTPUT:
+            command = [PrivateConstants.SET_PIN_MODE, pin_number,
+                       PrivateConstants.AT_PWM_OUTPUT, value_range >> 8,
+                       value_range & 0xff]
+
         else:
             if self.shutdown_on_exception:
                 self.shutdown()
@@ -862,27 +901,24 @@ class Telemetrix(threading.Thread):
 
         self._stop_threads()
 
-        try:
-            command = [PrivateConstants.STOP_ALL_REPORTS]
+        # try:
+        command = [PrivateConstants.STOP_ALL_REPORTS]
+        self._send_command(command)
+        time.sleep(.2)
+        if self.reset_on_shutdown:
+            command = [PrivateConstants.RESET_BOARD]
             self._send_command(command)
-            time.sleep(.5)
+            time.sleep(.2)
+        # try:
+            # self.serial_port.reset_input_buffer()
+        #     self.serial_port.close()
 
-            if self.ip_address:
-                try:
-                    self.sock.shutdown(socket.SHUT_RDWR)
-                    self.sock.close()
-                except Exception:
-                    pass
-            else:
-                try:
-                    self.serial_port.reset_input_buffer()
-                    self.serial_port.close()
-
-                except (RuntimeError, SerialException, OSError):
-                    # ignore error on shutdown
-                    pass
-        except Exception:
-            raise RuntimeError('Shutdown failed - could not send stop streaming message')
+        # except (RuntimeError, SerialException, OSError):
+            # ignore error on shutdown
+        #     pass
+        # except Exception:
+        #     raise RuntimeError('Shutdown failed - could not send stop streaming
+    #     message')
 
     '''
     report message handlers
@@ -935,7 +971,8 @@ class Telemetrix(threading.Thread):
             # data[0] = report sub type, data[1] = pin, data[2] = error message
             if self.dht_callbacks[data[1]]:
                 # Callback 0=DHT REPORT, DHT_ERROR=0, PIN, Error Number, Time
-                message = [PrivateConstants.DHT_REPORT, data[0], data[1], data[2], time.time()]
+                message = [PrivateConstants.DHT_REPORT, data[0], data[1], data[2],
+                           time.time()]
                 self.dht_callbacks[data[1]](message)
         else:
             # got valid data DHT_DATA
@@ -966,7 +1003,7 @@ class Telemetrix(threading.Thread):
 
     def _firmware_message(self, data):
         """
-        Telemetrix4Arduino firmware version message
+        Telemetrix4pico firmware version message
         :param data: data[0] = major number, data[1] = minor number
         """
 
@@ -1005,7 +1042,8 @@ class Telemetrix(threading.Thread):
         """
         if self.shutdown_on_exception:
             self.shutdown()
-        raise RuntimeError(f'i2c too few bytes received from i2c port {data[0]} i2c address {data[1]}')
+        raise RuntimeError(
+            f'i2c too few bytes received from i2c port {data[0]} i2c address {data[1]}')
 
     def _i2c_too_many(self, data):
         """
@@ -1015,18 +1053,21 @@ class Telemetrix(threading.Thread):
         """
         if self.shutdown_on_exception:
             self.shutdown()
-        raise RuntimeError(f'i2c too many bytes received from i2c port {data[0]} i2c address {data[1]}')
+        raise RuntimeError(
+            f'i2c too many bytes received from i2c port {data[0]} i2c address {data[1]}')
 
     def _i_am_here(self, data):
         """
         Reply to are_u_there message
-        :param data: arduino id
+        :param data: pico id
         """
-        self.reported_arduino_id = data[0]
+
+        for i in range(len(data)):
+            self.reported_pico_id.append(data[i])
 
     def _report_debug_data(self, data):
         """
-        Print debug data sent from Arduino
+        Print debug data sent from pico
         :param data: data[0] is a byte followed by 2
                      bytes that comprise an integer
         :return:
@@ -1063,10 +1104,6 @@ class Telemetrix(threading.Thread):
                 if self.shutdown_on_exception:
                     self.shutdown()
                 raise RuntimeError('write fail in _send_command')
-        elif self.ip_address:
-            self.sock.sendall(send_message)
-        else:
-            raise RuntimeError('No serial port or ip address set.')
 
     def _servo_unavailable(self, report):
         """
@@ -1075,7 +1112,8 @@ class Telemetrix(threading.Thread):
         """
         if self.shutdown_on_exception:
             self.shutdown()
-        raise RuntimeError(f'Servo Attach For Pin {report[0]} Failed: No Available Servos')
+        raise RuntimeError(
+            f'Servo Attach For Pin {report[0]} Failed: No Available Servos')
 
     def _sonar_distance_report(self, report):
         """
@@ -1143,7 +1181,8 @@ class Telemetrix(threading.Thread):
                 else:
                     if self.shutdown_on_exception:
                         self.shutdown()
-                    raise RuntimeError('A report with a packet length of zero was received.')
+                    raise RuntimeError(
+                        'A report with a packet length of zero was received.')
             else:
                 time.sleep(self.sleep_tune)
 
@@ -1154,10 +1193,6 @@ class Telemetrix(threading.Thread):
         """
         self.run_event.wait()
 
-        # Don't start this thread if using a tcp/ip transport
-        if self.ip_address:
-            return
-
         while self._is_running() and not self.shutdown_flag:
             # we can get an OSError: [Errno9] Bad file descriptor when shutting down
             # just ignore it
@@ -1165,29 +1200,8 @@ class Telemetrix(threading.Thread):
                 if self.serial_port.inWaiting():
                     c = self.serial_port.read()
                     self.the_deque.append(ord(c))
-                    # print(ord(c))
                 else:
                     time.sleep(self.sleep_tune)
                     # continue
             except OSError:
                 pass
-
-    def _tcp_receiver(self):
-        """
-        Thread to continuously check for incoming data.
-        When a byte comes in, place it onto the deque.
-        """
-        self.run_event.wait()
-
-        # Start this thread only if ip_address is set
-
-        if self.ip_address:
-
-            while self._is_running() and not self.shutdown_flag:
-                try:
-                    payload = self.sock.recv(1)
-                    self.the_deque.append(ord(payload))
-                except Exception:
-                    pass
-        else:
-            return

@@ -21,7 +21,7 @@
 import sys
 import time
 
-from telemetrix import telemetrix
+from telemetrix_rpi_pico import telemetrix_rpi_pico
 
 """
 Setup a pin for digital output 
@@ -29,10 +29,10 @@ and toggle the pin 5 times.
 """
 
 # some globals
-DIGITAL_PIN = 6  # the board LED
+DIGITAL_PIN = 25  # the board LED
 
 # Create a Telemetrix instance.
-board = telemetrix.Telemetrix(com_port='com5')
+board = telemetrix_rpi_pico.TelemetrixRpiPico()
 
 # Set the DIGITAL_PIN as an output pin
 board.set_pin_mode_digital_output(DIGITAL_PIN)
@@ -53,3 +53,5 @@ for blink in range(5):
     except KeyboardInterrupt:
         board.shutdown()
         sys.exit(0)
+
+board.shutdown()

@@ -26,7 +26,7 @@ class PrivateConstants:
     LOOP_COMMAND = 0
     SET_PIN_MODE = 1  # set a pin to INPUT/OUTPUT/PWM/etc
     DIGITAL_WRITE = 2  # set a single digital pin value instead of entire port
-    ANALOG_WRITE = 3
+    PWM_WRITE = 3
     MODIFY_REPORTING = 4
     GET_FIRMWARE_VERSION = 5
     ARE_U_THERE = 6  # Arduino ID query for auto-detect of telemetrix connected boards
@@ -41,12 +41,13 @@ class PrivateConstants:
     STOP_ALL_REPORTS = 15
     SET_ANALOG_SCANNING_INTERVAL = 16
     ENABLE_ALL_REPORTS = 17
-    RESET = 18
+    RESET_DATA = 18
+    RESET_BOARD = 19
 
     # reports
     # debug data from Arduino
     DIGITAL_REPORT = DIGITAL_WRITE
-    ANALOG_REPORT = ANALOG_WRITE
+    ANALOG_REPORT = 3
     FIRMWARE_REPORT = GET_FIRMWARE_VERSION
     I_AM_HERE_REPORT = ARE_U_THERE
     SERVO_UNAVAILABLE = SERVO_ATTACH
@@ -58,7 +59,7 @@ class PrivateConstants:
 
     DEBUG_PRINT = 99
 
-    TELEMETRIX_VERSION = "1.5"
+    TELEMETRIX_VERSION = "0.1"
 
     # reporting control
     REPORTING_DISABLE_ALL = 0
@@ -68,17 +69,29 @@ class PrivateConstants:
     REPORTING_DIGITAL_DISABLE = 4
 
     # Pin mode definitions
+
+    # define DIGITAL_INPUT 0
+    # define DIGITAL_OUTPUT 1
+    # define PWM_OUTPUT 2
+    # define DIGITAL_INPUT_PULL_UP 3
+    # define DIGITAL_INPUT_PULL_DOWN 4
+    # define ANALOG_INPUT 5
     AT_INPUT = 0
     AT_OUTPUT = 1
-    AT_INPUT_PULLUP = 2
-    AT_ANALOG = 3
-    AT_SERVO = 4
-    AT_SONAR = 5
-    AT_DHT = 6
+    AT_PWM_OUTPUT = 2
+    AT_INPUT_PULLUP = 3
+    AT_INPUT_PULL_DOWN = 4
+    AT_ANALOG = 5
+    AT_SERVO = 6
+    AT_SONAR = 7
+    AT_DHT = 8
     AT_MODE_NOT_SET = 255
 
     # maximum number of digital pins supported
     NUMBER_OF_DIGITAL_PINS = 100
+
+    # maximum number of active PWM pins
+    MAX_PWM_PINS_ACTIVE = 16
 
     # maximum number of analog pins supported
     NUMBER_OF_ANALOG_PINS = 20
