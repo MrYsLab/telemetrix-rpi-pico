@@ -4,7 +4,7 @@ This is an early version of a Telemetrix client for the Raspberry Pi Pico.
 
 This is a work in progress.
 
-##To install The Client Library:
+## To install The Client Library:
 
 **Linux/macOS:**
 
@@ -14,7 +14,7 @@ sudo pip3 install telemetrix-rpi-pico
 
 pip install telemetrix-rpi-pico
 
-##To Install The Pico Server Application
+## To Install The Pico Server Application
 1. [Download](https://github.com/MrYsLab/Telemetrix4RpiPico/raw/master/cmake-build-release/Telemetrix4RpiPico.uf2) 
    and save the .uf2 file.
 2. Place the Pico in file upload mode:
