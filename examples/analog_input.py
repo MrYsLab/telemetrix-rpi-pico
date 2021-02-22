@@ -50,18 +50,18 @@ def the_callback(data):
           f'Value: {data[CB_VALUE]} Time Stamp: {date}')
 
 
-def analog_in(my_board, pin):
+def analog_in(my_board, adc):
     """
      This function establishes the pin as an
      analog input. Any changes on this pin will
      be reported through the call back function.
 
      :param my_board: a pymata4 instance
-     :param pin: Arduino pin number
+     :param adc: ADC number
      """
 
     # set the pin mode
-    my_board.set_pin_mode_analog_input(4, differential=10, callback=the_callback)
+    my_board.set_pin_mode_analog_input(adc, differential=10, callback=the_callback)
 
     print('Enter Control-C to quit.')
     try:
