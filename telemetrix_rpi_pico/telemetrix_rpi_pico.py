@@ -116,7 +116,7 @@ class TelemetrixRpiPico(threading.Thread):
             {PrivateConstants.ANALOG_REPORT: self._analog_message})
         self.report_dispatch.update(
             {PrivateConstants.FIRMWARE_REPORT: self._firmware_message})
-        self.report_dispatch.update({PrivateConstants.I_AM_HERE_REPORT: self._i_am_here})
+        self.report_dispatch.update({PrivateConstants.UNIQUE_ID_REPORT: self._report_unique_id})
         self.report_dispatch.update(
             {PrivateConstants.SERVO_UNAVAILABLE: self._servo_unavailable})
         self.report_dispatch.update(
@@ -247,11 +247,8 @@ class TelemetrixRpiPico(threading.Thread):
 
     def _find_pico(self):
         """
-        This method will search all potential serial ports for an pico
-        containing a sketch that has a matching pico_instance_id as
-        specified in the input parameters of this class.
-
-        This is used explicitly with the Telemetrix4pico sketch.
+        This method will search all potential serial ports for a pico
+        board using its USB PID and VID.
         """
 
         # a list of serial ports to be checked
@@ -402,7 +399,7 @@ class TelemetrixRpiPico(threading.Thread):
         Retrieve pico-telemetrix pico id
 
         """
-        command = [PrivateConstants.ARE_U_THERE]
+        command = [PrivateConstants.RETRIEVE_PICO_UNIQUE_ID]
         self._send_command(command)
         # provide time for the reply
         time.sleep(.5)
@@ -418,6 +415,7 @@ class TelemetrixRpiPico(threading.Thread):
         # provide time for the reply
         time.sleep(.5)
 
+    # TBD
     def i2c_read(self, address, register, number_of_bytes,
                  callback=None, i2c_port=0):
         """
@@ -445,6 +443,7 @@ class TelemetrixRpiPico(threading.Thread):
         self._i2c_read_request(address, register, number_of_bytes,
                                callback=callback, i2c_port=i2c_port)
 
+    # TBD
     def i2c_read_restart_transmission(self, address, register,
                                       number_of_bytes,
                                       callback=None, i2c_port=0):
@@ -477,6 +476,7 @@ class TelemetrixRpiPico(threading.Thread):
                                stop_transmission=False,
                                callback=callback, i2c_port=i2c_port)
 
+    # TBD
     def _i2c_read_request(self, address, register, number_of_bytes,
                           stop_transmission=True, callback=None, i2c_port=0):
         """
@@ -533,6 +533,7 @@ class TelemetrixRpiPico(threading.Thread):
                    stop_transmission, i2c_port]
         self._send_command(command)
 
+    # TBD
     def i2c_write(self, address, args, i2c_port=0):
         """
         Write data to an i2c device.
@@ -581,6 +582,7 @@ class TelemetrixRpiPico(threading.Thread):
         self.loop_back_callback = callback
         self._send_command(command)
 
+    # TBD
     def set_analog_scan_interval(self, interval):
         """
         Set the analog scanning interval.
@@ -595,15 +597,6 @@ class TelemetrixRpiPico(threading.Thread):
             if self.shutdown_on_exception:
                 self.shutdown()
             raise RuntimeError('Analog interval must be between 0 and 255')
-
-    def set_pin_mode_analog_output(self, pin_number):
-        """
-        Set a pin as a pwm (analog output) pin.
-
-        :param pin_number:pico pin number
-
-        """
-        self._set_pin_mode(pin_number, PrivateConstants.AT_OUTPUT)
 
     def set_pin_mode_analog_input(self, pin_number, differential=0, callback=None):
         """
@@ -664,6 +657,25 @@ class TelemetrixRpiPico(threading.Thread):
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULLUP,
                            callback=callback)
 
+    def set_pin_mode_digital_input_pull_down(self, pin_number, callback=None):
+        """
+        Set a pin as a digital input with pull down enabled.
+
+        :param pin_number: pico pin number
+
+        :param callback: callback function
+
+
+        callback returns a data list:
+
+        [pin_type, pin_number, pin_value, raw_time_stamp]
+
+        The pin_type for digital input pins with pullups enabled = 11
+
+        """
+        self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULL_DOWN,
+                           callback=callback)
+
     def set_pin_mode_digital_output(self, pin_number):
         """
         Set a pin as a digital output pin.
@@ -695,6 +707,7 @@ class TelemetrixRpiPico(threading.Thread):
         self._set_pin_mode(pin_number, PrivateConstants.AT_PWM_OUTPUT,
                            value_range=value_range)
 
+    # TBD
     def set_pin_mode_i2c(self, i2c_port=0):
         """
         Establish the standard pico i2c pins for i2c utilization.
@@ -726,6 +739,7 @@ class TelemetrixRpiPico(threading.Thread):
         command = [PrivateConstants.I2C_BEGIN, i2c_port]
         self._send_command(command)
 
+    # TBD
     def set_pin_mode_dht(self, pin, callback=None):
         """
 
@@ -756,6 +770,7 @@ class TelemetrixRpiPico(threading.Thread):
             raise RuntimeError(
                 f'Maximum Number Of DHTs Exceeded - set_pin_mode_dht fails for pin {pin}')
 
+    # TBD
     # noinspection PyRedundantParentheses
     def set_pin_mode_servo(self, pin_number, min_pulse=544, max_pulse=2400):
         """
@@ -776,6 +791,7 @@ class TelemetrixRpiPico(threading.Thread):
                    minv[0], minv[1], maxv[0], maxv[1]]
         self._send_command(command)
 
+    # TBD
     def set_pin_mode_sonar(self, trigger_pin, echo_pin,
                            callback=None):
         """
@@ -807,6 +823,7 @@ class TelemetrixRpiPico(threading.Thread):
             raise RuntimeError(
                 f'Maximum Number Of Sonars Exceeded - set_pin_mode_sonar fails for pin {trigger_pin}')
 
+    # TBD
     def servo_write(self, pin_number, angle):
         """
 
@@ -820,6 +837,7 @@ class TelemetrixRpiPico(threading.Thread):
         command = [PrivateConstants.SERVO_WRITE, pin_number, angle]
         self._send_command(command)
 
+    # TBD
     def servo_detach(self, pin_number):
         """
         Detach a servo for reuse
@@ -857,6 +875,8 @@ class TelemetrixRpiPico(threading.Thread):
                 self.digital_callbacks[pin_number] = callback
             elif pin_state == PrivateConstants.AT_INPUT_PULLUP:
                 self.digital_callbacks[pin_number] = callback
+            elif pin_state == PrivateConstants.AT_INPUT_PULL_DOWN:
+                self.digital_callbacks[pin_number] = callback
             elif pin_state == PrivateConstants.AT_ANALOG:
                 self.analog_callbacks[pin_number] = callback
             else:
@@ -870,6 +890,10 @@ class TelemetrixRpiPico(threading.Thread):
         elif pin_state == PrivateConstants.AT_INPUT_PULLUP:
             command = [PrivateConstants.SET_PIN_MODE, pin_number,
                        PrivateConstants.AT_INPUT_PULLUP, 1]
+
+        elif pin_state == PrivateConstants.AT_INPUT_PULL_DOWN:
+            command = [PrivateConstants.SET_PIN_MODE, pin_number,
+                       PrivateConstants.AT_INPUT_PULL_DOWN, 1]
 
         elif pin_state == PrivateConstants.AT_OUTPUT:
             command = [PrivateConstants.SET_PIN_MODE, pin_number,
@@ -942,6 +966,7 @@ class TelemetrixRpiPico(threading.Thread):
             message = [PrivateConstants.ANALOG_REPORT, pin, value, time_stamp]
             self.analog_callbacks[pin](message)
 
+    # TBD
     def _dht_report(self, data):
         """
         This is the dht report handler method.
@@ -1010,6 +1035,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         self.firmware_version = [data[0], data[1]]
 
+    # TBD
     def _i2c_read_report(self, data):
         """
         Execute callback for i2c reads.
@@ -1035,6 +1061,7 @@ class TelemetrixRpiPico(threading.Thread):
         else:
             self.i2c_callback(cb_list)
 
+    # TBD
     def _i2c_too_few(self, data):
         """
         I2c reports too few bytes received
@@ -1046,6 +1073,7 @@ class TelemetrixRpiPico(threading.Thread):
         raise RuntimeError(
             f'i2c too few bytes received from i2c port {data[0]} i2c address {data[1]}')
 
+    # TBD
     def _i2c_too_many(self, data):
         """
         I2c reports too few bytes received
@@ -1057,7 +1085,7 @@ class TelemetrixRpiPico(threading.Thread):
         raise RuntimeError(
             f'i2c too many bytes received from i2c port {data[0]} i2c address {data[1]}')
 
-    def _i_am_here(self, data):
+    def _report_unique_id(self, data):
         """
         Reply to are_u_there message
         :param data: pico id
@@ -1106,6 +1134,7 @@ class TelemetrixRpiPico(threading.Thread):
                     self.shutdown()
                 raise RuntimeError('write fail in _send_command')
 
+    # TBD
     def _servo_unavailable(self, report):
         """
         Message if no servos are available for use.
@@ -1116,6 +1145,7 @@ class TelemetrixRpiPico(threading.Thread):
         raise RuntimeError(
             f'Servo Attach For Pin {report[0]} Failed: No Available Servos')
 
+    # TBD
     def _sonar_distance_report(self, report):
         """
 
