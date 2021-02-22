@@ -582,27 +582,11 @@ class TelemetrixRpiPico(threading.Thread):
         self.loop_back_callback = callback
         self._send_command(command)
 
-    # TBD
-    def set_analog_scan_interval(self, interval):
-        """
-        Set the analog scanning interval.
-
-        :param interval: value of 0 - 255 - milliseconds
-        """
-
-        if 0 <= interval <= 255:
-            command = [PrivateConstants.SET_ANALOG_SCANNING_INTERVAL, interval]
-            self._send_command(command)
-        else:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError('Analog interval must be between 0 and 255')
-
     def set_pin_mode_analog_input(self, pin_number, differential=0, callback=None):
         """
         Set a pin as an analog input.
 
-        :param pin_number: pico pin number
+        :param pin_number: ADC Number 0-3 - ADC 3 is the temp sensor
 
         :param differential: difference in previous to current value before
                              report will be generated
@@ -618,7 +602,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         """
         self._set_pin_mode(pin_number, PrivateConstants.AT_ANALOG, differential,
-                           callback)
+                           callback=callback)
 
     def set_pin_mode_digital_input(self, pin_number, callback=None):
         """

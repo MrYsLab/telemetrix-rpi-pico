@@ -40,10 +40,9 @@ class PrivateConstants:
     SONAR_NEW = 13
     DHT_NEW = 14
     STOP_ALL_REPORTS = 15
-    SET_ANALOG_SCANNING_INTERVAL = 16
-    ENABLE_ALL_REPORTS = 17
-    RESET_DATA = 18
-    RESET_BOARD = 19
+    ENABLE_ALL_REPORTS = 16
+    RESET_DATA = 17
+    RESET_BOARD = 18
 
     # reports
     # debug data from Arduino
