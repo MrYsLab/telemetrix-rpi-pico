@@ -259,6 +259,8 @@ class TelemetrixRpiPico(threading.Thread):
         for port in the_ports_list:
             if port.pid is None:
                 continue
+            if port.pid != 10:
+                continue
             try:
                 self.serial_port = serial.Serial(port.device, 115200,
                                                  timeout=1, writeTimeout=0)
@@ -291,11 +293,11 @@ class TelemetrixRpiPico(threading.Thread):
             # time.sleep(self.pico_wait)
 
             self._get_pico_id()
-
-            if self.reported_pico_id != self.pico_instance_id:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(f'Incorrect pico ID: {self.reported_pico_id}')
+            if self.pico_instance_id:
+                if self.reported_pico_id != self.pico_instance_id:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError(f'Incorrect pico ID: {self.reported_pico_id}')
             print('Valid pico ID Found.')
             # get pico firmware version and print it
             print('\nRetrieving Telemetrix4pico firmware ID...')
@@ -702,8 +704,6 @@ class TelemetrixRpiPico(threading.Thread):
     # TBD
     def set_pin_mode_i2c(self, i2c_port=0):
         """
-        NOT YET IMPLEMENTED!!!
-
         Establish the standard pico i2c pins for i2c utilization.
 
         :param i2c_port: 0 = i2c1, 1 = i2c2
