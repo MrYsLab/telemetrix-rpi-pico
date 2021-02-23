@@ -10,6 +10,14 @@ A Python API for may be found [here.](https://htmlpreview.github.com/?https://gi
 
 The Pico server code may be viewed [here.](https://github.com/MrYsLab/Telemetrix4RpiPico)
 
+The following functionality is implemented in this release:
+
+* Analog Input
+* Digital Input, Digital Input Pullup, Digital Input Pulldown
+* PWM output
+* Loopback (for client/server link debugging)
+
+
 ## To install The Client Library:
 
 **Linux/macOS:**
