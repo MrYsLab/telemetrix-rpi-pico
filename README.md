@@ -39,7 +39,7 @@ pip install telemetrix-rpi-pico
    
    A. Press and hold the BOOTSEL button while applying power. 
    B. Release the BOOTSEL button.
-   C. In you file explorer, you should a new folder appear called: RPI-RP2.
+   C. In your file explorer, you should a new folder appear called: RPI-RP2.
    D. Drag the .uf2 file into this folder to upload the code.
    
 3. [Download,](https://github.com/MrYsLab/telemetrix-rpi-pico/archive/master.zip) 
