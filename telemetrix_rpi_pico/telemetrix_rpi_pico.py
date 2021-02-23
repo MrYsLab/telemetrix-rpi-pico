@@ -419,6 +419,8 @@ class TelemetrixRpiPico(threading.Thread):
     def i2c_read(self, address, register, number_of_bytes,
                  callback=None, i2c_port=0):
         """
+        NOT YET IMPLEMENTED!!!
+
         Read the specified number of bytes from the specified register for
         the i2c device.
 
@@ -448,6 +450,8 @@ class TelemetrixRpiPico(threading.Thread):
                                       number_of_bytes,
                                       callback=None, i2c_port=0):
         """
+        NOT YET IMPLEMENTED!!!
+
         Read the specified number of bytes from the specified register for
         the i2c device. This restarts the transmission after the read. It is
         required for some i2c devices such as the MMA8452Q accelerometer.
@@ -480,6 +484,8 @@ class TelemetrixRpiPico(threading.Thread):
     def _i2c_read_request(self, address, register, number_of_bytes,
                           stop_transmission=True, callback=None, i2c_port=0):
         """
+        NOT YET IMPLEMENTED!!!
+
         This method requests the read of an i2c device. Results are retrieved
         via callback.
 
@@ -536,6 +542,8 @@ class TelemetrixRpiPico(threading.Thread):
     # TBD
     def i2c_write(self, address, args, i2c_port=0):
         """
+        NOT YET IMPLEMENTED!!!
+
         Write data to an i2c device.
 
         :param address: i2c device address
@@ -694,6 +702,8 @@ class TelemetrixRpiPico(threading.Thread):
     # TBD
     def set_pin_mode_i2c(self, i2c_port=0):
         """
+        NOT YET IMPLEMENTED!!!
+
         Establish the standard pico i2c pins for i2c utilization.
 
         :param i2c_port: 0 = i2c1, 1 = i2c2
@@ -726,6 +736,7 @@ class TelemetrixRpiPico(threading.Thread):
     # TBD
     def set_pin_mode_dht(self, pin, callback=None):
         """
+        NOT YET IMPLEMENTED!!!
 
         :param pin: connection pin
 
@@ -758,6 +769,7 @@ class TelemetrixRpiPico(threading.Thread):
     # noinspection PyRedundantParentheses
     def set_pin_mode_servo(self, pin_number, min_pulse=544, max_pulse=2400):
         """
+        NOT YET IMPLEMENTED!!!
 
         Attach a pin to a servo motor
 
@@ -779,6 +791,7 @@ class TelemetrixRpiPico(threading.Thread):
     def set_pin_mode_sonar(self, trigger_pin, echo_pin,
                            callback=None):
         """
+        NOT YET IMPLEMENTED!!!
 
         :param trigger_pin:
 
@@ -810,6 +823,7 @@ class TelemetrixRpiPico(threading.Thread):
     # TBD
     def servo_write(self, pin_number, angle):
         """
+        NOT YET IMPLEMENTED!!!
 
         Set a servo attached to a pin to a given angle.
 
@@ -824,6 +838,8 @@ class TelemetrixRpiPico(threading.Thread):
     # TBD
     def servo_detach(self, pin_number):
         """
+        NOT YET IMPLEMENTED!!!
+
         Detach a servo for reuse
 
         :param pin_number: attached pin
@@ -918,16 +934,7 @@ class TelemetrixRpiPico(threading.Thread):
             command = [PrivateConstants.RESET_BOARD]
             self._send_command(command)
             time.sleep(.2)
-        # try:
-            # self.serial_port.reset_input_buffer()
-        #     self.serial_port.close()
 
-        # except (RuntimeError, SerialException, OSError):
-            # ignore error on shutdown
-        #     pass
-        # except Exception:
-        #     raise RuntimeError('Shutdown failed - could not send stop streaming
-    #     message')
 
     '''
     report message handlers
