@@ -7,7 +7,7 @@ with open('README.md') as f:
 
 
 setup(
-    name='telemetrix-pi-pico',
+    name='telemetrix-rpi-pico',
     packages=['telemetrix_rpi_pico'],
     install_requires=['pyserial'],
 
