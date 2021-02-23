@@ -12,6 +12,10 @@ The Pico server code may be viewed [here.](https://github.com/MrYsLab/Telemetrix
 
 The following functionality is implemented in this release:
 
+* Autodetect and connection to a single PICO connected to the PC.
+* Automatic board reset of the PICO using the watchdog timer when application exits.
+    * Board will blink twice upon reset.
+* Retrieval of the PICO unique ID.
 * Analog Input
 * Digital Input, Digital Input Pullup, Digital Input Pulldown
 * PWM output
