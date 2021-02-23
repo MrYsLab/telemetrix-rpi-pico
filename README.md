@@ -44,11 +44,13 @@ pip install telemetrix-rpi-pico
    C. In your file explorer, you should see a new folder appear called: RPI-RP2.
    
    D. Drag the .uf2 file into this folder to upload the code.
+
+## Download And Run The Examples
    
-3. [Download,](https://github.com/MrYsLab/telemetrix-rpi-pico/archive/master.zip) 
+1. [Download,](https://github.com/MrYsLab/telemetrix-rpi-pico/archive/master.zip) 
    save, and uncompress the teletmetrix-rpi-pico Github repository.
    
-4. Open the _examples_ directory and run any of the examples. You may
+2. Open the _examples_ directory and run any of the examples. You may
 modify them to suit your needs.
 
 
