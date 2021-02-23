@@ -259,7 +259,7 @@ class TelemetrixRpiPico(threading.Thread):
         for port in the_ports_list:
             if port.pid is None:
                 continue
-            if port.pid != 10:
+            if port.pid != 10 or port.vid != 11914:
                 continue
             try:
                 self.serial_port = serial.Serial(port.device, 115200,
