@@ -686,11 +686,12 @@ class TelemetrixRpiPico(threading.Thread):
         :param scl_gpio: gpio pin assigned to SCL
 
 
-        NOTES: 1. THIS METHOD MUST BE CALLED BEFORE ANY I2C REQUEST IS MADE
+        NOTES:
+               1. THIS METHOD MUST BE CALLED BEFORE ANY I2C REQUEST IS MADE <br>
                2. Callbacks are set within the individual i2c read methods of this
               API.
 
-              See i2c_read, or i2c_read_restart_transmission.
+              See i2c_read, and i2c_write
 
         """
         # determine if the i2c port is specified correctly
