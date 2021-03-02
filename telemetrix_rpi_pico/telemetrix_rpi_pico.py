@@ -116,15 +116,16 @@ class TelemetrixRpiPico(threading.Thread):
             {PrivateConstants.ANALOG_REPORT: self._analog_message})
         self.report_dispatch.update(
             {PrivateConstants.FIRMWARE_REPORT: self._firmware_message})
-        self.report_dispatch.update({PrivateConstants.UNIQUE_ID_REPORT: self._report_unique_id})
+        self.report_dispatch.update(
+            {PrivateConstants.UNIQUE_ID_REPORT: self._report_unique_id})
         self.report_dispatch.update(
             {PrivateConstants.SERVO_UNAVAILABLE: self._servo_unavailable})
         self.report_dispatch.update(
             {PrivateConstants.I2C_READ_REPORT: self._i2c_read_report})
         self.report_dispatch.update(
-            {PrivateConstants.I2C_TOO_FEW_BYTES_RCVD: self._i2c_too_few})
+            {PrivateConstants.I2C_WRITE_FAILED: self._i2c_write_failed})
         self.report_dispatch.update(
-            {PrivateConstants.I2C_TOO_MANY_BYTES_RCVD: self._i2c_too_many})
+            {PrivateConstants.I2C_READ_FAILED: self._i2c_read_failed})
         self.report_dispatch.update(
             {PrivateConstants.SONAR_DISTANCE: self._sonar_distance_report})
         self.report_dispatch.update({PrivateConstants.DHT_REPORT: self._dht_report})
@@ -140,8 +141,8 @@ class TelemetrixRpiPico(threading.Thread):
         self.i2c_callback = None
         self.i2c_callback2 = None
 
+        self.i2c_0_active = False
         self.i2c_1_active = False
-        self.i2c_2_active = False
 
         # the trigger pin will be the key to retrieve
         # the callback for a specific HC-SR04
@@ -173,6 +174,26 @@ class TelemetrixRpiPico(threading.Thread):
 
         # flag to indicate if i2c was previously enabled
         self.i2c_enabled = False
+
+        # Create a dictionary to store the pins in use.
+        # Notice that gpio pins 23, 24 and 25 are not included
+        # because the Pico does not support these GPIOs.
+
+        # This dictionary is a list of gpio pins updated with the pin mode when a pin mode
+        # is set.
+        # It is created initially using a dictionary comprehension.
+        self.pico_pins = {gpio_pin: PrivateConstants.AT_MODE_NOT_SET for gpio_pin in
+                          range(23)}
+        for pin in range(25, 29):
+            self.pico_pins[pin] = PrivateConstants.AT_MODE_NOT_SET
+
+        # creating a list of available sda and scl pins for i2c. If assigned the pins
+        # value will be set to either 0 or 1 depending upon the i2c selected.
+        self.i2c_sda_pins = {n: 255 for n in range(2, 21, 2)}
+        self.i2c_sda_pins[26] = 255
+
+        self.i2c_scl_pins = {n: 255 for n in range(3, 22, 2)}
+        self.i2c_scl_pins[27] = 255
 
         self.the_reporter_thread.start()
         self.the_data_receive_thread.start()
@@ -419,10 +440,8 @@ class TelemetrixRpiPico(threading.Thread):
 
     # TBD
     def i2c_read(self, address, register, number_of_bytes,
-                 callback=None, i2c_port=0):
+                 callback=None, i2c_port=0, no_stop=False):
         """
-        NOT YET IMPLEMENTED!!!
-
         Read the specified number of bytes from the specified register for
         the i2c device.
 
@@ -436,141 +455,88 @@ class TelemetrixRpiPico(threading.Thread):
         :param callback: Required callback function to report i2c data as a
                    result of read command
 
-       :param i2c_port: 0 = default, 1 = secondary
+       :param i2c_port: 0 = port 0, 1 = port 1
+
+       :param no_stop: If true, master retains control of the bus at the end of the
+                       transfer (no Stop is issued), and the next transfer will
+                       begin with a Restart rather than a Start.
 
 
         callback returns a data list:
-        [I2C_READ_REPORT, address, register, count of data bytes, data bytes, time-stamp]
+        [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
+        time-stamp]
 
         """
-
-        self._i2c_read_request(address, register, number_of_bytes,
-                               callback=callback, i2c_port=i2c_port)
-
-    # TBD
-    def i2c_read_restart_transmission(self, address, register,
-                                      number_of_bytes,
-                                      callback=None, i2c_port=0):
-        """
-        NOT YET IMPLEMENTED!!!
-
-        Read the specified number of bytes from the specified register for
-        the i2c device. This restarts the transmission after the read. It is
-        required for some i2c devices such as the MMA8452Q accelerometer.
-
-
-        :param address: i2c device address
-
-        :param register: i2c register (or None if no register
-                                                    selection is needed)
-
-        :param number_of_bytes: number of bytes to be read
-
-        :param callback: Required callback function to report i2c data as a
-                   result of read command
-
-       :param i2c_port: 0 = default 1 = secondary
-
-
-        callback returns a data list:
-
-        [I2C_READ_REPORT, address, register, count of data bytes, data bytes, time-stamp]
-
-        """
-
-        self._i2c_read_request(address, register, number_of_bytes,
-                               stop_transmission=False,
-                               callback=callback, i2c_port=i2c_port)
-
-    # TBD
-    def _i2c_read_request(self, address, register, number_of_bytes,
-                          stop_transmission=True, callback=None, i2c_port=0):
-        """
-        NOT YET IMPLEMENTED!!!
-
-        This method requests the read of an i2c device. Results are retrieved
-        via callback.
-
-        :param address: i2c device address
-
-        :param register: register number (or None if no register selection is needed)
-
-        :param number_of_bytes: number of bytes expected to be returned
-
-        :param stop_transmission: stop transmission after read
-
-        :param callback: Required callback function to report i2c data as a
-                   result of read command.
-
-        """
-        if not i2c_port:
-            if not self.i2c_1_active:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(
-                    'I2C Read: set_pin_mode i2c never called for i2c port 1.')
-
-        if i2c_port:
-            if not self.i2c_2_active:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(
-                    'I2C Read: set_pin_mode i2c never called for i2c port 2.')
 
         if not callback:
             if self.shutdown_on_exception:
                 self.shutdown()
             raise RuntimeError('I2C Read: A callback function must be specified.')
 
-        if not i2c_port:
-            self.i2c_callback = callback
+        # i2c_port = 0 for port 0
+        if i2c_port == 0:
+            if not self.i2c_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    'I2C Write: set_pin_mode_i2c never called for i2c port 0.')
+            else:
+                self.i2c_callback = callback
+
         else:
-            self.i2c_callback2 = callback
+            if not i2c_port == 1:
+                if not self.i2c_0_active:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError(
+                        'I2C Write: set_pin_mode_i2c never called for i2c port 1.')
+                else:
+                    self.i2c_callback2 = callback
 
+        command = [PrivateConstants.I2C_READ, i2c_port, address, register,
+                   number_of_bytes, no_stop]
+
+        # no register specified
         if not register:
-            register = 0
+            command[3] = PrivateConstants.I2C_NO_REGISTER
 
-        # message contains:
-        # 1. address
-        # 2. register
-        # 3. number of bytes
-        # 4. restart_transmission - True or False
-        # 5. i2c port
-
-        command = [PrivateConstants.I2C_READ, address, register, number_of_bytes,
-                   stop_transmission, i2c_port]
         self._send_command(command)
 
     # TBD
-    def i2c_write(self, address, args, i2c_port=0):
+    def i2c_write(self, address, args, i2c_port=0, no_stop=False):
         """
-        NOT YET IMPLEMENTED!!!
-
         Write data to an i2c device.
 
         :param address: i2c device address
 
-        :param i2c_port: 0= port 1, 1 = port 2
-
         :param args: A variable number of bytes to be sent to the device
-                     passed in as a list
+                     passed in as a list.
+                     NOTE: THIS MUST BE IN THE FORM OF A LIST.
+
+        :param i2c_port: 0= port 0, 1 = port 1
+
+        :param no_stop: If true, master retains control of the bus at the end of the
+                       transfer (no Stop is issued), and the next transfer will
+                       begin with a Restart rather than a Start.
+
+
 
         """
         if not i2c_port:
-            if not self.i2c_1_active:
+            if not self.i2c_0_active:
                 if self.shutdown_on_exception:
                     self.shutdown()
                 raise RuntimeError(
-                    'I2C Write: set_pin_mode i2c never called for i2c port 1.')
+                    'I2C Write: set_pin_mode i2c never called for i2c port 0.')
 
-        if i2c_port:
-            if not self.i2c_2_active:
+        elif i2c_port:
+            if not self.i2c_1_active:
                 if self.shutdown_on_exception:
                     self.shutdown()
                 raise RuntimeError(
                     'I2C Write: set_pin_mode i2c never called for i2c port 2.')
 
-        command = [PrivateConstants.I2C_WRITE, len(args), address, i2c_port]
+        command = [PrivateConstants.I2C_WRITE, i2c_port,  address, len(args), no_stop]
 
         for item in args:
             command.append(item)
@@ -592,11 +558,11 @@ class TelemetrixRpiPico(threading.Thread):
         self.loop_back_callback = callback
         self._send_command(command)
 
-    def set_pin_mode_analog_input(self, pin_number, differential=0, callback=None):
+    def set_pin_mode_analog_input(self, adc_number, differential=0, callback=None):
         """
         Set a pin as an analog input.
 
-        :param pin_number: ADC Number 0-3 - ADC 3 is the temp sensor
+        :param adc_number: ADC Number 0-3 - ADC 3 is the temp sensor
 
         :param differential: difference in previous to current value before
                              report will be generated
@@ -611,7 +577,10 @@ class TelemetrixRpiPico(threading.Thread):
         The pin_type for analog input pins = 2
 
         """
-        self._set_pin_mode(pin_number, PrivateConstants.AT_ANALOG, differential,
+        # make sure adc number is in range
+        if not 0 < adc_number < 5:
+            raise RuntimeError('Invalid ADC Number')
+        self._set_pin_mode(adc_number, PrivateConstants.AT_ANALOG, differential,
                            callback=callback)
 
     def set_pin_mode_digital_input(self, pin_number, callback=None):
@@ -688,25 +657,34 @@ class TelemetrixRpiPico(threading.Thread):
         :param value_range: value range - 16 bits
         """
 
-        if self.pwm_active_count >= 15:
-            raise RuntimeError(
-                'set_pin_mode_pwm_output: number of active PWM pins is at maximum')
+        if pin_number in self.pico_pins:
+            self.pico_pins[pin_number] = PrivateConstants.AT_PWM_OUTPUT
+            if self.pwm_active_count >= 15:
+                raise RuntimeError(
+                    'set_pin_mode_pwm_output: number of active PWM pins is at maximum')
 
-        if value_range > 0xffff:
-            raise RuntimeError(
-                'set_pin_mode_pwm_output: value_range is limited to 16 bits')
+            if value_range > 0xffff:
+                raise RuntimeError(
+                    'set_pin_mode_pwm_output: value_range is limited to 16 bits')
 
-        self.pwm_active_count += 1
+            self.pwm_active_count += 1
 
-        self._set_pin_mode(pin_number, PrivateConstants.AT_PWM_OUTPUT,
-                           value_range=value_range)
+            self._set_pin_mode(pin_number, PrivateConstants.AT_PWM_OUTPUT,
+                               value_range=value_range)
+        else:
+            raise RuntimeError('Gpio Pin Number is invalid')
 
     # TBD
-    def set_pin_mode_i2c(self, i2c_port=0):
+    def set_pin_mode_i2c(self, i2c_port=0, sda_gpio=4, scl_gpio=5):
         """
         Establish the standard pico i2c pins for i2c utilization.
 
-        :param i2c_port: 0 = i2c1, 1 = i2c2
+        :param i2c_port: 0 = i2c0, 1 = i2c1
+
+        :param sda_gpio: gpio pin assigned to SDA
+
+        :param scl_gpio: gpio pin assigned to SCL
+
 
         NOTES: 1. THIS METHOD MUST BE CALLED BEFORE ANY I2C REQUEST IS MADE
                2. Callbacks are set within the individual i2c read methods of this
@@ -715,22 +693,37 @@ class TelemetrixRpiPico(threading.Thread):
               See i2c_read, or i2c_read_restart_transmission.
 
         """
-        # test for i2c port 2
-        if i2c_port:
-            # if not previously activated set it to activated
-            # and the send a begin message for this port
-            if not self.i2c_2_active:
-                self.i2c_2_active = True
-            else:
-                return
+        # determine if the i2c port is specified correctly
+        if i2c_port not in [0, 1]:
+            raise RuntimeError('i2c port must be either a 0 or 1')
+        # determine if the sda and scl gpio's are valid
+        if sda_gpio not in self.i2c_sda_pins:
+            raise RuntimeError(f'GPIO {sda_gpio} is an invalid i2c SDA GPIO')
+        if scl_gpio not in self.i2c_scl_pins:
+            raise RuntimeError(f'GPIO {scl_gpio} is an invalid i2c SCL GPIO')
+
+        # are both GPIOs available?
+        if not self.i2c_sda_pins[sda_gpio] == 255:
+            raise RuntimeError(f'GPIO SDA pin {sda_gpio} is already in use.')
+        if not self.i2c_scl_pins[scl_gpio] == 255:
+            raise RuntimeError(f'GPIO SCL pin {scl_gpio} is already in use.')
+        # both pins available - mark the sda and scl dictionaries appropriately
+        self.i2c_sda_pins[sda_gpio] = self.i2c_scl_pins[scl_gpio] = i2c_port
+
+        # now mark the pico_pins dictionary for these pins
+        self.pico_pins[sda_gpio] = self.pico_pins[scl_gpio] = PrivateConstants.AT_I2C
+
+        # determine if the specified sda or scl pin has already been
+        # assigned.
+
+        # test for i2c port 0
+        if not i2c_port:
+            self.i2c_0_active = True
         # port 1
         else:
-            if not self.i2c_1_active:
-                self.i2c_1_active = True
-            else:
-                return
+            self.i2c_1_active = True
 
-        command = [PrivateConstants.I2C_BEGIN, i2c_port]
+        command = [PrivateConstants.I2C_BEGIN, i2c_port, sda_gpio, scl_gpio]
         self._send_command(command)
 
     # TBD
@@ -820,6 +813,14 @@ class TelemetrixRpiPico(threading.Thread):
             raise RuntimeError(
                 f'Maximum Number Of Sonars Exceeded - set_pin_mode_sonar fails for pin {trigger_pin}')
 
+    def get_pico_pins(self):
+        """
+        This method returns the pico_pins dictionary
+
+        :return: pico_pins
+        """
+        return self.pico_pins
+
     # TBD
     def servo_write(self, pin_number, angle):
         """
@@ -870,6 +871,15 @@ class TelemetrixRpiPico(threading.Thread):
                          called when pin data value changes
 
         """
+        # Map ADC to GPIO pin numbers
+        if pin_state == PrivateConstants.AT_ANALOG:
+            self.pico_pins[26 + pin_number] = PrivateConstants.AT_ANALOG
+        else:
+            if pin_number in self.pico_pins:
+                self.pico_pins[pin_number] = pin_state
+            else:
+                raise RuntimeError('Gpio Pin Number is invalid')
+
         if callback:
             if pin_state == PrivateConstants.AT_INPUT:
                 self.digital_callbacks[pin_number] = callback
@@ -934,7 +944,6 @@ class TelemetrixRpiPico(threading.Thread):
             command = [PrivateConstants.RESET_BOARD]
             self._send_command(command)
             time.sleep(.2)
-
 
     '''
     report message handlers
@@ -1031,20 +1040,12 @@ class TelemetrixRpiPico(threading.Thread):
         """
         Execute callback for i2c reads.
 
-        :param data: [I2C_READ_REPORT, i2c_port, number of bytes read, address, register, bytes read..., time-stamp]
+        :param data: [I2C_READ_REPORT, i2c_port, i2c_address,
+        register, number of bytes read, bytes read..., time-stamp]
         """
 
-        # we receive [# data bytes, address, register, data bytes]
-        # number of bytes of data returned
-
-        # data[0] = number of bytes
-        # data[1] = i2c_port
-        # data[2] = number of bytes returned
-        # data[3] = address
-        # data[4] = register
-        # data[5] ... all the data bytes
-
         cb_list = [PrivateConstants.I2C_READ_REPORT, data[0], data[1]] + data[2:]
+
         cb_list.append(time.time())
 
         if cb_list[1]:
@@ -1052,29 +1053,31 @@ class TelemetrixRpiPico(threading.Thread):
         else:
             self.i2c_callback(cb_list)
 
-    # TBD
-    def _i2c_too_few(self, data):
+    def _i2c_write_failed(self, data):
         """
-        I2c reports too few bytes received
+        I2c write attempt failed
 
-        :param data: data[0] = device address
+        :param data: data[0] = i2c_device
         """
         if self.shutdown_on_exception:
             self.shutdown()
         raise RuntimeError(
-            f'i2c too few bytes received from i2c port {data[0]} i2c address {data[1]}')
+            f'i2c Write Failed for I2C port {data[0]}')
+        while True:
+            time.sleep(1)
 
-    # TBD
-    def _i2c_too_many(self, data):
+    def _i2c_read_failed(self, data):
         """
-        I2c reports too few bytes received
+        I2c read failed
 
-        :param data: data[0] = device address
+        :param data: data[0] = i2c device
         """
         if self.shutdown_on_exception:
             self.shutdown()
         raise RuntimeError(
-            f'i2c too many bytes received from i2c port {data[0]} i2c address {data[1]}')
+            f'i2c Read Failed for I2C port {data[0]}')
+        while True:
+            time.sleep(.1)
 
     def _report_unique_id(self, data):
         """
@@ -1176,6 +1179,7 @@ class TelemetrixRpiPico(threading.Thread):
                 # response_data will be populated with the received data for the report
                 response_data = []
                 packet_length = self.the_deque.popleft()
+
                 if packet_length:
                     # get all the data for the report and place it into response_data
                     for i in range(packet_length):
@@ -1184,12 +1188,9 @@ class TelemetrixRpiPico(threading.Thread):
                         data = self.the_deque.popleft()
                         response_data.append(data)
 
-                    # print(response_data)
-
                     # get the report type and look up its dispatch method
                     # here we pop the report type off of response_data
                     report_type = response_data.pop(0)
-                    # print(report_type)
 
                     # retrieve the report handler from the dispatch table
                     dispatch_entry = self.report_dispatch.get(report_type)

@@ -51,15 +51,15 @@ class PrivateConstants:
     FIRMWARE_REPORT = GET_FIRMWARE_VERSION
     UNIQUE_ID_REPORT = RETRIEVE_PICO_UNIQUE_ID
     SERVO_UNAVAILABLE = SERVO_ATTACH
-    I2C_TOO_FEW_BYTES_RCVD = 8
-    I2C_TOO_MANY_BYTES_RCVD = 9
+    I2C_WRITE_FAILED = 8
+    I2C_READ_FAILED = 9
     I2C_READ_REPORT = 10
     SONAR_DISTANCE = 11
     DHT_REPORT = 12
 
     DEBUG_PRINT = 99
 
-    TELEMETRIX_VERSION = "0.3"
+    TELEMETRIX_VERSION = "0.4"
 
     # reporting control
     REPORTING_DISABLE_ALL = 0
@@ -70,12 +70,6 @@ class PrivateConstants:
 
     # Pin mode definitions
 
-    # define DIGITAL_INPUT 0
-    # define DIGITAL_OUTPUT 1
-    # define PWM_OUTPUT 2
-    # define DIGITAL_INPUT_PULL_UP 3
-    # define DIGITAL_INPUT_PULL_DOWN 4
-    # define ANALOG_INPUT 5
     AT_INPUT = 0
     AT_OUTPUT = 1
     AT_PWM_OUTPUT = 2
@@ -85,7 +79,11 @@ class PrivateConstants:
     AT_SERVO = 6
     AT_SONAR = 7
     AT_DHT = 8
+    AT_I2C = 9
     AT_MODE_NOT_SET = 255
+
+    # flag to indicate that an i2c command does not specify a register
+    I2C_NO_REGISTER = 254
 
     # maximum number of digital pins supported
     NUMBER_OF_DIGITAL_PINS = 100
