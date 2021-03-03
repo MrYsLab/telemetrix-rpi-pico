@@ -35,7 +35,7 @@ sudo pip3 install telemetrix-rpi-pico
 
 
 ```bash
-pip install telemetrix-rpi-pico --upgrade
+pip install telemetrix-rpi-pico 
 ```
 
 ### If you are upgrading from a previously installed version:
@@ -51,7 +51,7 @@ sudo pip3 install telemetrix-rpi-pico --upgrade
 
 
 ```bash
-pip install telemetrix-rpi-pico
+pip install telemetrix-rpi-pico --upgrade
 ```
 
 ## To Install The Pico Server Application
