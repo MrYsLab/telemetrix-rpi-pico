@@ -26,11 +26,33 @@ The following functionality is implemented in this release:
 
 **Linux/macOS:**
 
+```bash
 sudo pip3 install telemetrix-rpi-pico
+```
+
 
 **Windows:**
 
+
+```bash
+pip install telemetrix-rpi-pico --upgrade
+```
+
+### If you are upgrading from a previously installed version:
+
+**Linux/macOS:**
+
+```bash
+sudo pip3 install telemetrix-rpi-pico --upgrade
+```
+
+
+**Windows:**
+
+
+```bash
 pip install telemetrix-rpi-pico
+```
 
 ## To Install The Pico Server Application
 1. [Download](https://github.com/MrYsLab/Telemetrix4RpiPico/raw/master/cmake-build-release/Telemetrix4RpiPico.uf2) 
