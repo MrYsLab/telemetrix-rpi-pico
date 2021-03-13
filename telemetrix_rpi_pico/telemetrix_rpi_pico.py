@@ -577,6 +577,9 @@ class TelemetrixRpiPico(threading.Thread):
         command = [PrivateConstants.SET_NEO_PIXEL, pixel_number, r, g, b, auto_show]
         self._send_command(command)
 
+        if auto_show:
+            self.neopixel_show()
+
     def neopixel_clear(self, auto_show=True):
         """
         Clear all pixels
@@ -588,6 +591,8 @@ class TelemetrixRpiPico(threading.Thread):
             raise RuntimeError('You must call set_pin_mode_neopixel first')
         command = [PrivateConstants.CLEAR_ALL_NEO_PIXELS, auto_show]
         self._send_command(command)
+        if auto_show:
+            self.neopixel_show()
 
     def neopixel_fill(self, r=0, g=0, b=0, auto_show=True):
         """
@@ -607,6 +612,9 @@ class TelemetrixRpiPico(threading.Thread):
             raise RuntimeError('Pixel value must be in the range of 0-255')
         command = [PrivateConstants.FILL_ALL_NEO_PIXELS, r, g, b, auto_show]
         self._send_command(command)
+
+        if auto_show:
+            self.neopixel_show()
 
     def neopixel_show(self):
         """
