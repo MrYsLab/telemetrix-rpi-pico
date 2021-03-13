@@ -184,6 +184,7 @@ class TelemetrixRpiPico(threading.Thread):
         # It is created initially using a dictionary comprehension.
         self.pico_pins = {gpio_pin: PrivateConstants.AT_MODE_NOT_SET for gpio_pin in
                           range(23)}
+
         for pin in range(25, 29):
             self.pico_pins[pin] = PrivateConstants.AT_MODE_NOT_SET
 
@@ -197,6 +198,11 @@ class TelemetrixRpiPico(threading.Thread):
 
         self.the_reporter_thread.start()
         self.the_data_receive_thread.start()
+
+        # neopixel data
+        self.number_of_pixels = None
+
+        self.neopixels_initiated = False
 
         print(f"TelemetrixRpiPico:  Version {PrivateConstants.TELEMETRIX_VERSION}\n\n"
               f"Copyright (c) 2020 Alan Yorinks All Rights Reserved.\n")
@@ -536,11 +542,80 @@ class TelemetrixRpiPico(threading.Thread):
                 raise RuntimeError(
                     'I2C Write: set_pin_mode i2c never called for i2c port 2.')
 
-        command = [PrivateConstants.I2C_WRITE, i2c_port,  address, len(args), no_stop]
+        command = [PrivateConstants.I2C_WRITE, i2c_port, address, len(args), no_stop]
 
         for item in args:
             command.append(item)
 
+        self._send_command(command)
+
+    def neo_pixel_set_value(self, pixel_number, r=0, g=0, b=0, auto_show=False):
+        """
+        Set the selected pixel in the pixel array on the Pico to
+        the value provided.
+
+        :param pixel_number: pixel number
+
+        :param r: red value 0-255
+
+        :param g: green value 0-255
+
+        :param b: blue value 0-255
+
+        :param auto_show: call show automatically
+
+        """
+        if not self.neopixels_initiated:
+            raise RuntimeError('You must call set_pin_mode_neopixel first')
+
+        if pixel_number > self.number_of_pixels:
+            raise RuntimeError('Pixel number is out of legal range')
+
+        if r and g and b not in range(256):
+            raise RuntimeError('Pixel value must be in the range of 0-255')
+
+        command = [PrivateConstants.SET_NEO_PIXEL, pixel_number, r, g, b, auto_show]
+        self._send_command(command)
+
+    def neopixel_clear(self, auto_show=True):
+        """
+        Clear all pixels
+
+        :param auto_show: call show automatically
+
+        """
+        if not self.neopixels_initiated:
+            raise RuntimeError('You must call set_pin_mode_neopixel first')
+        command = [PrivateConstants.CLEAR_ALL_NEO_PIXELS, auto_show]
+        self._send_command(command)
+
+    def neopixel_fill(self, r=0, g=0, b=0, auto_show=True):
+        """
+        Fill all pixels with specified value
+
+        :param r: 0-255
+
+        :param g: 0-255
+
+        :param b: 0-255
+
+        :param auto_show: call show automatically
+        """
+        if not self.neopixels_initiated:
+            raise RuntimeError('You must call set_pin_mode_neopixel first')
+        if r and g and b not in range(256):
+            raise RuntimeError('Pixel value must be in the range of 0-255')
+        command = [PrivateConstants.FILL_ALL_NEO_PIXELS, r, g, b, auto_show]
+        self._send_command(command)
+
+    def neopixel_show(self):
+        """
+        Write the NeoPixel buffer stored in the Pico to the NeoPixel strip.
+
+        """
+        if not self.neopixels_initiated:
+            raise RuntimeError('You must call set_pin_mode_neopixel first')
+        command = [PrivateConstants.SHOW_NEO_PIXELS]
         self._send_command(command)
 
     def loop_back(self, start_character, callback=None):
@@ -647,6 +722,37 @@ class TelemetrixRpiPico(threading.Thread):
         """
 
         self._set_pin_mode(pin_number, PrivateConstants.AT_OUTPUT)
+
+    def set_pin_mode_neopixel(self, pin_number=28, num_pixels=8,
+                              fill_r=0, fill_g=0, fill_b=0):
+        """
+        Initialize the pico for NeoPixel control. Fill with rgb values specified.
+
+        Default: Set all the pixels to off.
+
+        :param pin_number: neopixel GPIO control pin
+
+        :param num_pixels: number of pixels in the strip
+
+        :param fill_r: initial red fill value 0-255
+
+        :param fill_g: initial green fill value 0-255
+
+        :param fill_b: initial blue fill value 0-255
+
+
+        """
+        if fill_r or fill_g or fill_g not in range(256):
+            raise RuntimeError('Pixel value must be in the range of 0-255')
+
+        self.number_of_pixels = num_pixels
+
+        command = [PrivateConstants.INITIALIZE_NEO_PIXELS, pin_number,
+                   self.number_of_pixels, fill_r, fill_g, fill_b]
+
+        self._send_command(command)
+
+        self.neopixels_initiated = True
 
     def set_pin_mode_pwm_output(self, pin_number, value_range=255):
         """

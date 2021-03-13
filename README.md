@@ -20,6 +20,8 @@ The following functionality is implemented in this release:
 * Digital Input, Digital Input Pullup, Digital Input Pulldown
 * PWM output
 * Loopback (for client/server link debugging)
+* I2C Support
+* NeoPixel Support
 
 
 ## To install The Client Library:

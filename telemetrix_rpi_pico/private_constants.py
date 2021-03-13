@@ -29,8 +29,7 @@ class PrivateConstants:
     PWM_WRITE = 3
     MODIFY_REPORTING = 4
     GET_FIRMWARE_VERSION = 5
-    RETRIEVE_PICO_UNIQUE_ID = 6  # Arduino ID query for auto-detect of telemetrix
-                                 # connected  boards
+    RETRIEVE_PICO_UNIQUE_ID = 6  # Arduino ID query for auto-detect of telemetrix connected boards
     SERVO_ATTACH = 7
     SERVO_WRITE = 8
     SERVO_DETACH = 9
@@ -43,6 +42,11 @@ class PrivateConstants:
     ENABLE_ALL_REPORTS = 16
     RESET_DATA = 17
     RESET_BOARD = 18
+    INITIALIZE_NEO_PIXELS = 19
+    SHOW_NEO_PIXELS = 20
+    SET_NEO_PIXEL = 21
+    CLEAR_ALL_NEO_PIXELS = 22
+    FILL_ALL_NEO_PIXELS = 23
 
     # reports
     # debug data from Arduino
@@ -59,7 +63,7 @@ class PrivateConstants:
 
     DEBUG_PRINT = 99
 
-    TELEMETRIX_VERSION = "0.4"
+    TELEMETRIX_VERSION = "0.5"
 
     # reporting control
     REPORTING_DISABLE_ALL = 0
@@ -103,3 +107,8 @@ class PrivateConstants:
     # DHT Report sub-types
     DHT_DATA = 0
     DHT_ERROR = 1
+
+    # NeoPixel color positions
+    RED = 0
+    GREEN = 1
+    BLUE = 2
