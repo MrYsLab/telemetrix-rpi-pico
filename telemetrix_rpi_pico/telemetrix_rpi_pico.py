@@ -472,6 +472,8 @@ class TelemetrixRpiPico(threading.Thread):
         [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
         time-stamp]
 
+        I2C_READ_REPORT = 12
+
         """
 
         if not callback:
@@ -657,7 +659,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         [pin_type, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for analog input pins = 2
+        The pin_type for analog input pins = 3
 
         """
         # make sure adc number is in range
@@ -679,7 +681,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         [pin_type, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins = 0
+        The pin_type for digital input pins = 2
 
         """
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT, callback=callback)
@@ -697,7 +699,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         [pin_type, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins with pullups enabled = 11
+        The pin_type for digital input pins with pullups enabled = 2
 
         """
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULLUP,
@@ -716,7 +718,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         [pin_type, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins with pullups enabled = 11
+        The pin_type for digital input pins with pullups enabled = 2
 
         """
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULL_DOWN,

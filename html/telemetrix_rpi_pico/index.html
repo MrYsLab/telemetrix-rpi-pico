@@ -513,6 +513,8 @@ class TelemetrixRpiPico(threading.Thread):
         [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
         time-stamp]
 
+        I2C_READ_REPORT = 12
+
         &#34;&#34;&#34;
 
         if not callback:
@@ -618,6 +620,9 @@ class TelemetrixRpiPico(threading.Thread):
         command = [PrivateConstants.SET_NEO_PIXEL, pixel_number, r, g, b, auto_show]
         self._send_command(command)
 
+        if auto_show:
+            self.neopixel_show()
+
     def neopixel_clear(self, auto_show=True):
         &#34;&#34;&#34;
         Clear all pixels
@@ -629,6 +634,8 @@ class TelemetrixRpiPico(threading.Thread):
             raise RuntimeError(&#39;You must call set_pin_mode_neopixel first&#39;)
         command = [PrivateConstants.CLEAR_ALL_NEO_PIXELS, auto_show]
         self._send_command(command)
+        if auto_show:
+            self.neopixel_show()
 
     def neopixel_fill(self, r=0, g=0, b=0, auto_show=True):
         &#34;&#34;&#34;
@@ -648,6 +655,9 @@ class TelemetrixRpiPico(threading.Thread):
             raise RuntimeError(&#39;Pixel value must be in the range of 0-255&#39;)
         command = [PrivateConstants.FILL_ALL_NEO_PIXELS, r, g, b, auto_show]
         self._send_command(command)
+
+        if auto_show:
+            self.neopixel_show()
 
     def neopixel_show(self):
         &#34;&#34;&#34;
@@ -690,7 +700,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         [pin_type, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for analog input pins = 2
+        The pin_type for analog input pins = 3
 
         &#34;&#34;&#34;
         # make sure adc number is in range
@@ -712,7 +722,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         [pin_type, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins = 0
+        The pin_type for digital input pins = 2
 
         &#34;&#34;&#34;
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT, callback=callback)
@@ -730,7 +740,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         [pin_type, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins with pullups enabled = 11
+        The pin_type for digital input pins with pullups enabled = 2
 
         &#34;&#34;&#34;
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULLUP,
@@ -749,7 +759,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         [pin_type, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins with pullups enabled = 11
+        The pin_type for digital input pins with pullups enabled = 2
 
         &#34;&#34;&#34;
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULL_DOWN,
@@ -1853,6 +1863,8 @@ receiving a KeyboardInterrupt exception</p>
         [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
         time-stamp]
 
+        I2C_READ_REPORT = 12
+
         &#34;&#34;&#34;
 
         if not callback:
@@ -1958,6 +1970,9 @@ receiving a KeyboardInterrupt exception</p>
         command = [PrivateConstants.SET_NEO_PIXEL, pixel_number, r, g, b, auto_show]
         self._send_command(command)
 
+        if auto_show:
+            self.neopixel_show()
+
     def neopixel_clear(self, auto_show=True):
         &#34;&#34;&#34;
         Clear all pixels
@@ -1969,6 +1984,8 @@ receiving a KeyboardInterrupt exception</p>
             raise RuntimeError(&#39;You must call set_pin_mode_neopixel first&#39;)
         command = [PrivateConstants.CLEAR_ALL_NEO_PIXELS, auto_show]
         self._send_command(command)
+        if auto_show:
+            self.neopixel_show()
 
     def neopixel_fill(self, r=0, g=0, b=0, auto_show=True):
         &#34;&#34;&#34;
@@ -1988,6 +2005,9 @@ receiving a KeyboardInterrupt exception</p>
             raise RuntimeError(&#39;Pixel value must be in the range of 0-255&#39;)
         command = [PrivateConstants.FILL_ALL_NEO_PIXELS, r, g, b, auto_show]
         self._send_command(command)
+
+        if auto_show:
+            self.neopixel_show()
 
     def neopixel_show(self):
         &#34;&#34;&#34;
@@ -2030,7 +2050,7 @@ receiving a KeyboardInterrupt exception</p>
 
         [pin_type, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for analog input pins = 2
+        The pin_type for analog input pins = 3
 
         &#34;&#34;&#34;
         # make sure adc number is in range
@@ -2052,7 +2072,7 @@ receiving a KeyboardInterrupt exception</p>
 
         [pin_type, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins = 0
+        The pin_type for digital input pins = 2
 
         &#34;&#34;&#34;
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT, callback=callback)
@@ -2070,7 +2090,7 @@ receiving a KeyboardInterrupt exception</p>
 
         [pin_type, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins with pullups enabled = 11
+        The pin_type for digital input pins with pullups enabled = 2
 
         &#34;&#34;&#34;
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULLUP,
@@ -2089,7 +2109,7 @@ receiving a KeyboardInterrupt exception</p>
 
         [pin_type, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins with pullups enabled = 11
+        The pin_type for digital input pins with pullups enabled = 2
 
         &#34;&#34;&#34;
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULL_DOWN,
@@ -2891,7 +2911,8 @@ transfer (no Stop is issued), and the next transfer will
 begin with a Restart rather than a Start.</p>
 <p>callback returns a data list:
 [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
-time-stamp]</p></div>
+time-stamp]</p>
+<p>I2C_READ_REPORT = 12</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2922,6 +2943,8 @@ time-stamp]</p></div>
     callback returns a data list:
     [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
     time-stamp]
+
+    I2C_READ_REPORT = 12
 
     &#34;&#34;&#34;
 
@@ -3088,7 +3111,10 @@ the value provided.</p>
         raise RuntimeError(&#39;Pixel value must be in the range of 0-255&#39;)
 
     command = [PrivateConstants.SET_NEO_PIXEL, pixel_number, r, g, b, auto_show]
-    self._send_command(command)</code></pre>
+    self._send_command(command)
+
+    if auto_show:
+        self.neopixel_show()</code></pre>
 </details>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.neopixel_clear"><code class="name flex">
@@ -3111,7 +3137,9 @@ the value provided.</p>
     if not self.neopixels_initiated:
         raise RuntimeError(&#39;You must call set_pin_mode_neopixel first&#39;)
     command = [PrivateConstants.CLEAR_ALL_NEO_PIXELS, auto_show]
-    self._send_command(command)</code></pre>
+    self._send_command(command)
+    if auto_show:
+        self.neopixel_show()</code></pre>
 </details>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.neopixel_fill"><code class="name flex">
@@ -3144,7 +3172,10 @@ the value provided.</p>
     if r and g and b not in range(256):
         raise RuntimeError(&#39;Pixel value must be in the range of 0-255&#39;)
     command = [PrivateConstants.FILL_ALL_NEO_PIXELS, r, g, b, auto_show]
-    self._send_command(command)</code></pre>
+    self._send_command(command)
+
+    if auto_show:
+        self.neopixel_show()</code></pre>
 </details>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.neopixel_show"><code class="name flex">
@@ -3255,7 +3286,7 @@ report will be generated</p>
 <p>:param callback: callback function</p>
 <p>callback returns a data list:</p>
 <p>[pin_type, pin_number, pin_value, raw_time_stamp]</p>
-<p>The pin_type for analog input pins = 2</p></div>
+<p>The pin_type for analog input pins = 3</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3276,7 +3307,7 @@ report will be generated</p>
 
     [pin_type, pin_number, pin_value, raw_time_stamp]
 
-    The pin_type for analog input pins = 2
+    The pin_type for analog input pins = 3
 
     &#34;&#34;&#34;
     # make sure adc number is in range
@@ -3340,7 +3371,7 @@ report will be generated</p>
 <p>:param callback: callback function</p>
 <p>callback returns a data list:</p>
 <p>[pin_type, pin_number, pin_value, raw_time_stamp]</p>
-<p>The pin_type for digital input pins = 0</p></div>
+<p>The pin_type for digital input pins = 2</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3358,7 +3389,7 @@ report will be generated</p>
 
     [pin_type, pin_number, pin_value, raw_time_stamp]
 
-    The pin_type for digital input pins = 0
+    The pin_type for digital input pins = 2
 
     &#34;&#34;&#34;
     self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT, callback=callback)</code></pre>
@@ -3373,7 +3404,7 @@ report will be generated</p>
 <p>:param callback: callback function</p>
 <p>callback returns a data list:</p>
 <p>[pin_type, pin_number, pin_value, raw_time_stamp]</p>
-<p>The pin_type for digital input pins with pullups enabled = 11</p></div>
+<p>The pin_type for digital input pins with pullups enabled = 2</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3391,7 +3422,7 @@ report will be generated</p>
 
     [pin_type, pin_number, pin_value, raw_time_stamp]
 
-    The pin_type for digital input pins with pullups enabled = 11
+    The pin_type for digital input pins with pullups enabled = 2
 
     &#34;&#34;&#34;
     self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULL_DOWN,
@@ -3407,7 +3438,7 @@ report will be generated</p>
 <p>:param callback: callback function</p>
 <p>callback returns a data list:</p>
 <p>[pin_type, pin_number, pin_value, raw_time_stamp]</p>
-<p>The pin_type for digital input pins with pullups enabled = 11</p></div>
+<p>The pin_type for digital input pins with pullups enabled = 2</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3425,7 +3456,7 @@ report will be generated</p>
 
     [pin_type, pin_number, pin_value, raw_time_stamp]
 
-    The pin_type for digital input pins with pullups enabled = 11
+    The pin_type for digital input pins with pullups enabled = 2
 
     &#34;&#34;&#34;
     self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULLUP,
