@@ -352,6 +352,9 @@ class TelemetrixRpiPico(threading.Thread):
         :param value: pin value (0-255)
 
         """
+        if self.pico_pins[pin] != PrivateConstants.AT_PWM_OUTPUT:
+            raise RuntimeError('pwm_write: You must set the pin mode before performing '
+                               'a PWM write.')
         value_msb = value >> 8
         value_lsb = value & 0xff
         command = [PrivateConstants.PWM_WRITE, pin, value_msb, value_lsb]
@@ -366,7 +369,9 @@ class TelemetrixRpiPico(threading.Thread):
         :param value: pin value (1 or 0)
 
         """
-
+        if self.pico_pins[pin] != PrivateConstants.AT_OUTPUT:
+            raise RuntimeError('pwm_write: You must set the pin mode before performing '
+                               'a digital write.')
         command = [PrivateConstants.DIGITAL_WRITE, pin, value]
         self._send_command(command)
 
