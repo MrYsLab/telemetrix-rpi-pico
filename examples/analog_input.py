@@ -65,8 +65,14 @@ def analog_in(my_board, adc):
 
     print('Enter Control-C to quit.')
     try:
+        time.sleep(5)
+        print('Disabling reporting for 3 seconds.')
+        my_board.disable_analog_reporting(adc)
+        time.sleep(3)
+        print('Re-enabling reporting.')
+        my_board.enable_analog_reporting(adc)
         while True:
-            time.sleep(1)
+            time.sleep(5)
     except KeyboardInterrupt:
         board.shutdown()
         sys.exit(0)
