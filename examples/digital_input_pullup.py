@@ -58,8 +58,16 @@ board.set_pin_mode_digital_input_pullup(14, the_callback)
 board.set_pin_mode_digital_input_pullup(15, the_callback)
 
 try:
+    print('Reporting enabled for 5 seconds.')
+    time.sleep(5)
+    print('Disabling reporting for pin 12 3 seconds. All others enabled')
+    board.disable_digital_reporting(12)
+    time.sleep(3)
+    print('Re-enabling reporting for pin 12.')
+    board.enable_digital_reporting(12)
     while True:
-        time.sleep(.0001)
+        time.sleep(5)
+
 except KeyboardInterrupt:
     board.shutdown()
     sys.exit(0)

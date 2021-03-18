@@ -347,9 +347,10 @@ class TelemetrixRpiPico(threading.Thread):
         """
         Set the specified pin to the specified value.
 
-        :param pin: pico pin number
+        :param pin: pico GPIO pin number
 
-        :param value: pin value (0-255)
+        :param value: pin value - size is determined by what was set for value_range
+        when set_pin_mode_pwm_output was called.
 
         """
         if self.pico_pins[pin] != PrivateConstants.AT_PWM_OUTPUT:
@@ -364,7 +365,7 @@ class TelemetrixRpiPico(threading.Thread):
         """
         Set the specified pin to the specified value.
 
-        :param pin: pico pin number
+        :param pin: pico GPIO pin number
 
         :param value: pin value (1 or 0)
 
@@ -398,7 +399,7 @@ class TelemetrixRpiPico(threading.Thread):
         """
         Disables digital reporting for a single digital input.
 
-        :param pin: Pin number.
+        :param pin: GPIO Pin number.
 
         """
         command = [PrivateConstants.MODIFY_REPORTING,
@@ -421,7 +422,7 @@ class TelemetrixRpiPico(threading.Thread):
         """
         Enable reporting on the specified digital pin.
 
-        :param pin: Pin number.
+        :param pin: GPIO Pin number.
         """
 
         command = [PrivateConstants.MODIFY_REPORTING,
@@ -677,7 +678,7 @@ class TelemetrixRpiPico(threading.Thread):
         """
         Set a pin as a digital input.
 
-        :param pin_number: pico pin number
+        :param pin_number: pico GPIO pin number
 
         :param callback: callback function
 
@@ -695,7 +696,7 @@ class TelemetrixRpiPico(threading.Thread):
         """
         Set a pin as a digital input with pullup enabled.
 
-        :param pin_number: pico pin number
+        :param pin_number: pico GPIO pin number
 
         :param callback: callback function
 
@@ -714,7 +715,7 @@ class TelemetrixRpiPico(threading.Thread):
         """
         Set a pin as a digital input with pull down enabled.
 
-        :param pin_number: pico pin number
+        :param pin_number: pico GPIO pin number
 
         :param callback: callback function
 
@@ -733,7 +734,7 @@ class TelemetrixRpiPico(threading.Thread):
         """
         Set a pin as a digital output pin.
 
-        :param pin_number: pico pin number
+        :param pin_number: pico GPIO pin number
         """
 
         self._set_pin_mode(pin_number, PrivateConstants.AT_OUTPUT)
@@ -773,7 +774,7 @@ class TelemetrixRpiPico(threading.Thread):
         """
         Enable a pin as a PWM pin. Maximum number of PWMs is 16.
 
-        :param pin_number: pico pin number
+        :param pin_number: pico GPIO pin number
 
         :param value_range: value range - 16 bits
         """
