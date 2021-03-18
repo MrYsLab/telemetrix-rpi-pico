@@ -387,7 +387,7 @@ class TelemetrixRpiPico(threading.Thread):
         """
         Disables analog reporting for a single analog pin.
 
-        :param pin: Analog pin number. For example for A0, the number is 0.
+        :param pin: Analog pin number. For example for ADC, the number is 0.
 
         """
         command = [PrivateConstants.MODIFY_REPORTING,
@@ -409,7 +409,7 @@ class TelemetrixRpiPico(threading.Thread):
         """
         Enables analog reporting for the specified pin.
 
-        :param pin: Analog pin number. For example for A0, the number is 0.
+        :param pin: Analog pin number. For example for ADC0, the number is 0.
 
 
         """
