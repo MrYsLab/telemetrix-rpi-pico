@@ -938,9 +938,20 @@ class TelemetrixRpiPico(threading.Thread):
     #         raise RuntimeError(
     #
 
-    def _get_pico_pins(self):
+    def get_pico_pins(self):
         """
         This method returns the pico_pins dictionary
+
+        Pin Modes MAP:
+            DIGITAL_INPUT = 0
+            DIGITAL_OUTPUT = 1
+            PWM_OUTPUT = 2
+            DIGITAL_INPUT_PULLUP = 3
+            DIGITAL_INPUT_PULL_DOWN = 4
+            ANALOG_INPUT = 5
+            I2C = 9
+            EO_PIXEL = 10
+            AT_MODE_NOT_SET = 255
 
         :return: pico_pins
         """
@@ -1047,7 +1058,16 @@ class TelemetrixRpiPico(threading.Thread):
                 self.shutdown()
             raise RuntimeError('Unknown pin state')
 
-        self.pico_pins[pin_number] = pin_state
+        if pin_state == PrivateConstants.AT_ANALOG:
+            if pin_number == 0:
+                self.pico_pins[26] = PrivateConstants.AT_ANALOG
+            elif pin_number == 1:
+                self.pico_pins[27] = PrivateConstants.AT_ANALOG
+            elif pin_number == 13:
+                self.pico_pins[28] = PrivateConstants.AT_ANALOG
+
+        else:
+            self.pico_pins[pin_number] = pin_state
 
         if command:
             self._send_command(command)
