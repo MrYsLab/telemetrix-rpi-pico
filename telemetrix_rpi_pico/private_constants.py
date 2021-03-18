@@ -84,6 +84,7 @@ class PrivateConstants:
     AT_SONAR = 7
     AT_DHT = 8
     AT_I2C = 9
+    AT_NEO_PIXEL = 10
     AT_MODE_NOT_SET = 255
 
     # flag to indicate that an i2c command does not specify a register

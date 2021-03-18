@@ -768,6 +768,8 @@ class TelemetrixRpiPico(threading.Thread):
 
         self._send_command(command)
 
+        self.pico_pins[pin_number] = PrivateConstants.AT_NEO_PIXEL
+
         self.neopixels_initiated = True
 
     def set_pin_mode_pwm_output(self, pin_number, value_range=255):
@@ -936,7 +938,7 @@ class TelemetrixRpiPico(threading.Thread):
     #         raise RuntimeError(
     #
 
-    def get_pico_pins(self):
+    def _get_pico_pins(self):
         """
         This method returns the pico_pins dictionary
 
@@ -1044,6 +1046,8 @@ class TelemetrixRpiPico(threading.Thread):
             if self.shutdown_on_exception:
                 self.shutdown()
             raise RuntimeError('Unknown pin state')
+
+        self.pico_pins[pin_number] = pin_state
 
         if command:
             self._send_command(command)
