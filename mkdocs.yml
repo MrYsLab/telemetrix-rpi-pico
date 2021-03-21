@@ -1,0 +1,25 @@
+site_name: The Telemetrix User's Guide For The Raspberry Pi Pico
+nav:
+    - Introduction: index.md
+    - Checking If You Have The Correct Version Of Python Installed: python_3_verify.md
+    - Installation Procedures:
+        - Installing And Upgrading The Client API On Your PC: install_telemetrix.md
+        - Installing And Upgrading The Pico Server Application: install_pico_server.md
+    - Downloading And Running The Examples: examples.md
+    - The Python API:
+        - Design Notes: about_the_apis.md
+        - Importing The Package And Instantiating The Library: importing.md
+        - Analog Input Methods: analog_input.md
+        - Digital Input Methods: digital_input.md
+        - Digital Output Methods: digital_output.md
+        - I2C Methods: i2c.md
+        - NeoPixel Methods: neopixel.md
+        - PWM Methods: pwm.md
+        - Shutting Down: management.md
+        - Diagnostic Aids: debug.md
+    - About: about.md
+    - License: license.md
+# theme: windmill
+
+theme:
+  name: 'material'
