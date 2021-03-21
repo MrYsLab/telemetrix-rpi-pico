@@ -49,7 +49,7 @@ Note that GPIO pins 0 and 1 are not available for use.
 
     callback returns a data list: [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes, time-stamp]
 
-    I2C_READ_REPORT = 12
+    I2C_READ_REPORT = 10
 ```
 
 This method allows you to read a specified number of bytes from the device. 
