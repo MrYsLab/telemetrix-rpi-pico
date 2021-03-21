@@ -73,7 +73,7 @@ list passed to the callback function are:
 
 [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes, time-stamp]
 
-The first element is the report type, and I2C_READ_REPORT has a value of 12. The 
+The first element is the report type, and I2C_READ_REPORT has a value of 10. The 
 i2c_port, the device's i2c address, the number of the bytes returned, the actual data 
 bytes, and a time-stamp are also contained in the report.
 
