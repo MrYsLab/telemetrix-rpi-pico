@@ -388,11 +388,15 @@ class TelemetrixRpiPico(threading.Thread):
         &#34;&#34;&#34;
         Set the specified pin to the specified value.
 
-        :param pin: pico pin number
+        :param pin: pico GPIO pin number
 
-        :param value: pin value (0-255)
+        :param value: pin value - size is determined by what was set for value_range
+        when set_pin_mode_pwm_output was called.
 
         &#34;&#34;&#34;
+        if self.pico_pins[pin] != PrivateConstants.AT_PWM_OUTPUT:
+            raise RuntimeError(&#39;pwm_write: You must set the pin mode before performing &#39;
+                               &#39;a PWM write.&#39;)
         value_msb = value &gt;&gt; 8
         value_lsb = value &amp; 0xff
         command = [PrivateConstants.PWM_WRITE, pin, value_msb, value_lsb]
@@ -402,12 +406,14 @@ class TelemetrixRpiPico(threading.Thread):
         &#34;&#34;&#34;
         Set the specified pin to the specified value.
 
-        :param pin: pico pin number
+        :param pin: pico GPIO pin number
 
         :param value: pin value (1 or 0)
 
         &#34;&#34;&#34;
-
+        if self.pico_pins[pin] != PrivateConstants.AT_OUTPUT:
+            raise RuntimeError(&#39;pwm_write: You must set the pin mode before performing &#39;
+                               &#39;a digital write.&#39;)
         command = [PrivateConstants.DIGITAL_WRITE, pin, value]
         self._send_command(command)
 
@@ -423,7 +429,7 @@ class TelemetrixRpiPico(threading.Thread):
         &#34;&#34;&#34;
         Disables analog reporting for a single analog pin.
 
-        :param pin: Analog pin number. For example for A0, the number is 0.
+        :param pin: Analog pin number. For example for ADC, the number is 0.
 
         &#34;&#34;&#34;
         command = [PrivateConstants.MODIFY_REPORTING,
@@ -434,7 +440,7 @@ class TelemetrixRpiPico(threading.Thread):
         &#34;&#34;&#34;
         Disables digital reporting for a single digital input.
 
-        :param pin: Pin number.
+        :param pin: GPIO Pin number.
 
         &#34;&#34;&#34;
         command = [PrivateConstants.MODIFY_REPORTING,
@@ -445,7 +451,7 @@ class TelemetrixRpiPico(threading.Thread):
         &#34;&#34;&#34;
         Enables analog reporting for the specified pin.
 
-        :param pin: Analog pin number. For example for A0, the number is 0.
+        :param pin: Analog pin number. For example for ADC0, the number is 0.
 
 
         &#34;&#34;&#34;
@@ -457,7 +463,7 @@ class TelemetrixRpiPico(threading.Thread):
         &#34;&#34;&#34;
         Enable reporting on the specified digital pin.
 
-        :param pin: Pin number.
+        :param pin: GPIO Pin number.
         &#34;&#34;&#34;
 
         command = [PrivateConstants.MODIFY_REPORTING,
@@ -513,7 +519,7 @@ class TelemetrixRpiPico(threading.Thread):
         [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
         time-stamp]
 
-        I2C_READ_REPORT = 12
+        I2C_READ_REPORT = 10
 
         &#34;&#34;&#34;
 
@@ -713,7 +719,7 @@ class TelemetrixRpiPico(threading.Thread):
         &#34;&#34;&#34;
         Set a pin as a digital input.
 
-        :param pin_number: pico pin number
+        :param pin_number: pico GPIO pin number
 
         :param callback: callback function
 
@@ -731,7 +737,7 @@ class TelemetrixRpiPico(threading.Thread):
         &#34;&#34;&#34;
         Set a pin as a digital input with pullup enabled.
 
-        :param pin_number: pico pin number
+        :param pin_number: pico GPIO pin number
 
         :param callback: callback function
 
@@ -750,7 +756,7 @@ class TelemetrixRpiPico(threading.Thread):
         &#34;&#34;&#34;
         Set a pin as a digital input with pull down enabled.
 
-        :param pin_number: pico pin number
+        :param pin_number: pico GPIO pin number
 
         :param callback: callback function
 
@@ -769,7 +775,7 @@ class TelemetrixRpiPico(threading.Thread):
         &#34;&#34;&#34;
         Set a pin as a digital output pin.
 
-        :param pin_number: pico pin number
+        :param pin_number: pico GPIO pin number
         &#34;&#34;&#34;
 
         self._set_pin_mode(pin_number, PrivateConstants.AT_OUTPUT)
@@ -803,13 +809,15 @@ class TelemetrixRpiPico(threading.Thread):
 
         self._send_command(command)
 
+        self.pico_pins[pin_number] = PrivateConstants.AT_NEO_PIXEL
+
         self.neopixels_initiated = True
 
     def set_pin_mode_pwm_output(self, pin_number, value_range=255):
         &#34;&#34;&#34;
         Enable a pin as a PWM pin. Maximum number of PWMs is 16.
 
-        :param pin_number: pico pin number
+        :param pin_number: pico GPIO pin number
 
         :param value_range: value range - 16 bits
         &#34;&#34;&#34;
@@ -975,6 +983,17 @@ class TelemetrixRpiPico(threading.Thread):
         &#34;&#34;&#34;
         This method returns the pico_pins dictionary
 
+        Pin Modes MAP:
+            DIGITAL_INPUT = 0
+            DIGITAL_OUTPUT = 1
+            PWM_OUTPUT = 2
+            DIGITAL_INPUT_PULLUP = 3
+            DIGITAL_INPUT_PULL_DOWN = 4
+            ANALOG_INPUT = 5
+            I2C = 9
+            EO_PIXEL = 10
+            AT_MODE_NOT_SET = 255
+
         :return: pico_pins
         &#34;&#34;&#34;
         return self.pico_pins
@@ -1079,6 +1098,17 @@ class TelemetrixRpiPico(threading.Thread):
             if self.shutdown_on_exception:
                 self.shutdown()
             raise RuntimeError(&#39;Unknown pin state&#39;)
+
+        if pin_state == PrivateConstants.AT_ANALOG:
+            if pin_number == 0:
+                self.pico_pins[26] = PrivateConstants.AT_ANALOG
+            elif pin_number == 1:
+                self.pico_pins[27] = PrivateConstants.AT_ANALOG
+            elif pin_number == 13:
+                self.pico_pins[28] = PrivateConstants.AT_ANALOG
+
+        else:
+            self.pico_pins[pin_number] = pin_state
 
         if command:
             self._send_command(command)
@@ -1736,11 +1766,15 @@ receiving a KeyboardInterrupt exception</p>
         &#34;&#34;&#34;
         Set the specified pin to the specified value.
 
-        :param pin: pico pin number
+        :param pin: pico GPIO pin number
 
-        :param value: pin value (0-255)
+        :param value: pin value - size is determined by what was set for value_range
+        when set_pin_mode_pwm_output was called.
 
         &#34;&#34;&#34;
+        if self.pico_pins[pin] != PrivateConstants.AT_PWM_OUTPUT:
+            raise RuntimeError(&#39;pwm_write: You must set the pin mode before performing &#39;
+                               &#39;a PWM write.&#39;)
         value_msb = value &gt;&gt; 8
         value_lsb = value &amp; 0xff
         command = [PrivateConstants.PWM_WRITE, pin, value_msb, value_lsb]
@@ -1750,12 +1784,14 @@ receiving a KeyboardInterrupt exception</p>
         &#34;&#34;&#34;
         Set the specified pin to the specified value.
 
-        :param pin: pico pin number
+        :param pin: pico GPIO pin number
 
         :param value: pin value (1 or 0)
 
         &#34;&#34;&#34;
-
+        if self.pico_pins[pin] != PrivateConstants.AT_OUTPUT:
+            raise RuntimeError(&#39;pwm_write: You must set the pin mode before performing &#39;
+                               &#39;a digital write.&#39;)
         command = [PrivateConstants.DIGITAL_WRITE, pin, value]
         self._send_command(command)
 
@@ -1771,7 +1807,7 @@ receiving a KeyboardInterrupt exception</p>
         &#34;&#34;&#34;
         Disables analog reporting for a single analog pin.
 
-        :param pin: Analog pin number. For example for A0, the number is 0.
+        :param pin: Analog pin number. For example for ADC, the number is 0.
 
         &#34;&#34;&#34;
         command = [PrivateConstants.MODIFY_REPORTING,
@@ -1782,7 +1818,7 @@ receiving a KeyboardInterrupt exception</p>
         &#34;&#34;&#34;
         Disables digital reporting for a single digital input.
 
-        :param pin: Pin number.
+        :param pin: GPIO Pin number.
 
         &#34;&#34;&#34;
         command = [PrivateConstants.MODIFY_REPORTING,
@@ -1793,7 +1829,7 @@ receiving a KeyboardInterrupt exception</p>
         &#34;&#34;&#34;
         Enables analog reporting for the specified pin.
 
-        :param pin: Analog pin number. For example for A0, the number is 0.
+        :param pin: Analog pin number. For example for ADC0, the number is 0.
 
 
         &#34;&#34;&#34;
@@ -1805,7 +1841,7 @@ receiving a KeyboardInterrupt exception</p>
         &#34;&#34;&#34;
         Enable reporting on the specified digital pin.
 
-        :param pin: Pin number.
+        :param pin: GPIO Pin number.
         &#34;&#34;&#34;
 
         command = [PrivateConstants.MODIFY_REPORTING,
@@ -1861,7 +1897,7 @@ receiving a KeyboardInterrupt exception</p>
         [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
         time-stamp]
 
-        I2C_READ_REPORT = 12
+        I2C_READ_REPORT = 10
 
         &#34;&#34;&#34;
 
@@ -2061,7 +2097,7 @@ receiving a KeyboardInterrupt exception</p>
         &#34;&#34;&#34;
         Set a pin as a digital input.
 
-        :param pin_number: pico pin number
+        :param pin_number: pico GPIO pin number
 
         :param callback: callback function
 
@@ -2079,7 +2115,7 @@ receiving a KeyboardInterrupt exception</p>
         &#34;&#34;&#34;
         Set a pin as a digital input with pullup enabled.
 
-        :param pin_number: pico pin number
+        :param pin_number: pico GPIO pin number
 
         :param callback: callback function
 
@@ -2098,7 +2134,7 @@ receiving a KeyboardInterrupt exception</p>
         &#34;&#34;&#34;
         Set a pin as a digital input with pull down enabled.
 
-        :param pin_number: pico pin number
+        :param pin_number: pico GPIO pin number
 
         :param callback: callback function
 
@@ -2117,7 +2153,7 @@ receiving a KeyboardInterrupt exception</p>
         &#34;&#34;&#34;
         Set a pin as a digital output pin.
 
-        :param pin_number: pico pin number
+        :param pin_number: pico GPIO pin number
         &#34;&#34;&#34;
 
         self._set_pin_mode(pin_number, PrivateConstants.AT_OUTPUT)
@@ -2151,13 +2187,15 @@ receiving a KeyboardInterrupt exception</p>
 
         self._send_command(command)
 
+        self.pico_pins[pin_number] = PrivateConstants.AT_NEO_PIXEL
+
         self.neopixels_initiated = True
 
     def set_pin_mode_pwm_output(self, pin_number, value_range=255):
         &#34;&#34;&#34;
         Enable a pin as a PWM pin. Maximum number of PWMs is 16.
 
-        :param pin_number: pico pin number
+        :param pin_number: pico GPIO pin number
 
         :param value_range: value range - 16 bits
         &#34;&#34;&#34;
@@ -2323,6 +2361,17 @@ receiving a KeyboardInterrupt exception</p>
         &#34;&#34;&#34;
         This method returns the pico_pins dictionary
 
+        Pin Modes MAP:
+            DIGITAL_INPUT = 0
+            DIGITAL_OUTPUT = 1
+            PWM_OUTPUT = 2
+            DIGITAL_INPUT_PULLUP = 3
+            DIGITAL_INPUT_PULL_DOWN = 4
+            ANALOG_INPUT = 5
+            I2C = 9
+            EO_PIXEL = 10
+            AT_MODE_NOT_SET = 255
+
         :return: pico_pins
         &#34;&#34;&#34;
         return self.pico_pins
@@ -2427,6 +2476,17 @@ receiving a KeyboardInterrupt exception</p>
             if self.shutdown_on_exception:
                 self.shutdown()
             raise RuntimeError(&#39;Unknown pin state&#39;)
+
+        if pin_state == PrivateConstants.AT_ANALOG:
+            if pin_number == 0:
+                self.pico_pins[26] = PrivateConstants.AT_ANALOG
+            elif pin_number == 1:
+                self.pico_pins[27] = PrivateConstants.AT_ANALOG
+            elif pin_number == 13:
+                self.pico_pins[28] = PrivateConstants.AT_ANALOG
+
+        else:
+            self.pico_pins[pin_number] = pin_state
 
         if command:
             self._send_command(command)
@@ -2744,7 +2804,7 @@ receiving a KeyboardInterrupt exception</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Set the specified pin to the specified value.</p>
-<p>:param pin: pico pin number</p>
+<p>:param pin: pico GPIO pin number</p>
 <p>:param value: pin value (1 or 0)</p></div>
 <details class="source">
 <summary>
@@ -2754,12 +2814,14 @@ receiving a KeyboardInterrupt exception</p>
     &#34;&#34;&#34;
     Set the specified pin to the specified value.
 
-    :param pin: pico pin number
+    :param pin: pico GPIO pin number
 
     :param value: pin value (1 or 0)
 
     &#34;&#34;&#34;
-
+    if self.pico_pins[pin] != PrivateConstants.AT_OUTPUT:
+        raise RuntimeError(&#39;pwm_write: You must set the pin mode before performing &#39;
+                           &#39;a digital write.&#39;)
     command = [PrivateConstants.DIGITAL_WRITE, pin, value]
     self._send_command(command)</code></pre>
 </details>
@@ -2787,7 +2849,7 @@ receiving a KeyboardInterrupt exception</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Disables analog reporting for a single analog pin.</p>
-<p>:param pin: Analog pin number. For example for A0, the number is 0.</p></div>
+<p>:param pin: Analog pin number. For example for ADC, the number is 0.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2796,7 +2858,7 @@ receiving a KeyboardInterrupt exception</p>
     &#34;&#34;&#34;
     Disables analog reporting for a single analog pin.
 
-    :param pin: Analog pin number. For example for A0, the number is 0.
+    :param pin: Analog pin number. For example for ADC, the number is 0.
 
     &#34;&#34;&#34;
     command = [PrivateConstants.MODIFY_REPORTING,
@@ -2809,7 +2871,7 @@ receiving a KeyboardInterrupt exception</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Disables digital reporting for a single digital input.</p>
-<p>:param pin: Pin number.</p></div>
+<p>:param pin: GPIO Pin number.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2818,7 +2880,7 @@ receiving a KeyboardInterrupt exception</p>
     &#34;&#34;&#34;
     Disables digital reporting for a single digital input.
 
-    :param pin: Pin number.
+    :param pin: GPIO Pin number.
 
     &#34;&#34;&#34;
     command = [PrivateConstants.MODIFY_REPORTING,
@@ -2831,7 +2893,7 @@ receiving a KeyboardInterrupt exception</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Enables analog reporting for the specified pin.</p>
-<p>:param pin: Analog pin number. For example for A0, the number is 0.</p></div>
+<p>:param pin: Analog pin number. For example for ADC0, the number is 0.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2840,7 +2902,7 @@ receiving a KeyboardInterrupt exception</p>
     &#34;&#34;&#34;
     Enables analog reporting for the specified pin.
 
-    :param pin: Analog pin number. For example for A0, the number is 0.
+    :param pin: Analog pin number. For example for ADC0, the number is 0.
 
 
     &#34;&#34;&#34;
@@ -2854,7 +2916,7 @@ receiving a KeyboardInterrupt exception</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Enable reporting on the specified digital pin.</p>
-<p>:param pin: Pin number.</p></div>
+<p>:param pin: GPIO Pin number.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2863,7 +2925,7 @@ receiving a KeyboardInterrupt exception</p>
     &#34;&#34;&#34;
     Enable reporting on the specified digital pin.
 
-    :param pin: Pin number.
+    :param pin: GPIO Pin number.
     &#34;&#34;&#34;
 
     command = [PrivateConstants.MODIFY_REPORTING,
@@ -2876,6 +2938,16 @@ receiving a KeyboardInterrupt exception</p>
 </code></dt>
 <dd>
 <div class="desc"><p>This method returns the pico_pins dictionary</p>
+<p>Pin Modes MAP:
+DIGITAL_INPUT = 0
+DIGITAL_OUTPUT = 1
+PWM_OUTPUT = 2
+DIGITAL_INPUT_PULLUP = 3
+DIGITAL_INPUT_PULL_DOWN = 4
+ANALOG_INPUT = 5
+I2C = 9
+EO_PIXEL = 10
+AT_MODE_NOT_SET = 255</p>
 <p>:return: pico_pins</p></div>
 <details class="source">
 <summary>
@@ -2884,6 +2956,17 @@ receiving a KeyboardInterrupt exception</p>
 <pre><code class="python">def get_pico_pins(self):
     &#34;&#34;&#34;
     This method returns the pico_pins dictionary
+
+    Pin Modes MAP:
+        DIGITAL_INPUT = 0
+        DIGITAL_OUTPUT = 1
+        PWM_OUTPUT = 2
+        DIGITAL_INPUT_PULLUP = 3
+        DIGITAL_INPUT_PULL_DOWN = 4
+        ANALOG_INPUT = 5
+        I2C = 9
+        EO_PIXEL = 10
+        AT_MODE_NOT_SET = 255
 
     :return: pico_pins
     &#34;&#34;&#34;
@@ -2908,7 +2991,7 @@ begin with a Restart rather than a Start.</p>
 <p>callback returns a data list:
 [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
 time-stamp]</p>
-<p>I2C_READ_REPORT = 12</p></div>
+<p>I2C_READ_REPORT = 10</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2940,7 +3023,7 @@ time-stamp]</p>
     [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
     time-stamp]
 
-    I2C_READ_REPORT = 12
+    I2C_READ_REPORT = 10
 
     &#34;&#34;&#34;
 
@@ -3199,8 +3282,9 @@ the value provided.</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Set the specified pin to the specified value.</p>
-<p>:param pin: pico pin number</p>
-<p>:param value: pin value (0-255)</p></div>
+<p>:param pin: pico GPIO pin number</p>
+<p>:param value: pin value - size is determined by what was set for value_range
+when set_pin_mode_pwm_output was called.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3209,11 +3293,15 @@ the value provided.</p>
     &#34;&#34;&#34;
     Set the specified pin to the specified value.
 
-    :param pin: pico pin number
+    :param pin: pico GPIO pin number
 
-    :param value: pin value (0-255)
+    :param value: pin value - size is determined by what was set for value_range
+    when set_pin_mode_pwm_output was called.
 
     &#34;&#34;&#34;
+    if self.pico_pins[pin] != PrivateConstants.AT_PWM_OUTPUT:
+        raise RuntimeError(&#39;pwm_write: You must set the pin mode before performing &#39;
+                           &#39;a PWM write.&#39;)
     value_msb = value &gt;&gt; 8
     value_lsb = value &amp; 0xff
     command = [PrivateConstants.PWM_WRITE, pin, value_msb, value_lsb]
@@ -3267,7 +3355,7 @@ report will be generated</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Set a pin as a digital input.</p>
-<p>:param pin_number: pico pin number</p>
+<p>:param pin_number: pico GPIO pin number</p>
 <p>:param callback: callback function</p>
 <p>callback returns a data list:</p>
 <p>[pin_type, pin_number, pin_value, raw_time_stamp]</p>
@@ -3280,7 +3368,7 @@ report will be generated</p>
     &#34;&#34;&#34;
     Set a pin as a digital input.
 
-    :param pin_number: pico pin number
+    :param pin_number: pico GPIO pin number
 
     :param callback: callback function
 
@@ -3300,7 +3388,7 @@ report will be generated</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Set a pin as a digital input with pull down enabled.</p>
-<p>:param pin_number: pico pin number</p>
+<p>:param pin_number: pico GPIO pin number</p>
 <p>:param callback: callback function</p>
 <p>callback returns a data list:</p>
 <p>[pin_type, pin_number, pin_value, raw_time_stamp]</p>
@@ -3313,7 +3401,7 @@ report will be generated</p>
     &#34;&#34;&#34;
     Set a pin as a digital input with pull down enabled.
 
-    :param pin_number: pico pin number
+    :param pin_number: pico GPIO pin number
 
     :param callback: callback function
 
@@ -3334,7 +3422,7 @@ report will be generated</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Set a pin as a digital input with pullup enabled.</p>
-<p>:param pin_number: pico pin number</p>
+<p>:param pin_number: pico GPIO pin number</p>
 <p>:param callback: callback function</p>
 <p>callback returns a data list:</p>
 <p>[pin_type, pin_number, pin_value, raw_time_stamp]</p>
@@ -3347,7 +3435,7 @@ report will be generated</p>
     &#34;&#34;&#34;
     Set a pin as a digital input with pullup enabled.
 
-    :param pin_number: pico pin number
+    :param pin_number: pico GPIO pin number
 
     :param callback: callback function
 
@@ -3368,7 +3456,7 @@ report will be generated</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Set a pin as a digital output pin.</p>
-<p>:param pin_number: pico pin number</p></div>
+<p>:param pin_number: pico GPIO pin number</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3377,7 +3465,7 @@ report will be generated</p>
     &#34;&#34;&#34;
     Set a pin as a digital output pin.
 
-    :param pin_number: pico pin number
+    :param pin_number: pico GPIO pin number
     &#34;&#34;&#34;
 
     self._set_pin_mode(pin_number, PrivateConstants.AT_OUTPUT)</code></pre>
@@ -3499,6 +3587,8 @@ API.</li>
 
     self._send_command(command)
 
+    self.pico_pins[pin_number] = PrivateConstants.AT_NEO_PIXEL
+
     self.neopixels_initiated = True</code></pre>
 </details>
 </dd>
@@ -3507,7 +3597,7 @@ API.</li>
 </code></dt>
 <dd>
 <div class="desc"><p>Enable a pin as a PWM pin. Maximum number of PWMs is 16.</p>
-<p>:param pin_number: pico pin number</p>
+<p>:param pin_number: pico GPIO pin number</p>
 <p>:param value_range: value range - 16 bits</p></div>
 <details class="source">
 <summary>
@@ -3517,7 +3607,7 @@ API.</li>
     &#34;&#34;&#34;
     Enable a pin as a PWM pin. Maximum number of PWMs is 16.
 
-    :param pin_number: pico pin number
+    :param pin_number: pico GPIO pin number
 
     :param value_range: value range - 16 bits
     &#34;&#34;&#34;
