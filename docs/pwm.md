@@ -10,8 +10,7 @@
     :param value_range: value range - 16 bits
 ```
 The Pico allows up to 16 GPIO pins to be assigned as PWM outputs. The **value_range** 
-parameter is used to set how many bits represent the full voltage measurement. The 
-larger the number, the larger the granularity.
+parameter is used to set how many bits represent the full voltage measurement. 
 
 ## pwm_write
 
