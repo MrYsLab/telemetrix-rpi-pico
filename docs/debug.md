@@ -18,6 +18,14 @@ This method allows you to check that there is serial communication between the c
 
 ## Example: [loop_back](https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/examples/loop_back.py)
 
+### Sample Output
+
+Sending: A
+Sending: B
+Sending: Z
+Looped back: A
+Looped back: B
+Looped back: Z
 
 ## get_pico_pins
 
@@ -50,6 +58,9 @@ Pin Mode MAP:
 ## Example: [get_pico_pins.py](https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/examples/get_pico_pins.py)
 
 ### Sample Output
+{0: 255, 1: 255, 2: 255, 3: 255, 4: 9, 5: 9, 6: 0, 7: 255, 8: 255, 9: 3, 
+ 10: 255, 11: 255, 12: 255, 13: 255, 14: 10, 15: 255, 16: 255, 17: 255, 
+ 18: 255, 19:255, 20: 255, 21: 255, 22: 255, 25: 255, 26: 255, 27: 5, 28: 255}
 
 Sending: A
 Sending: B
