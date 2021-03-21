@@ -478,7 +478,7 @@ class TelemetrixRpiPico(threading.Thread):
         [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
         time-stamp]
 
-        I2C_READ_REPORT = 12
+        I2C_READ_REPORT = 10
 
         """
 
