@@ -4,7 +4,7 @@ This is an early version of a Telemetrix client for the Raspberry Pi Pico.
 
 This is a work in progress.
 
-A full User's Guide is under development.
+A full User's Guide is [available online.](https://mryslab.github.io/telemetrix-rpi-pico/)
 
 A Python API for may be found [here.](https://htmlpreview.github.com/?https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/html/telemetrix_rpi_pico/index.html) 
 
