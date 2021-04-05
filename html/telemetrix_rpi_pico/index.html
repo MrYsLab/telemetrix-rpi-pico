@@ -226,6 +226,7 @@ class TelemetrixRpiPico(threading.Thread):
         self.pico_pins = {gpio_pin: PrivateConstants.AT_MODE_NOT_SET for gpio_pin in
                           range(23)}
 
+        # skip over unavailable pins
         for pin in range(25, 29):
             self.pico_pins[pin] = PrivateConstants.AT_MODE_NOT_SET
 
@@ -236,6 +237,14 @@ class TelemetrixRpiPico(threading.Thread):
 
         self.i2c_scl_pins = {n: 255 for n in range(3, 22, 2)}
         self.i2c_scl_pins[27] = 255
+
+        # create a dictionary that holds all the servo ranges
+        self.servo_ranges = {gpio_pin: [1000, 2000] for gpio_pin in
+                             range(23)}
+
+        # skip over unavailable pins
+        for gpio_pin in range(25, 29):
+            self.servo_ranges[gpio_pin] = [1000, 2000]
 
         self.the_reporter_thread.start()
         self.the_data_receive_thread.start()
@@ -384,21 +393,41 @@ class TelemetrixRpiPico(threading.Thread):
                 self.shutdown()
             raise RuntimeError(&#39;User Hit Control-C&#39;)
 
-    def pwm_write(self, pin, value):
+    def pwm_write(self, pin, duty_cycle=0, raw=False):
         &#34;&#34;&#34;
         Set the specified pin to the specified value.
 
         :param pin: pico GPIO pin number
 
-        :param value: pin value - size is determined by what was set for value_range
-        when set_pin_mode_pwm_output was called.
+        :param duty_cycle: if the raw parameter is False, then this is expressed
+                           as a percentage between 0 and 100
+
+                           if the raw parameter is True, then the valid range
+                           of values is from 0 - 19999
+
+       :param raw: Sets how the duty-cycle parameter is perceived.
 
         &#34;&#34;&#34;
-        if self.pico_pins[pin] != PrivateConstants.AT_PWM_OUTPUT:
+        if self.pico_pins[pin] != PrivateConstants.AT_PWM_OUTPUT \
+                and self.pico_pins[pin] != PrivateConstants.AT_SERVO:
             raise RuntimeError(&#39;pwm_write: You must set the pin mode before performing &#39;
                                &#39;a PWM write.&#39;)
-        value_msb = value &gt;&gt; 8
-        value_lsb = value &amp; 0xff
+        if raw:
+            if not (0 &lt;= duty_cycle &lt; PrivateConstants.MAX_RAW_DUTY_CYCLE):
+                raise RuntimeError(&#39;Raw PWM duty cycle out of range&#39;)
+            # else:
+            #     dc = duty_cycle
+        else:
+            if not (0 &lt;= duty_cycle &lt;= 99):
+                raise RuntimeError(&#39;Raw PWM duty cycle percentage of range&#39;)
+            # calculate percentage of duty cycle
+            else:
+                duty_cycle = ((PrivateConstants.MAX_RAW_DUTY_CYCLE * duty_cycle) // 100)
+                # print(duty_cycle)
+
+        value_msb = duty_cycle &gt;&gt; 8
+        value_lsb = duty_cycle &amp; 0x00ff
+
         command = [PrivateConstants.PWM_WRITE, pin, value_msb, value_lsb]
         self._send_command(command)
 
@@ -813,33 +842,31 @@ class TelemetrixRpiPico(threading.Thread):
 
         self.neopixels_initiated = True
 
-    def set_pin_mode_pwm_output(self, pin_number, value_range=255):
+    def set_pin_mode_pwm_output(self, pin_number):
         &#34;&#34;&#34;
         Enable a pin as a PWM pin. Maximum number of PWMs is 16.
+        The frequency is fixed at 50 hz.
+
+        Note: There are up to 16 pins that can be assigned as
+        PWM. Servo pins share the 16 PWM pins.
+
 
         :param pin_number: pico GPIO pin number
 
-        :param value_range: value range - 16 bits
         &#34;&#34;&#34;
 
         if pin_number in self.pico_pins:
             self.pico_pins[pin_number] = PrivateConstants.AT_PWM_OUTPUT
             if self.pwm_active_count &gt;= 15:
                 raise RuntimeError(
-                    &#39;set_pin_mode_pwm_output: number of active PWM pins is at maximum&#39;)
-
-            if value_range &gt; 0xffff:
-                raise RuntimeError(
-                    &#39;set_pin_mode_pwm_output: value_range is limited to 16 bits&#39;)
+                    &#39;pwm or servo set mode: number of active PWM pins is at maximum&#39;)
 
             self.pwm_active_count += 1
 
-            self._set_pin_mode(pin_number, PrivateConstants.AT_PWM_OUTPUT,
-                               value_range=value_range)
+            self._set_pin_mode(pin_number, PrivateConstants.AT_PWM_OUTPUT)
         else:
             raise RuntimeError(&#39;Gpio Pin Number is invalid&#39;)
 
-    # TBD
     def set_pin_mode_i2c(self, i2c_port=0, sda_gpio=4, scl_gpio=5):
         &#34;&#34;&#34;
         Establish the standard pico i2c pins for i2c utilization.
@@ -924,27 +951,52 @@ class TelemetrixRpiPico(threading.Thread):
     #         raise RuntimeError(
     #             f&#39;Maximum Number Of DHTs Exceeded - set_pin_mode_dht fails for pin {pin}&#39;)
     #
-    # # TBD
-    # # noinspection PyRedundantParentheses
-    # def set_pin_mode_servo(self, pin_number, min_pulse=544, max_pulse=2400):
-    #     &#34;&#34;&#34;
-    #     NOT YET IMPLEMENTED!!!
-    #
-    #     Attach a pin to a servo motor
-    #
-    #     :param pin_number: pin
-    #
-    #     :param min_pulse: minimum pulse width
-    #
-    #     :param max_pulse: maximum pulse width
-    #
-    #     &#34;&#34;&#34;
-    #     minv = (min_pulse).to_bytes(2, byteorder=&#34;big&#34;)
-    #     maxv = (max_pulse).to_bytes(2, byteorder=&#34;big&#34;)
-    #
-    #     command = [PrivateConstants.SERVO_ATTACH, pin_number,
-    #                minv[0], minv[1], maxv[0], maxv[1]]
-    #     self._send_command(command)
+    # 
+
+    # noinspection PyRedundantParentheses
+    def set_pin_mode_servo(self, pin_number, min_pulse=1000, max_pulse=2000):
+        &#34;&#34;&#34;
+
+        Attach a pin to a servo motor
+
+        Servo mode is a specialized version of PWM Output mode.
+        There are 16 PWM pins shared between the Servo and PWM Output modes.
+
+        :param pin_number: pin
+
+        :param min_pulse: minimum pulse width in microseconds
+
+        :param max_pulse: maximum pulse width in microseconds
+
+        &#34;&#34;&#34;
+
+        self._set_pin_mode(pin_number, PrivateConstants.AT_SERVO, min_pulse, max_pulse)
+
+    def servo_write(self, pin_number, value):
+        &#34;&#34;&#34;
+        Write the value to the specified servo
+
+        :param pin_number: GPIO pin number
+
+        :param value: value between 0 and 180
+
+        &#34;&#34;&#34;
+
+        if self.pico_pins[pin_number] != PrivateConstants.AT_SERVO:
+            raise RuntimeError(&#39;You must call set_pin_mode_servo before trying to &#39;
+                               &#39;write a value to a servo or servo was detached.&#39;)
+
+        # get the min and max for the servo and calculate the duty-cycle
+        min_duty = self.servo_ranges[pin_number][PrivateConstants.MIN_SERVO_DUTY_CYCLE]
+        max_duty = self.servo_ranges[pin_number][PrivateConstants.MAX_SERVO_DUTY_CYCLE]
+
+        servo_range = max_duty - min_duty
+
+        duty_cycle = int(value / 180 * servo_range) + min_duty
+
+        # use a raw pwm write from the calculated values
+        self.pwm_write(pin_number, duty_cycle, True)
+
     #
     # # TBD
     # def set_pin_mode_sonar(self, trigger_pin, echo_pin,
@@ -990,6 +1042,7 @@ class TelemetrixRpiPico(threading.Thread):
             DIGITAL_INPUT_PULLUP = 3
             DIGITAL_INPUT_PULL_DOWN = 4
             ANALOG_INPUT = 5
+            SERVO = 6
             I2C = 9
             EO_PIXEL = 10
             AT_MODE_NOT_SET = 255
@@ -997,34 +1050,6 @@ class TelemetrixRpiPico(threading.Thread):
         :return: pico_pins
         &#34;&#34;&#34;
         return self.pico_pins
-
-    # TBD
-    # def servo_write(self, pin_number, angle):
-    #     &#34;&#34;&#34;
-    #     NOT YET IMPLEMENTED!!!
-    #
-    #     Set a servo attached to a pin to a given angle.
-    #
-    #     :param pin_number: pin
-    #
-    #     :param angle: angle (0-180)
-    #
-    #     &#34;&#34;&#34;
-    #     command = [PrivateConstants.SERVO_WRITE, pin_number, angle]
-    #     self._send_command(command)
-    #
-    # # TBD
-    # def servo_detach(self, pin_number):
-    #     &#34;&#34;&#34;
-    #     NOT YET IMPLEMENTED!!!
-    #
-    #     Detach a servo for reuse
-    #
-    #     :param pin_number: attached pin
-    #
-    #     &#34;&#34;&#34;
-    #     command = [PrivateConstants.SERVO_DETACH, pin_number]
-    #     self._send_command(command)
 
     def _set_pin_mode(self, pin_number, pin_state, differential=0, value_range=0,
                       callback=None):
@@ -1040,7 +1065,10 @@ class TelemetrixRpiPico(threading.Thread):
                              value to be achieved for report to
                              be generated
 
-        :param value_range: valid value range
+                           : for servo we overload this variable to mean the minimum
+                             duty cycle
+
+        :param value_range: for servo this is the maximum duty cycle
 
         :param callback: A reference to a call back function to be
                          called when pin data value changes
@@ -1091,8 +1119,13 @@ class TelemetrixRpiPico(threading.Thread):
 
         elif pin_state == PrivateConstants.AT_PWM_OUTPUT:
             command = [PrivateConstants.SET_PIN_MODE, pin_number,
-                       PrivateConstants.AT_PWM_OUTPUT, value_range &gt;&gt; 8,
-                       value_range &amp; 0xff]
+                       PrivateConstants.AT_PWM_OUTPUT]
+
+        elif pin_state == PrivateConstants.AT_SERVO:
+            # we reuse the PWM_OUTPUT command
+            command = [PrivateConstants.SET_PIN_MODE, pin_number,
+                       PrivateConstants.AT_PWM_OUTPUT]
+            self.servo_ranges[pin_number] = [differential, value_range]
 
         else:
             if self.shutdown_on_exception:
@@ -1604,6 +1637,7 @@ receiving a KeyboardInterrupt exception</p>
         self.pico_pins = {gpio_pin: PrivateConstants.AT_MODE_NOT_SET for gpio_pin in
                           range(23)}
 
+        # skip over unavailable pins
         for pin in range(25, 29):
             self.pico_pins[pin] = PrivateConstants.AT_MODE_NOT_SET
 
@@ -1614,6 +1648,14 @@ receiving a KeyboardInterrupt exception</p>
 
         self.i2c_scl_pins = {n: 255 for n in range(3, 22, 2)}
         self.i2c_scl_pins[27] = 255
+
+        # create a dictionary that holds all the servo ranges
+        self.servo_ranges = {gpio_pin: [1000, 2000] for gpio_pin in
+                             range(23)}
+
+        # skip over unavailable pins
+        for gpio_pin in range(25, 29):
+            self.servo_ranges[gpio_pin] = [1000, 2000]
 
         self.the_reporter_thread.start()
         self.the_data_receive_thread.start()
@@ -1762,21 +1804,41 @@ receiving a KeyboardInterrupt exception</p>
                 self.shutdown()
             raise RuntimeError(&#39;User Hit Control-C&#39;)
 
-    def pwm_write(self, pin, value):
+    def pwm_write(self, pin, duty_cycle=0, raw=False):
         &#34;&#34;&#34;
         Set the specified pin to the specified value.
 
         :param pin: pico GPIO pin number
 
-        :param value: pin value - size is determined by what was set for value_range
-        when set_pin_mode_pwm_output was called.
+        :param duty_cycle: if the raw parameter is False, then this is expressed
+                           as a percentage between 0 and 100
+
+                           if the raw parameter is True, then the valid range
+                           of values is from 0 - 19999
+
+       :param raw: Sets how the duty-cycle parameter is perceived.
 
         &#34;&#34;&#34;
-        if self.pico_pins[pin] != PrivateConstants.AT_PWM_OUTPUT:
+        if self.pico_pins[pin] != PrivateConstants.AT_PWM_OUTPUT \
+                and self.pico_pins[pin] != PrivateConstants.AT_SERVO:
             raise RuntimeError(&#39;pwm_write: You must set the pin mode before performing &#39;
                                &#39;a PWM write.&#39;)
-        value_msb = value &gt;&gt; 8
-        value_lsb = value &amp; 0xff
+        if raw:
+            if not (0 &lt;= duty_cycle &lt; PrivateConstants.MAX_RAW_DUTY_CYCLE):
+                raise RuntimeError(&#39;Raw PWM duty cycle out of range&#39;)
+            # else:
+            #     dc = duty_cycle
+        else:
+            if not (0 &lt;= duty_cycle &lt;= 99):
+                raise RuntimeError(&#39;Raw PWM duty cycle percentage of range&#39;)
+            # calculate percentage of duty cycle
+            else:
+                duty_cycle = ((PrivateConstants.MAX_RAW_DUTY_CYCLE * duty_cycle) // 100)
+                # print(duty_cycle)
+
+        value_msb = duty_cycle &gt;&gt; 8
+        value_lsb = duty_cycle &amp; 0x00ff
+
         command = [PrivateConstants.PWM_WRITE, pin, value_msb, value_lsb]
         self._send_command(command)
 
@@ -2191,33 +2253,31 @@ receiving a KeyboardInterrupt exception</p>
 
         self.neopixels_initiated = True
 
-    def set_pin_mode_pwm_output(self, pin_number, value_range=255):
+    def set_pin_mode_pwm_output(self, pin_number):
         &#34;&#34;&#34;
         Enable a pin as a PWM pin. Maximum number of PWMs is 16.
+        The frequency is fixed at 50 hz.
+
+        Note: There are up to 16 pins that can be assigned as
+        PWM. Servo pins share the 16 PWM pins.
+
 
         :param pin_number: pico GPIO pin number
 
-        :param value_range: value range - 16 bits
         &#34;&#34;&#34;
 
         if pin_number in self.pico_pins:
             self.pico_pins[pin_number] = PrivateConstants.AT_PWM_OUTPUT
             if self.pwm_active_count &gt;= 15:
                 raise RuntimeError(
-                    &#39;set_pin_mode_pwm_output: number of active PWM pins is at maximum&#39;)
-
-            if value_range &gt; 0xffff:
-                raise RuntimeError(
-                    &#39;set_pin_mode_pwm_output: value_range is limited to 16 bits&#39;)
+                    &#39;pwm or servo set mode: number of active PWM pins is at maximum&#39;)
 
             self.pwm_active_count += 1
 
-            self._set_pin_mode(pin_number, PrivateConstants.AT_PWM_OUTPUT,
-                               value_range=value_range)
+            self._set_pin_mode(pin_number, PrivateConstants.AT_PWM_OUTPUT)
         else:
             raise RuntimeError(&#39;Gpio Pin Number is invalid&#39;)
 
-    # TBD
     def set_pin_mode_i2c(self, i2c_port=0, sda_gpio=4, scl_gpio=5):
         &#34;&#34;&#34;
         Establish the standard pico i2c pins for i2c utilization.
@@ -2302,27 +2362,52 @@ receiving a KeyboardInterrupt exception</p>
     #         raise RuntimeError(
     #             f&#39;Maximum Number Of DHTs Exceeded - set_pin_mode_dht fails for pin {pin}&#39;)
     #
-    # # TBD
-    # # noinspection PyRedundantParentheses
-    # def set_pin_mode_servo(self, pin_number, min_pulse=544, max_pulse=2400):
-    #     &#34;&#34;&#34;
-    #     NOT YET IMPLEMENTED!!!
-    #
-    #     Attach a pin to a servo motor
-    #
-    #     :param pin_number: pin
-    #
-    #     :param min_pulse: minimum pulse width
-    #
-    #     :param max_pulse: maximum pulse width
-    #
-    #     &#34;&#34;&#34;
-    #     minv = (min_pulse).to_bytes(2, byteorder=&#34;big&#34;)
-    #     maxv = (max_pulse).to_bytes(2, byteorder=&#34;big&#34;)
-    #
-    #     command = [PrivateConstants.SERVO_ATTACH, pin_number,
-    #                minv[0], minv[1], maxv[0], maxv[1]]
-    #     self._send_command(command)
+    # 
+
+    # noinspection PyRedundantParentheses
+    def set_pin_mode_servo(self, pin_number, min_pulse=1000, max_pulse=2000):
+        &#34;&#34;&#34;
+
+        Attach a pin to a servo motor
+
+        Servo mode is a specialized version of PWM Output mode.
+        There are 16 PWM pins shared between the Servo and PWM Output modes.
+
+        :param pin_number: pin
+
+        :param min_pulse: minimum pulse width in microseconds
+
+        :param max_pulse: maximum pulse width in microseconds
+
+        &#34;&#34;&#34;
+
+        self._set_pin_mode(pin_number, PrivateConstants.AT_SERVO, min_pulse, max_pulse)
+
+    def servo_write(self, pin_number, value):
+        &#34;&#34;&#34;
+        Write the value to the specified servo
+
+        :param pin_number: GPIO pin number
+
+        :param value: value between 0 and 180
+
+        &#34;&#34;&#34;
+
+        if self.pico_pins[pin_number] != PrivateConstants.AT_SERVO:
+            raise RuntimeError(&#39;You must call set_pin_mode_servo before trying to &#39;
+                               &#39;write a value to a servo or servo was detached.&#39;)
+
+        # get the min and max for the servo and calculate the duty-cycle
+        min_duty = self.servo_ranges[pin_number][PrivateConstants.MIN_SERVO_DUTY_CYCLE]
+        max_duty = self.servo_ranges[pin_number][PrivateConstants.MAX_SERVO_DUTY_CYCLE]
+
+        servo_range = max_duty - min_duty
+
+        duty_cycle = int(value / 180 * servo_range) + min_duty
+
+        # use a raw pwm write from the calculated values
+        self.pwm_write(pin_number, duty_cycle, True)
+
     #
     # # TBD
     # def set_pin_mode_sonar(self, trigger_pin, echo_pin,
@@ -2368,6 +2453,7 @@ receiving a KeyboardInterrupt exception</p>
             DIGITAL_INPUT_PULLUP = 3
             DIGITAL_INPUT_PULL_DOWN = 4
             ANALOG_INPUT = 5
+            SERVO = 6
             I2C = 9
             EO_PIXEL = 10
             AT_MODE_NOT_SET = 255
@@ -2375,34 +2461,6 @@ receiving a KeyboardInterrupt exception</p>
         :return: pico_pins
         &#34;&#34;&#34;
         return self.pico_pins
-
-    # TBD
-    # def servo_write(self, pin_number, angle):
-    #     &#34;&#34;&#34;
-    #     NOT YET IMPLEMENTED!!!
-    #
-    #     Set a servo attached to a pin to a given angle.
-    #
-    #     :param pin_number: pin
-    #
-    #     :param angle: angle (0-180)
-    #
-    #     &#34;&#34;&#34;
-    #     command = [PrivateConstants.SERVO_WRITE, pin_number, angle]
-    #     self._send_command(command)
-    #
-    # # TBD
-    # def servo_detach(self, pin_number):
-    #     &#34;&#34;&#34;
-    #     NOT YET IMPLEMENTED!!!
-    #
-    #     Detach a servo for reuse
-    #
-    #     :param pin_number: attached pin
-    #
-    #     &#34;&#34;&#34;
-    #     command = [PrivateConstants.SERVO_DETACH, pin_number]
-    #     self._send_command(command)
 
     def _set_pin_mode(self, pin_number, pin_state, differential=0, value_range=0,
                       callback=None):
@@ -2418,7 +2476,10 @@ receiving a KeyboardInterrupt exception</p>
                              value to be achieved for report to
                              be generated
 
-        :param value_range: valid value range
+                           : for servo we overload this variable to mean the minimum
+                             duty cycle
+
+        :param value_range: for servo this is the maximum duty cycle
 
         :param callback: A reference to a call back function to be
                          called when pin data value changes
@@ -2469,8 +2530,13 @@ receiving a KeyboardInterrupt exception</p>
 
         elif pin_state == PrivateConstants.AT_PWM_OUTPUT:
             command = [PrivateConstants.SET_PIN_MODE, pin_number,
-                       PrivateConstants.AT_PWM_OUTPUT, value_range &gt;&gt; 8,
-                       value_range &amp; 0xff]
+                       PrivateConstants.AT_PWM_OUTPUT]
+
+        elif pin_state == PrivateConstants.AT_SERVO:
+            # we reuse the PWM_OUTPUT command
+            command = [PrivateConstants.SET_PIN_MODE, pin_number,
+                       PrivateConstants.AT_PWM_OUTPUT]
+            self.servo_ranges[pin_number] = [differential, value_range]
 
         else:
             if self.shutdown_on_exception:
@@ -2945,6 +3011,7 @@ PWM_OUTPUT = 2
 DIGITAL_INPUT_PULLUP = 3
 DIGITAL_INPUT_PULL_DOWN = 4
 ANALOG_INPUT = 5
+SERVO = 6
 I2C = 9
 EO_PIXEL = 10
 AT_MODE_NOT_SET = 255</p>
@@ -2964,6 +3031,7 @@ AT_MODE_NOT_SET = 255</p>
         DIGITAL_INPUT_PULLUP = 3
         DIGITAL_INPUT_PULL_DOWN = 4
         ANALOG_INPUT = 5
+        SERVO = 6
         I2C = 9
         EO_PIXEL = 10
         AT_MODE_NOT_SET = 255
@@ -3278,34 +3346,95 @@ the value provided.</p>
 </details>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.pwm_write"><code class="name flex">
-<span>def <span class="ident">pwm_write</span></span>(<span>self, pin, value)</span>
+<span>def <span class="ident">pwm_write</span></span>(<span>self, pin, duty_cycle=0, raw=False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Set the specified pin to the specified value.</p>
 <p>:param pin: pico GPIO pin number</p>
-<p>:param value: pin value - size is determined by what was set for value_range
-when set_pin_mode_pwm_output was called.</p></div>
+<p>:param duty_cycle: if the raw parameter is False, then this is expressed
+as a percentage between 0 and 100</p>
+<pre><code>                if the raw parameter is True, then the valid range
+                of values is from 0 - 19999
+</code></pre>
+<p>:param raw: Sets how the duty-cycle parameter is perceived.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def pwm_write(self, pin, value):
+<pre><code class="python">def pwm_write(self, pin, duty_cycle=0, raw=False):
     &#34;&#34;&#34;
     Set the specified pin to the specified value.
 
     :param pin: pico GPIO pin number
 
-    :param value: pin value - size is determined by what was set for value_range
-    when set_pin_mode_pwm_output was called.
+    :param duty_cycle: if the raw parameter is False, then this is expressed
+                       as a percentage between 0 and 100
+
+                       if the raw parameter is True, then the valid range
+                       of values is from 0 - 19999
+
+   :param raw: Sets how the duty-cycle parameter is perceived.
 
     &#34;&#34;&#34;
-    if self.pico_pins[pin] != PrivateConstants.AT_PWM_OUTPUT:
+    if self.pico_pins[pin] != PrivateConstants.AT_PWM_OUTPUT \
+            and self.pico_pins[pin] != PrivateConstants.AT_SERVO:
         raise RuntimeError(&#39;pwm_write: You must set the pin mode before performing &#39;
                            &#39;a PWM write.&#39;)
-    value_msb = value &gt;&gt; 8
-    value_lsb = value &amp; 0xff
+    if raw:
+        if not (0 &lt;= duty_cycle &lt; PrivateConstants.MAX_RAW_DUTY_CYCLE):
+            raise RuntimeError(&#39;Raw PWM duty cycle out of range&#39;)
+        # else:
+        #     dc = duty_cycle
+    else:
+        if not (0 &lt;= duty_cycle &lt;= 99):
+            raise RuntimeError(&#39;Raw PWM duty cycle percentage of range&#39;)
+        # calculate percentage of duty cycle
+        else:
+            duty_cycle = ((PrivateConstants.MAX_RAW_DUTY_CYCLE * duty_cycle) // 100)
+            # print(duty_cycle)
+
+    value_msb = duty_cycle &gt;&gt; 8
+    value_lsb = duty_cycle &amp; 0x00ff
+
     command = [PrivateConstants.PWM_WRITE, pin, value_msb, value_lsb]
     self._send_command(command)</code></pre>
+</details>
+</dd>
+<dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.servo_write"><code class="name flex">
+<span>def <span class="ident">servo_write</span></span>(<span>self, pin_number, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write the value to the specified servo</p>
+<p>:param pin_number: GPIO pin number</p>
+<p>:param value: value between 0 and 180</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def servo_write(self, pin_number, value):
+    &#34;&#34;&#34;
+    Write the value to the specified servo
+
+    :param pin_number: GPIO pin number
+
+    :param value: value between 0 and 180
+
+    &#34;&#34;&#34;
+
+    if self.pico_pins[pin_number] != PrivateConstants.AT_SERVO:
+        raise RuntimeError(&#39;You must call set_pin_mode_servo before trying to &#39;
+                           &#39;write a value to a servo or servo was detached.&#39;)
+
+    # get the min and max for the servo and calculate the duty-cycle
+    min_duty = self.servo_ranges[pin_number][PrivateConstants.MIN_SERVO_DUTY_CYCLE]
+    max_duty = self.servo_ranges[pin_number][PrivateConstants.MAX_SERVO_DUTY_CYCLE]
+
+    servo_range = max_duty - min_duty
+
+    duty_cycle = int(value / 180 * servo_range) + min_duty
+
+    # use a raw pwm write from the calculated values
+    self.pwm_write(pin_number, duty_cycle, True)</code></pre>
 </details>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_analog_input"><code class="name flex">
@@ -3593,41 +3722,75 @@ API.</li>
 </details>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_pwm_output"><code class="name flex">
-<span>def <span class="ident">set_pin_mode_pwm_output</span></span>(<span>self, pin_number, value_range=255)</span>
+<span>def <span class="ident">set_pin_mode_pwm_output</span></span>(<span>self, pin_number)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Enable a pin as a PWM pin. Maximum number of PWMs is 16.</p>
-<p>:param pin_number: pico GPIO pin number</p>
-<p>:param value_range: value range - 16 bits</p></div>
+<div class="desc"><p>Enable a pin as a PWM pin. Maximum number of PWMs is 16.
+The frequency is fixed at 50 hz.</p>
+<p>Note: There are up to 16 pins that can be assigned as
+PWM. Servo pins share the 16 PWM pins.</p>
+<p>:param pin_number: pico GPIO pin number</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def set_pin_mode_pwm_output(self, pin_number, value_range=255):
+<pre><code class="python">def set_pin_mode_pwm_output(self, pin_number):
     &#34;&#34;&#34;
     Enable a pin as a PWM pin. Maximum number of PWMs is 16.
+    The frequency is fixed at 50 hz.
+
+    Note: There are up to 16 pins that can be assigned as
+    PWM. Servo pins share the 16 PWM pins.
+
 
     :param pin_number: pico GPIO pin number
 
-    :param value_range: value range - 16 bits
     &#34;&#34;&#34;
 
     if pin_number in self.pico_pins:
         self.pico_pins[pin_number] = PrivateConstants.AT_PWM_OUTPUT
         if self.pwm_active_count &gt;= 15:
             raise RuntimeError(
-                &#39;set_pin_mode_pwm_output: number of active PWM pins is at maximum&#39;)
-
-        if value_range &gt; 0xffff:
-            raise RuntimeError(
-                &#39;set_pin_mode_pwm_output: value_range is limited to 16 bits&#39;)
+                &#39;pwm or servo set mode: number of active PWM pins is at maximum&#39;)
 
         self.pwm_active_count += 1
 
-        self._set_pin_mode(pin_number, PrivateConstants.AT_PWM_OUTPUT,
-                           value_range=value_range)
+        self._set_pin_mode(pin_number, PrivateConstants.AT_PWM_OUTPUT)
     else:
         raise RuntimeError(&#39;Gpio Pin Number is invalid&#39;)</code></pre>
+</details>
+</dd>
+<dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_servo"><code class="name flex">
+<span>def <span class="ident">set_pin_mode_servo</span></span>(<span>self, pin_number, min_pulse=1000, max_pulse=2000)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Attach a pin to a servo motor</p>
+<p>Servo mode is a specialized version of PWM Output mode.
+There are 16 PWM pins shared between the Servo and PWM Output modes.</p>
+<p>:param pin_number: pin</p>
+<p>:param min_pulse: minimum pulse width in microseconds</p>
+<p>:param max_pulse: maximum pulse width in microseconds</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_pin_mode_servo(self, pin_number, min_pulse=1000, max_pulse=2000):
+    &#34;&#34;&#34;
+
+    Attach a pin to a servo motor
+
+    Servo mode is a specialized version of PWM Output mode.
+    There are 16 PWM pins shared between the Servo and PWM Output modes.
+
+    :param pin_number: pin
+
+    :param min_pulse: minimum pulse width in microseconds
+
+    :param max_pulse: maximum pulse width in microseconds
+
+    &#34;&#34;&#34;
+
+    self._set_pin_mode(pin_number, PrivateConstants.AT_SERVO, min_pulse, max_pulse)</code></pre>
 </details>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.shutdown"><code class="name flex">
@@ -3695,6 +3858,7 @@ If any exceptions are thrown, they are ignored.</p></div>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.neopixel_fill" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.neopixel_fill">neopixel_fill</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.neopixel_show" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.neopixel_show">neopixel_show</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.pwm_write" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.pwm_write">pwm_write</a></code></li>
+<li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.servo_write" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.servo_write">servo_write</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_analog_input" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_analog_input">set_pin_mode_analog_input</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_digital_input" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_digital_input">set_pin_mode_digital_input</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_digital_input_pull_down" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_digital_input_pull_down">set_pin_mode_digital_input_pull_down</a></code></li>
@@ -3703,6 +3867,7 @@ If any exceptions are thrown, they are ignored.</p></div>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_i2c" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_i2c">set_pin_mode_i2c</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_neopixel" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_neopixel">set_pin_mode_neopixel</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_pwm_output" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_pwm_output">set_pin_mode_pwm_output</a></code></li>
+<li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_servo" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_servo">set_pin_mode_servo</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.shutdown" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.shutdown">shutdown</a></code></li>
 </ul>
 </li>
