@@ -15,6 +15,7 @@ nav:
         - I2C Methods: i2c.md
         - NeoPixel Methods: neopixel.md
         - PWM Methods: pwm.md
+        - Servo Methods: servo.md
         - Shutting Down: management.md
         - Diagnostic Aids: debug.md
     - About: about.md
