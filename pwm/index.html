@@ -415,6 +415,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../servo/" title="Servo Methods" class="md-nav__link">
+      Servo Methods
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../management/" title="Shutting Down" class="md-nav__link">
       Shutting Down
     </a>
@@ -525,26 +537,34 @@
                   <h1>PWM Methods</h1>
                 
                 <h2 id="set_pin_mode_pwm_output">set_pin_mode_pwm_output</h2>
-<pre><code class="python"> def set_pin_mode_pwm_output(self, pin_number, value_range=255)
-
+<pre><code class="python"> def set_pin_mode_pwm_output(self, pin_number):
+    &quot;&quot;&quot;
     Enable a pin as a PWM pin. Maximum number of PWMs is 16.
+    The frequency is fixed at 50 hz.
 
-    :param pin_number: pico pin number
+    Note: There are up to 16 pins that can be assigned as
+    PWM. Servo pins share the 16 PWM pins.
 
-    :param value_range: value range - 16 bits
+
+    :param pin_number: pico GPIO pin number
+
 </code></pre>
 
-<p>The Pico allows up to 16 GPIO pins to be assigned as PWM outputs. The <strong>value_range</strong> 
-parameter is used to set how many bits represent the full voltage measurement. </p>
+<p>The Pico allows up to 16 GPIO pins to be assigned as PWM outputs.</p>
+<p><strong>NOTE:</strong> Servo assigned pins are a special case of PWM so they share in the 16 pins.</p>
 <h2 id="pwm_write">pwm_write</h2>
-<pre><code class="python"> def pwm_write(self, pin, value)
+<pre><code class="python"> def pwm_write(self, pin, duty_cycle=0, raw=False)
 
     Set the specified pin to the specified value.
 
-    :param pin: pico pin number
+    :param pin: pico GPIO pin number
 
-    :param value: pin value - size is determined by what was set for value_range
-        when set_pin_mode_pwm_output was called.
+    :param duty_cycle: if the raw parameter is False, then this is expressed as a percentage between 0 and 100
+
+                    if the raw parameter is True, then the valid range
+                    of values is from 0 - 19999
+
+    :param raw: Sets how the duty-cycle parameter is perceived.
 </code></pre>
 
 <h2 id="example-fadepy">Example: <a href="https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/examples/fade.py">fade.py</a></h2>
@@ -584,13 +604,13 @@ parameter is used to set how many bits represent the full voltage measurement. <
           </a>
         
         
-          <a href="../management/" title="Shutting Down" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../servo/" title="Servo Methods" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Shutting Down
+                Servo Methods
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">

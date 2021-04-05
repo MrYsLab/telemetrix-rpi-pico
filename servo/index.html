@@ -15,7 +15,7 @@
     
     
       
-        <title>Digital Output Methods - The Telemetrix User's Guide For The Raspberry Pi Pico</title>
+        <title>Servo Methods - The Telemetrix User's Guide For The Raspberry Pi Pico</title>
       
     
     
@@ -48,7 +48,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#set_pin_mode_digital_output" class="md-skip">
+        <a href="#set_pin_mode_servo" class="md-skip">
           Skip to content
         </a>
       
@@ -76,7 +76,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              Digital Output Methods
+              Servo Methods
             
           </span>
         </div>
@@ -313,63 +313,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Digital Output Methods
-        <span class="md-nav__icon md-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
-        </span>
-      </label>
-    
-    <a href="./" title="Digital Output Methods" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../digital_output/" title="Digital Output Methods" class="md-nav__link">
       Digital Output Methods
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-      </span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#set_pin_mode_digital_output" class="md-nav__link">
-    set_pin_mode_digital_output
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#digital_write" class="md-nav__link">
-    digital_write
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example-blinkpy" class="md-nav__link">
-    Example: blink.py
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -413,11 +361,63 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../servo/" title="Servo Methods" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Servo Methods
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="Servo Methods" class="md-nav__link md-nav__link--active">
       Servo Methods
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#set_pin_mode_servo" class="md-nav__link">
+    set_pin_mode_servo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#servo_write" class="md-nav__link">
+    servo_write
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-servopy" class="md-nav__link">
+    Example: servo.py
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -498,22 +498,22 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#set_pin_mode_digital_output" class="md-nav__link">
-    set_pin_mode_digital_output
+  <a href="#set_pin_mode_servo" class="md-nav__link">
+    set_pin_mode_servo
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#digital_write" class="md-nav__link">
-    digital_write
+  <a href="#servo_write" class="md-nav__link">
+    servo_write
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-blinkpy" class="md-nav__link">
-    Example: blink.py
+  <a href="#example-servopy" class="md-nav__link">
+    Example: servo.py
   </a>
   
 </li>
@@ -534,28 +534,36 @@
                   
                 
                 
-                  <h1>Digital Output Methods</h1>
+                  <h1>Servo Methods</h1>
                 
-                <h2 id="set_pin_mode_digital_output">set_pin_mode_digital_output</h2>
-<pre><code class="python">  def set_pin_mode_digital_output(self, pin_number)
+                <h2 id="set_pin_mode_servo">set_pin_mode_servo</h2>
+<pre><code class="python"> def set_pin_mode_servo(self, pin_number, min_pulse=1000, max_pulse=2000)
 
-    Set a pin as a digital output pin.
+    Attach a pin to a servo motor
 
-    :param pin_number: pico pin number
+    Servo mode is a specialized version of PWM Output mode. There are 16 PWM pins shared between the Servo and PWM Output modes.
+
+    :param pin_number: pin
+
+    :param min_pulse: minimum pulse width in microseconds
+
+    :param max_pulse: maximum pulse width in microseconds
+
 </code></pre>
 
-<p><strong>NOTE:</strong> This method must be called before calling digital_write.</p>
-<h2 id="digital_write">digital_write</h2>
-<pre><code class="python"> def digital_write(self, pin, value)
+<p><strong>NOTE:</strong> Servo-assigned pins are a special case of PWM,  so they share in the maximum 
+assignment of 16 PWM pins.</p>
+<h2 id="servo_write">servo_write</h2>
+<pre><code class="python"> def servo_write(self, pin_number, value)
 
-    Set the specified pin to the specified value.
+    Write the value to the specified servo
 
-    :param pin: pico pin number
+    :param pin_number: GPIO pin number
 
-    :param value: pin value (1 or 0)
+    :param value: value between 0 and 180 degrees
 </code></pre>
 
-<h2 id="example-blinkpy">Example: <a href="https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/examples/blink.py">blink.py</a></h2>
+<h2 id="example-servopy">Example: <a href="https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/examples/servo.py">servo.py</a></h2>
 <p><br>
 <br></p>
 <p>Copyright (C) 2021 Alan Yorinks. All Rights Reserved.</p>
@@ -577,7 +585,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../digital_input/" title="Digital Input Methods" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../pwm/" title="PWM Methods" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -586,19 +594,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Digital Input Methods
+                PWM Methods
               </div>
             </div>
           </a>
         
         
-          <a href="../i2c/" title="I2C Methods" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../management/" title="Shutting Down" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                I2C Methods
+                Shutting Down
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">
