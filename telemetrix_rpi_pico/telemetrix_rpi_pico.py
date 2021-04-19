@@ -30,7 +30,7 @@ from serial.tools import list_ports
 from telemetrix_rpi_pico.private_constants import PrivateConstants
 
 
-# noinspection PyPep8,PyMethodMayBeStatic
+# noinspection PyPep8,PyMethodMayBeStatic,GrazieInspection
 class TelemetrixRpiPico(threading.Thread):
     """
     This class exposes and implements a Telemetrix type
@@ -47,7 +47,6 @@ class TelemetrixRpiPico(threading.Thread):
                  reset_on_shutdown=True):
 
         """
-
         :param com_port: e.g. COM3 or /dev/ttyACM0.
                          Only use if you wish to bypass auto com port
                          detection.
@@ -956,39 +955,33 @@ class TelemetrixRpiPico(threading.Thread):
         # use a raw pwm write from the calculated values
         self.pwm_write(pin_number, duty_cycle, True)
 
+    def set_pin_mode_sonar(self, trigger_pin, echo_pin,  callback=None):
+        """
+        :param trigger_pin:
+
+        :param echo_pin:
+
+        :param callback: callback
+
+        callback data: [PrivateConstants.SONAR_DISTANCE, trigger_pin, distance_value, time_stamp]
+
+        """
+
+        if not callback:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError('set_pin_mode_sonar: A Callback must be specified')
+
+        if self.sonar_count < PrivateConstants.MAX_SONARS - 1:
+            self.sonar_callbacks[trigger_pin] = callback
+            self.sonar_count += 1
     #
-    # # TBD
-    # def set_pin_mode_sonar(self, trigger_pin, echo_pin,
-    #                        callback=None):
-    #     """
-    #     NOT YET IMPLEMENTED!!!
-    #
-    #     :param trigger_pin:
-    #
-    #     :param echo_pin:
-    #
-    #     :param callback: callback
-    #
-    #     callback data: [PrivateConstants.SONAR_DISTANCE, trigger_pin, distance_value, time_stamp]
-    #
-    #     """
-    #
-    #     if not callback:
-    #         if self.shutdown_on_exception:
-    #             self.shutdown()
-    #         raise RuntimeError('set_pin_mode_sonar: A Callback must be specified')
-    #
-    #     if self.sonar_count < PrivateConstants.MAX_SONARS - 1:
-    #         self.sonar_callbacks[trigger_pin] = callback
-    #         self.sonar_count += 1
-    #
-    #         command = [PrivateConstants.SONAR_NEW, trigger_pin, echo_pin]
-    #         self._send_command(command)
-    #     else:
-    #         if self.shutdown_on_exception:
-    #             self.shutdown()
-    #         raise RuntimeError(
-    #
+            command = [PrivateConstants.SONAR_NEW, trigger_pin, echo_pin]
+            self._send_command(command)
+        else:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError
 
     def get_pico_pins(self):
         """
