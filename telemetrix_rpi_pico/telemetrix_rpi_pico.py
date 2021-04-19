@@ -995,6 +995,7 @@ class TelemetrixRpiPico(threading.Thread):
             DIGITAL_INPUT_PULL_DOWN = 4
             ANALOG_INPUT = 5
             SERVO = 6
+            SONAR (HC-SR04) = 7
             I2C = 9
             EO_PIXEL = 10
             AT_MODE_NOT_SET = 255

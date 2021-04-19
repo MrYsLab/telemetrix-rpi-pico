@@ -107,7 +107,7 @@ class PrivateConstants:
     MAX_SERVO_DUTY_CYCLE = 1
 
     # maximum number of sonars allowed
-    MAX_SONARS = 6
+    MAX_SONARS = 4
 
     # maximum number of DHT devices allowed
     MAX_DHTS = 6
