@@ -12,6 +12,8 @@ nav:
         - Analog Input Methods: analog_input.md
         - Digital Input Methods: digital_input.md
         - Digital Output Methods: digital_output.md
+        - DHT Humidity/Temperature Sensor Methods: dht.md
+        - HC-SR04 Sonar Distance Sensor Methods: sonar.md
         - I2C Methods: i2c.md
         - NeoPixel Methods: neopixel.md
         - PWM Methods: pwm.md
