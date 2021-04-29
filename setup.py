@@ -11,7 +11,7 @@ setup(
     packages=['telemetrix_rpi_pico'],
     install_requires=['pyserial'],
 
-    version='0.8',
+    version='1.0',
     description="Remotely Control And Monitor A Raspberry Pi Pico",
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -22,7 +22,7 @@ setup(
     download_url='https://github.com/MrYsLab/telemetrix-rpi-pico',
     keywords=['telemetrix', 'Raspberry_Pi_Pico', 'Protocol', 'Python'],
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status:: 5 - Production / Stable',
         'Environment :: Other Environment',
         'Intended Audience :: Developers',
         'Intended Audience :: Education',

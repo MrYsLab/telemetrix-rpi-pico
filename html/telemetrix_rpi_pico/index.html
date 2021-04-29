@@ -56,7 +56,6 @@ USA</p>
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 &#34;&#34;&#34;
-import struct
 import sys
 import threading
 import time
@@ -68,10 +67,11 @@ from serial.serialutil import SerialException
 # noinspection PyPackageRequirements
 from serial.tools import list_ports
 
+# noinspection PyUnresolvedReferences
 from telemetrix_rpi_pico.private_constants import PrivateConstants
 
 
-# noinspection PyPep8,PyMethodMayBeStatic
+# noinspection PyPep8,PyMethodMayBeStatic,GrazieInspection
 class TelemetrixRpiPico(threading.Thread):
     &#34;&#34;&#34;
     This class exposes and implements a Telemetrix type
@@ -545,7 +545,8 @@ class TelemetrixRpiPico(threading.Thread):
 
 
         callback returns a data list:
-        [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
+        [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
+        data bytes,
         time-stamp]
 
         I2C_READ_REPORT = 10
@@ -602,8 +603,6 @@ class TelemetrixRpiPico(threading.Thread):
         :param no_stop: If true, master retains control of the bus at the end of the
                        transfer (no Stop is issued), and the next transfer will
                        begin with a Restart rather than a Start.
-
-
 
         &#34;&#34;&#34;
         if not i2c_port:
@@ -733,9 +732,9 @@ class TelemetrixRpiPico(threading.Thread):
 
         callback returns a data list:
 
-        [pin_type, pin_number, pin_value, raw_time_stamp]
+        [ANALOG_REPORT, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for analog input pins = 3
+        The ANALOG_REPORT  = 3
 
         &#34;&#34;&#34;
         # make sure adc number is in range
@@ -755,9 +754,9 @@ class TelemetrixRpiPico(threading.Thread):
 
         callback returns a data list:
 
-        [pin_type, pin_number, pin_value, raw_time_stamp]
+        [DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins = 2
+        DIGITAL_REPORT = 2
 
         &#34;&#34;&#34;
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT, callback=callback)
@@ -773,9 +772,9 @@ class TelemetrixRpiPico(threading.Thread):
 
         callback returns a data list:
 
-        [pin_type, pin_number, pin_value, raw_time_stamp]
+        [DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins with pullups enabled = 2
+        The DIGITAL_REPORT = 2
 
         &#34;&#34;&#34;
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULLUP,
@@ -792,9 +791,9 @@ class TelemetrixRpiPico(threading.Thread):
 
         callback returns a data list:
 
-        [pin_type, pin_number, pin_value, raw_time_stamp]
+        [DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins with pullups enabled = 2
+        DIGITAL_REPORT= 2
 
         &#34;&#34;&#34;
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULL_DOWN,
@@ -919,39 +918,37 @@ class TelemetrixRpiPico(threading.Thread):
         command = [PrivateConstants.I2C_BEGIN, i2c_port, sda_gpio, scl_gpio]
         self._send_command(command)
 
-    # TBD
-    # def set_pin_mode_dht(self, pin, callback=None):
-    #     &#34;&#34;&#34;
-    #     NOT YET IMPLEMENTED!!!
-    #
-    #     :param pin: connection pin
-    #
-    #     :param callback: callback function
-    #
-    #     Error Callback: [Callback 0=DHT REPORT, DHT_ERROR=0, PIN, Error Number, Time]
-    #
-    #     Valid Data Callback: Callback 0=DHT REPORT, DHT_DATA=1, PIN, Humidity, Temperature Time]
-    #
-    #     &#34;&#34;&#34;
-    #
-    #     if not callback:
-    #         if self.shutdown_on_exception:
-    #             self.shutdown()
-    #         raise RuntimeError(&#39;set_pin_mode_dht: A Callback must be specified&#39;)
-    #
-    #     if self.dht_count &lt; PrivateConstants.MAX_DHTS - 1:
-    #         self.dht_callbacks[pin] = callback
-    #         self.dht_count += 1
-    #
-    #         command = [PrivateConstants.DHT_NEW, pin]
-    #         self._send_command(command)
-    #     else:
-    #         if self.shutdown_on_exception:
-    #             self.shutdown()
-    #         raise RuntimeError(
-    #             f&#39;Maximum Number Of DHTs Exceeded - set_pin_mode_dht fails for pin {pin}&#39;)
-    #
-    # 
+    def set_pin_mode_dht(self, pin, callback=None):
+        &#34;&#34;&#34;
+    
+      :param pin: connection pin
+
+      :param callback: callback function
+
+      callback returns a data list:
+
+    DHT REPORT, DHT_DATA=1, PIN, Humidity,  Temperature (c),Time]
+
+    DHT_REPORT =  12
+
+        &#34;&#34;&#34;
+
+        if not callback:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;set_pin_mode_dht: A Callback must be specified&#39;)
+
+        if self.dht_count &lt; PrivateConstants.MAX_DHTS:
+            self.dht_callbacks[pin] = callback
+            self.dht_count += 1
+            self.pico_pins[pin] = PrivateConstants.AT_DHT
+            command = [PrivateConstants.DHT_NEW, pin]
+            self._send_command(command)
+        else:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(
+                f&#39;Maximum Number Of DHTs Exceeded - set_pin_mode_dht fails for pin {pin}&#39;)
 
     # noinspection PyRedundantParentheses
     def set_pin_mode_servo(self, pin_number, min_pulse=1000, max_pulse=2000):
@@ -971,6 +968,7 @@ class TelemetrixRpiPico(threading.Thread):
         &#34;&#34;&#34;
 
         self._set_pin_mode(pin_number, PrivateConstants.AT_SERVO, min_pulse, max_pulse)
+        self.pico_pins[pin_number] = PrivateConstants.AT_SERVO
 
     def servo_write(self, pin_number, value):
         &#34;&#34;&#34;
@@ -997,54 +995,68 @@ class TelemetrixRpiPico(threading.Thread):
         # use a raw pwm write from the calculated values
         self.pwm_write(pin_number, duty_cycle, True)
 
-    #
-    # # TBD
-    # def set_pin_mode_sonar(self, trigger_pin, echo_pin,
-    #                        callback=None):
-    #     &#34;&#34;&#34;
-    #     NOT YET IMPLEMENTED!!!
-    #
-    #     :param trigger_pin:
-    #
-    #     :param echo_pin:
-    #
-    #     :param callback: callback
-    #
-    #     callback data: [PrivateConstants.SONAR_DISTANCE, trigger_pin, distance_value, time_stamp]
-    #
-    #     &#34;&#34;&#34;
-    #
-    #     if not callback:
-    #         if self.shutdown_on_exception:
-    #             self.shutdown()
-    #         raise RuntimeError(&#39;set_pin_mode_sonar: A Callback must be specified&#39;)
-    #
-    #     if self.sonar_count &lt; PrivateConstants.MAX_SONARS - 1:
-    #         self.sonar_callbacks[trigger_pin] = callback
-    #         self.sonar_count += 1
-    #
-    #         command = [PrivateConstants.SONAR_NEW, trigger_pin, echo_pin]
-    #         self._send_command(command)
-    #     else:
-    #         if self.shutdown_on_exception:
-    #             self.shutdown()
-    #         raise RuntimeError(
-    #
+    def set_pin_mode_sonar(self, trigger_pin, echo_pin, callback=None):
+        &#34;&#34;&#34;
+        :param trigger_pin:  Sensor trigger gpio pin
+
+        :param echo_pin: Sensor echo gpio pin
+
+        :param callback: callback
+
+       callback returns a data list:
+
+       [ SONAR_DISTANCE, trigger_pin, distance_value, time_stamp]
+
+       SONAR_DISTANCE =  11
+
+        &#34;&#34;&#34;
+
+        if not callback:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;set_pin_mode_sonar: A Callback must be specified&#39;)
+
+        if self.sonar_count &lt; PrivateConstants.MAX_SONARS:
+            self.sonar_callbacks[trigger_pin] = callback
+            self.sonar_count += 1
+            self.pico_pins[trigger_pin] = self.pico_pins[echo_pin] = \
+                PrivateConstants.AT_SONAR
+
+            command = [PrivateConstants.SONAR_NEW, trigger_pin, echo_pin]
+            self._send_command(command)
+        else:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;Maximum number of supported sonar devices exceeded.&#39;)
 
     def get_pico_pins(self):
         &#34;&#34;&#34;
         This method returns the pico_pins dictionary
 
         Pin Modes MAP:
+
             DIGITAL_INPUT = 0
+
             DIGITAL_OUTPUT = 1
+
             PWM_OUTPUT = 2
+
             DIGITAL_INPUT_PULLUP = 3
+
             DIGITAL_INPUT_PULL_DOWN = 4
+
             ANALOG_INPUT = 5
+
             SERVO = 6
+
+            SONAR = 7
+
+            DHT = 8
+
             I2C = 9
-            EO_PIXEL = 10
+
+            NEO_PIXEL = 10
+
             AT_MODE_NOT_SET = 255
 
         :return: pico_pins
@@ -1092,6 +1104,7 @@ class TelemetrixRpiPico(threading.Thread):
                 self.digital_callbacks[pin_number] = callback
             elif pin_state == PrivateConstants.AT_ANALOG:
                 self.analog_callbacks[pin_number] = callback
+
             else:
                 print(&#39;{} {}&#39;.format(&#39;set_pin_mode: callback ignored for &#39;
                                      &#39;pin state:&#39;, pin_state))
@@ -1190,45 +1203,25 @@ class TelemetrixRpiPico(threading.Thread):
         &#34;&#34;&#34;
         This is the dht report handler method.
 
-        :param data:            data[0] = report sub type - DHT_DATA or DHT_ERROR
+        :param data:
+
+                                data[0] = report sub type - DHT_REPORT
 
                                 data[1] = pin number
 
-                                data[2] = humidity high order byte or error value if DHT_ERROR
+                                data[2] = humidity
 
-                                data[3] = humidity byte 2
+                                data[3] = temperature
 
-                                data[4] = humidity byte 3
+                                data[4] = timestamp
 
-                                data[5] = humidity byte 4
 
-                                data[6] = temperature high order byte for data
-
-                                data[7] = temperature byte 2
-
-                                data[8] = temperature byte 3
-
-                                data[9] = temperature byte 4
         &#34;&#34;&#34;
+        cb = self.dht_callbacks[data[0]]
 
-        if data[0]:  # DHT_ERROR
-            # error report
-            # data[0] = report sub type, data[1] = pin, data[2] = error message
-            if self.dht_callbacks[data[1]]:
-                # Callback 0=DHT REPORT, DHT_ERROR=0, PIN, Error Number, Time
-                message = [PrivateConstants.DHT_REPORT, data[0], data[1], data[2],
-                           time.time()]
-                self.dht_callbacks[data[1]](message)
-        else:
-            # got valid data DHT_DATA
-            f_humidity = bytearray(data[2:6])
-            f_temperature = bytearray(data[6:])
-            message = [PrivateConstants.DHT_REPORT, data[0], data[1],
-                       (struct.unpack(&#39;&lt;f&#39;, f_humidity))[0],
-                       (struct.unpack(&#39;&lt;f&#39;, f_temperature))[0],
-                       time.time()]
-
-            self.dht_callbacks[data[1]](message)
+        cb_list = [PrivateConstants.DHT_REPORT, data[0],
+                   (data[1] + (data[2] / 100)), (data[3] + (data[4] / 100)), time.time()]
+        cb(cb_list)
 
     def _digital_message(self, data):
         &#34;&#34;&#34;
@@ -1358,21 +1351,25 @@ class TelemetrixRpiPico(threading.Thread):
         raise RuntimeError(
             f&#39;Servo Attach For Pin {report[0]} Failed: No Available Servos&#39;)
 
-    # TBD
     def _sonar_distance_report(self, report):
         &#34;&#34;&#34;
 
         :param report: data[0] = trigger pin, data[1] and data[2] = distance
 
-        callback report format: [PrivateConstants.SONAR_DISTANCE, trigger_pin, distance_value, time_stamp]
+        callback report format: [PrivateConstants.SONAR_DISTANCE, trigger_pin,
+        distance  in centimeters, time_stamp]
         &#34;&#34;&#34;
 
         # get callback from pin number
         cb = self.sonar_callbacks[report[0]]
 
         # build report data
-        cb_list = [PrivateConstants.SONAR_DISTANCE, report[0],
-                   ((report[1] &lt;&lt; 8) + report[2]), time.time()]
+        if report[1] == 0 and report[2] == 0:
+            cb_list = [PrivateConstants.SONAR_DISTANCE, report[0],
+                       0, time.time()]
+        else:
+            cb_list = [PrivateConstants.SONAR_DISTANCE, report[0],
+                       (report[1] + (report[2] / 100)), time.time()]
 
         cb(cb_list)
 
@@ -1956,7 +1953,8 @@ receiving a KeyboardInterrupt exception</p>
 
 
         callback returns a data list:
-        [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
+        [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
+        data bytes,
         time-stamp]
 
         I2C_READ_REPORT = 10
@@ -2013,8 +2011,6 @@ receiving a KeyboardInterrupt exception</p>
         :param no_stop: If true, master retains control of the bus at the end of the
                        transfer (no Stop is issued), and the next transfer will
                        begin with a Restart rather than a Start.
-
-
 
         &#34;&#34;&#34;
         if not i2c_port:
@@ -2144,9 +2140,9 @@ receiving a KeyboardInterrupt exception</p>
 
         callback returns a data list:
 
-        [pin_type, pin_number, pin_value, raw_time_stamp]
+        [ANALOG_REPORT, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for analog input pins = 3
+        The ANALOG_REPORT  = 3
 
         &#34;&#34;&#34;
         # make sure adc number is in range
@@ -2166,9 +2162,9 @@ receiving a KeyboardInterrupt exception</p>
 
         callback returns a data list:
 
-        [pin_type, pin_number, pin_value, raw_time_stamp]
+        [DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins = 2
+        DIGITAL_REPORT = 2
 
         &#34;&#34;&#34;
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT, callback=callback)
@@ -2184,9 +2180,9 @@ receiving a KeyboardInterrupt exception</p>
 
         callback returns a data list:
 
-        [pin_type, pin_number, pin_value, raw_time_stamp]
+        [DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins with pullups enabled = 2
+        The DIGITAL_REPORT = 2
 
         &#34;&#34;&#34;
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULLUP,
@@ -2203,9 +2199,9 @@ receiving a KeyboardInterrupt exception</p>
 
         callback returns a data list:
 
-        [pin_type, pin_number, pin_value, raw_time_stamp]
+        [DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins with pullups enabled = 2
+        DIGITAL_REPORT= 2
 
         &#34;&#34;&#34;
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULL_DOWN,
@@ -2330,39 +2326,37 @@ receiving a KeyboardInterrupt exception</p>
         command = [PrivateConstants.I2C_BEGIN, i2c_port, sda_gpio, scl_gpio]
         self._send_command(command)
 
-    # TBD
-    # def set_pin_mode_dht(self, pin, callback=None):
-    #     &#34;&#34;&#34;
-    #     NOT YET IMPLEMENTED!!!
-    #
-    #     :param pin: connection pin
-    #
-    #     :param callback: callback function
-    #
-    #     Error Callback: [Callback 0=DHT REPORT, DHT_ERROR=0, PIN, Error Number, Time]
-    #
-    #     Valid Data Callback: Callback 0=DHT REPORT, DHT_DATA=1, PIN, Humidity, Temperature Time]
-    #
-    #     &#34;&#34;&#34;
-    #
-    #     if not callback:
-    #         if self.shutdown_on_exception:
-    #             self.shutdown()
-    #         raise RuntimeError(&#39;set_pin_mode_dht: A Callback must be specified&#39;)
-    #
-    #     if self.dht_count &lt; PrivateConstants.MAX_DHTS - 1:
-    #         self.dht_callbacks[pin] = callback
-    #         self.dht_count += 1
-    #
-    #         command = [PrivateConstants.DHT_NEW, pin]
-    #         self._send_command(command)
-    #     else:
-    #         if self.shutdown_on_exception:
-    #             self.shutdown()
-    #         raise RuntimeError(
-    #             f&#39;Maximum Number Of DHTs Exceeded - set_pin_mode_dht fails for pin {pin}&#39;)
-    #
-    # 
+    def set_pin_mode_dht(self, pin, callback=None):
+        &#34;&#34;&#34;
+    
+      :param pin: connection pin
+
+      :param callback: callback function
+
+      callback returns a data list:
+
+    DHT REPORT, DHT_DATA=1, PIN, Humidity,  Temperature (c),Time]
+
+    DHT_REPORT =  12
+
+        &#34;&#34;&#34;
+
+        if not callback:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;set_pin_mode_dht: A Callback must be specified&#39;)
+
+        if self.dht_count &lt; PrivateConstants.MAX_DHTS:
+            self.dht_callbacks[pin] = callback
+            self.dht_count += 1
+            self.pico_pins[pin] = PrivateConstants.AT_DHT
+            command = [PrivateConstants.DHT_NEW, pin]
+            self._send_command(command)
+        else:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(
+                f&#39;Maximum Number Of DHTs Exceeded - set_pin_mode_dht fails for pin {pin}&#39;)
 
     # noinspection PyRedundantParentheses
     def set_pin_mode_servo(self, pin_number, min_pulse=1000, max_pulse=2000):
@@ -2382,6 +2376,7 @@ receiving a KeyboardInterrupt exception</p>
         &#34;&#34;&#34;
 
         self._set_pin_mode(pin_number, PrivateConstants.AT_SERVO, min_pulse, max_pulse)
+        self.pico_pins[pin_number] = PrivateConstants.AT_SERVO
 
     def servo_write(self, pin_number, value):
         &#34;&#34;&#34;
@@ -2408,54 +2403,68 @@ receiving a KeyboardInterrupt exception</p>
         # use a raw pwm write from the calculated values
         self.pwm_write(pin_number, duty_cycle, True)
 
-    #
-    # # TBD
-    # def set_pin_mode_sonar(self, trigger_pin, echo_pin,
-    #                        callback=None):
-    #     &#34;&#34;&#34;
-    #     NOT YET IMPLEMENTED!!!
-    #
-    #     :param trigger_pin:
-    #
-    #     :param echo_pin:
-    #
-    #     :param callback: callback
-    #
-    #     callback data: [PrivateConstants.SONAR_DISTANCE, trigger_pin, distance_value, time_stamp]
-    #
-    #     &#34;&#34;&#34;
-    #
-    #     if not callback:
-    #         if self.shutdown_on_exception:
-    #             self.shutdown()
-    #         raise RuntimeError(&#39;set_pin_mode_sonar: A Callback must be specified&#39;)
-    #
-    #     if self.sonar_count &lt; PrivateConstants.MAX_SONARS - 1:
-    #         self.sonar_callbacks[trigger_pin] = callback
-    #         self.sonar_count += 1
-    #
-    #         command = [PrivateConstants.SONAR_NEW, trigger_pin, echo_pin]
-    #         self._send_command(command)
-    #     else:
-    #         if self.shutdown_on_exception:
-    #             self.shutdown()
-    #         raise RuntimeError(
-    #
+    def set_pin_mode_sonar(self, trigger_pin, echo_pin, callback=None):
+        &#34;&#34;&#34;
+        :param trigger_pin:  Sensor trigger gpio pin
+
+        :param echo_pin: Sensor echo gpio pin
+
+        :param callback: callback
+
+       callback returns a data list:
+
+       [ SONAR_DISTANCE, trigger_pin, distance_value, time_stamp]
+
+       SONAR_DISTANCE =  11
+
+        &#34;&#34;&#34;
+
+        if not callback:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;set_pin_mode_sonar: A Callback must be specified&#39;)
+
+        if self.sonar_count &lt; PrivateConstants.MAX_SONARS:
+            self.sonar_callbacks[trigger_pin] = callback
+            self.sonar_count += 1
+            self.pico_pins[trigger_pin] = self.pico_pins[echo_pin] = \
+                PrivateConstants.AT_SONAR
+
+            command = [PrivateConstants.SONAR_NEW, trigger_pin, echo_pin]
+            self._send_command(command)
+        else:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;Maximum number of supported sonar devices exceeded.&#39;)
 
     def get_pico_pins(self):
         &#34;&#34;&#34;
         This method returns the pico_pins dictionary
 
         Pin Modes MAP:
+
             DIGITAL_INPUT = 0
+
             DIGITAL_OUTPUT = 1
+
             PWM_OUTPUT = 2
+
             DIGITAL_INPUT_PULLUP = 3
+
             DIGITAL_INPUT_PULL_DOWN = 4
+
             ANALOG_INPUT = 5
+
             SERVO = 6
+
+            SONAR = 7
+
+            DHT = 8
+
             I2C = 9
-            EO_PIXEL = 10
+
+            NEO_PIXEL = 10
+
             AT_MODE_NOT_SET = 255
 
         :return: pico_pins
@@ -2503,6 +2512,7 @@ receiving a KeyboardInterrupt exception</p>
                 self.digital_callbacks[pin_number] = callback
             elif pin_state == PrivateConstants.AT_ANALOG:
                 self.analog_callbacks[pin_number] = callback
+
             else:
                 print(&#39;{} {}&#39;.format(&#39;set_pin_mode: callback ignored for &#39;
                                      &#39;pin state:&#39;, pin_state))
@@ -2601,45 +2611,25 @@ receiving a KeyboardInterrupt exception</p>
         &#34;&#34;&#34;
         This is the dht report handler method.
 
-        :param data:            data[0] = report sub type - DHT_DATA or DHT_ERROR
+        :param data:
+
+                                data[0] = report sub type - DHT_REPORT
 
                                 data[1] = pin number
 
-                                data[2] = humidity high order byte or error value if DHT_ERROR
+                                data[2] = humidity
 
-                                data[3] = humidity byte 2
+                                data[3] = temperature
 
-                                data[4] = humidity byte 3
+                                data[4] = timestamp
 
-                                data[5] = humidity byte 4
 
-                                data[6] = temperature high order byte for data
-
-                                data[7] = temperature byte 2
-
-                                data[8] = temperature byte 3
-
-                                data[9] = temperature byte 4
         &#34;&#34;&#34;
+        cb = self.dht_callbacks[data[0]]
 
-        if data[0]:  # DHT_ERROR
-            # error report
-            # data[0] = report sub type, data[1] = pin, data[2] = error message
-            if self.dht_callbacks[data[1]]:
-                # Callback 0=DHT REPORT, DHT_ERROR=0, PIN, Error Number, Time
-                message = [PrivateConstants.DHT_REPORT, data[0], data[1], data[2],
-                           time.time()]
-                self.dht_callbacks[data[1]](message)
-        else:
-            # got valid data DHT_DATA
-            f_humidity = bytearray(data[2:6])
-            f_temperature = bytearray(data[6:])
-            message = [PrivateConstants.DHT_REPORT, data[0], data[1],
-                       (struct.unpack(&#39;&lt;f&#39;, f_humidity))[0],
-                       (struct.unpack(&#39;&lt;f&#39;, f_temperature))[0],
-                       time.time()]
-
-            self.dht_callbacks[data[1]](message)
+        cb_list = [PrivateConstants.DHT_REPORT, data[0],
+                   (data[1] + (data[2] / 100)), (data[3] + (data[4] / 100)), time.time()]
+        cb(cb_list)
 
     def _digital_message(self, data):
         &#34;&#34;&#34;
@@ -2769,21 +2759,25 @@ receiving a KeyboardInterrupt exception</p>
         raise RuntimeError(
             f&#39;Servo Attach For Pin {report[0]} Failed: No Available Servos&#39;)
 
-    # TBD
     def _sonar_distance_report(self, report):
         &#34;&#34;&#34;
 
         :param report: data[0] = trigger pin, data[1] and data[2] = distance
 
-        callback report format: [PrivateConstants.SONAR_DISTANCE, trigger_pin, distance_value, time_stamp]
+        callback report format: [PrivateConstants.SONAR_DISTANCE, trigger_pin,
+        distance  in centimeters, time_stamp]
         &#34;&#34;&#34;
 
         # get callback from pin number
         cb = self.sonar_callbacks[report[0]]
 
         # build report data
-        cb_list = [PrivateConstants.SONAR_DISTANCE, report[0],
-                   ((report[1] &lt;&lt; 8) + report[2]), time.time()]
+        if report[1] == 0 and report[2] == 0:
+            cb_list = [PrivateConstants.SONAR_DISTANCE, report[0],
+                       0, time.time()]
+        else:
+            cb_list = [PrivateConstants.SONAR_DISTANCE, report[0],
+                       (report[1] + (report[2] / 100)), time.time()]
 
         cb(cb_list)
 
@@ -3004,17 +2998,31 @@ receiving a KeyboardInterrupt exception</p>
 </code></dt>
 <dd>
 <div class="desc"><p>This method returns the pico_pins dictionary</p>
-<p>Pin Modes MAP:
-DIGITAL_INPUT = 0
+<p>Pin Modes MAP:</p>
+<pre><code>DIGITAL_INPUT = 0
+
 DIGITAL_OUTPUT = 1
+
 PWM_OUTPUT = 2
+
 DIGITAL_INPUT_PULLUP = 3
+
 DIGITAL_INPUT_PULL_DOWN = 4
+
 ANALOG_INPUT = 5
+
 SERVO = 6
+
+SONAR = 7
+
+DHT = 8
+
 I2C = 9
-EO_PIXEL = 10
-AT_MODE_NOT_SET = 255</p>
+
+NEO_PIXEL = 10
+
+AT_MODE_NOT_SET = 255
+</code></pre>
 <p>:return: pico_pins</p></div>
 <details class="source">
 <summary>
@@ -3025,15 +3033,29 @@ AT_MODE_NOT_SET = 255</p>
     This method returns the pico_pins dictionary
 
     Pin Modes MAP:
+
         DIGITAL_INPUT = 0
+
         DIGITAL_OUTPUT = 1
+
         PWM_OUTPUT = 2
+
         DIGITAL_INPUT_PULLUP = 3
+
         DIGITAL_INPUT_PULL_DOWN = 4
+
         ANALOG_INPUT = 5
+
         SERVO = 6
+
+        SONAR = 7
+
+        DHT = 8
+
         I2C = 9
-        EO_PIXEL = 10
+
+        NEO_PIXEL = 10
+
         AT_MODE_NOT_SET = 255
 
     :return: pico_pins
@@ -3057,7 +3079,8 @@ result of read command</p>
 transfer (no Stop is issued), and the next transfer will
 begin with a Restart rather than a Start.</p>
 <p>callback returns a data list:
-[I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
+[I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
+data bytes,
 time-stamp]</p>
 <p>I2C_READ_REPORT = 10</p></div>
 <details class="source">
@@ -3088,7 +3111,8 @@ time-stamp]</p>
 
 
     callback returns a data list:
-    [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
+    [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
+    data bytes,
     time-stamp]
 
     I2C_READ_REPORT = 10
@@ -3162,8 +3186,6 @@ begin with a Restart rather than a Start.</p></div>
     :param no_stop: If true, master retains control of the bus at the end of the
                    transfer (no Stop is issued), and the next transfer will
                    begin with a Restart rather than a Start.
-
-
 
     &#34;&#34;&#34;
     if not i2c_port:
@@ -3447,8 +3469,9 @@ as a percentage between 0 and 100</p>
 report will be generated</p>
 <p>:param callback: callback function</p>
 <p>callback returns a data list:</p>
-<p>[pin_type, pin_number, pin_value, raw_time_stamp]</p>
-<p>The pin_type for analog input pins = 3</p></div>
+<p>[ANALOG_REPORT, pin_number, pin_value, raw_time_stamp]</p>
+<p>The ANALOG_REPORT
+= 3</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3467,9 +3490,9 @@ report will be generated</p>
 
     callback returns a data list:
 
-    [pin_type, pin_number, pin_value, raw_time_stamp]
+    [ANALOG_REPORT, pin_number, pin_value, raw_time_stamp]
 
-    The pin_type for analog input pins = 3
+    The ANALOG_REPORT  = 3
 
     &#34;&#34;&#34;
     # make sure adc number is in range
@@ -3477,6 +3500,54 @@ report will be generated</p>
         raise RuntimeError(&#39;Invalid ADC Number&#39;)
     self._set_pin_mode(adc_number, PrivateConstants.AT_ANALOG, differential,
                        callback=callback)</code></pre>
+</details>
+</dd>
+<dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_dht"><code class="name flex">
+<span>def <span class="ident">set_pin_mode_dht</span></span>(<span>self, pin, callback=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param pin: connection pin</p>
+<p>:param callback: callback function</p>
+<p>callback returns a data list:</p>
+<p>DHT REPORT, DHT_DATA=1, PIN, Humidity,
+Temperature (c),Time]</p>
+<p>DHT_REPORT =
+12</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_pin_mode_dht(self, pin, callback=None):
+    &#34;&#34;&#34;
+
+  :param pin: connection pin
+
+  :param callback: callback function
+
+  callback returns a data list:
+
+DHT REPORT, DHT_DATA=1, PIN, Humidity,  Temperature (c),Time]
+
+DHT_REPORT =  12
+
+    &#34;&#34;&#34;
+
+    if not callback:
+        if self.shutdown_on_exception:
+            self.shutdown()
+        raise RuntimeError(&#39;set_pin_mode_dht: A Callback must be specified&#39;)
+
+    if self.dht_count &lt; PrivateConstants.MAX_DHTS:
+        self.dht_callbacks[pin] = callback
+        self.dht_count += 1
+        self.pico_pins[pin] = PrivateConstants.AT_DHT
+        command = [PrivateConstants.DHT_NEW, pin]
+        self._send_command(command)
+    else:
+        if self.shutdown_on_exception:
+            self.shutdown()
+        raise RuntimeError(
+            f&#39;Maximum Number Of DHTs Exceeded - set_pin_mode_dht fails for pin {pin}&#39;)</code></pre>
 </details>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_digital_input"><code class="name flex">
@@ -3487,8 +3558,8 @@ report will be generated</p>
 <p>:param pin_number: pico GPIO pin number</p>
 <p>:param callback: callback function</p>
 <p>callback returns a data list:</p>
-<p>[pin_type, pin_number, pin_value, raw_time_stamp]</p>
-<p>The pin_type for digital input pins = 2</p></div>
+<p>[DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]</p>
+<p>DIGITAL_REPORT = 2</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3504,9 +3575,9 @@ report will be generated</p>
 
     callback returns a data list:
 
-    [pin_type, pin_number, pin_value, raw_time_stamp]
+    [DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]
 
-    The pin_type for digital input pins = 2
+    DIGITAL_REPORT = 2
 
     &#34;&#34;&#34;
     self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT, callback=callback)</code></pre>
@@ -3520,8 +3591,8 @@ report will be generated</p>
 <p>:param pin_number: pico GPIO pin number</p>
 <p>:param callback: callback function</p>
 <p>callback returns a data list:</p>
-<p>[pin_type, pin_number, pin_value, raw_time_stamp]</p>
-<p>The pin_type for digital input pins with pullups enabled = 2</p></div>
+<p>[DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]</p>
+<p>DIGITAL_REPORT= 2</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3537,9 +3608,9 @@ report will be generated</p>
 
     callback returns a data list:
 
-    [pin_type, pin_number, pin_value, raw_time_stamp]
+    [DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]
 
-    The pin_type for digital input pins with pullups enabled = 2
+    DIGITAL_REPORT= 2
 
     &#34;&#34;&#34;
     self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULL_DOWN,
@@ -3554,8 +3625,8 @@ report will be generated</p>
 <p>:param pin_number: pico GPIO pin number</p>
 <p>:param callback: callback function</p>
 <p>callback returns a data list:</p>
-<p>[pin_type, pin_number, pin_value, raw_time_stamp]</p>
-<p>The pin_type for digital input pins with pullups enabled = 2</p></div>
+<p>[DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]</p>
+<p>The DIGITAL_REPORT = 2</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3571,9 +3642,9 @@ report will be generated</p>
 
     callback returns a data list:
 
-    [pin_type, pin_number, pin_value, raw_time_stamp]
+    [DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]
 
-    The pin_type for digital input pins with pullups enabled = 2
+    The DIGITAL_REPORT = 2
 
     &#34;&#34;&#34;
     self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULLUP,
@@ -3790,7 +3861,59 @@ There are 16 PWM pins shared between the Servo and PWM Output modes.</p>
 
     &#34;&#34;&#34;
 
-    self._set_pin_mode(pin_number, PrivateConstants.AT_SERVO, min_pulse, max_pulse)</code></pre>
+    self._set_pin_mode(pin_number, PrivateConstants.AT_SERVO, min_pulse, max_pulse)
+    self.pico_pins[pin_number] = PrivateConstants.AT_SERVO</code></pre>
+</details>
+</dd>
+<dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_sonar"><code class="name flex">
+<span>def <span class="ident">set_pin_mode_sonar</span></span>(<span>self, trigger_pin, echo_pin, callback=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param trigger_pin:
+Sensor trigger gpio pin</p>
+<p>:param echo_pin: Sensor echo gpio pin</p>
+<p>:param callback: callback</p>
+<p>callback returns a data list:</p>
+<p>[ SONAR_DISTANCE, trigger_pin, distance_value, time_stamp]</p>
+<p>SONAR_DISTANCE =
+11</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_pin_mode_sonar(self, trigger_pin, echo_pin, callback=None):
+    &#34;&#34;&#34;
+    :param trigger_pin:  Sensor trigger gpio pin
+
+    :param echo_pin: Sensor echo gpio pin
+
+    :param callback: callback
+
+   callback returns a data list:
+
+   [ SONAR_DISTANCE, trigger_pin, distance_value, time_stamp]
+
+   SONAR_DISTANCE =  11
+
+    &#34;&#34;&#34;
+
+    if not callback:
+        if self.shutdown_on_exception:
+            self.shutdown()
+        raise RuntimeError(&#39;set_pin_mode_sonar: A Callback must be specified&#39;)
+
+    if self.sonar_count &lt; PrivateConstants.MAX_SONARS:
+        self.sonar_callbacks[trigger_pin] = callback
+        self.sonar_count += 1
+        self.pico_pins[trigger_pin] = self.pico_pins[echo_pin] = \
+            PrivateConstants.AT_SONAR
+
+        command = [PrivateConstants.SONAR_NEW, trigger_pin, echo_pin]
+        self._send_command(command)
+    else:
+        if self.shutdown_on_exception:
+            self.shutdown()
+        raise RuntimeError(&#39;Maximum number of supported sonar devices exceeded.&#39;)</code></pre>
 </details>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.shutdown"><code class="name flex">
@@ -3860,6 +3983,7 @@ If any exceptions are thrown, they are ignored.</p></div>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.pwm_write" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.pwm_write">pwm_write</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.servo_write" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.servo_write">servo_write</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_analog_input" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_analog_input">set_pin_mode_analog_input</a></code></li>
+<li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_dht" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_dht">set_pin_mode_dht</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_digital_input" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_digital_input">set_pin_mode_digital_input</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_digital_input_pull_down" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_digital_input_pull_down">set_pin_mode_digital_input_pull_down</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_digital_input_pullup" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_digital_input_pullup">set_pin_mode_digital_input_pullup</a></code></li>
@@ -3868,6 +3992,7 @@ If any exceptions are thrown, they are ignored.</p></div>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_neopixel" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_neopixel">set_pin_mode_neopixel</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_pwm_output" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_pwm_output">set_pin_mode_pwm_output</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_servo" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_servo">set_pin_mode_servo</a></code></li>
+<li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_sonar" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_sonar">set_pin_mode_sonar</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.shutdown" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.shutdown">shutdown</a></code></li>
 </ul>
 </li>

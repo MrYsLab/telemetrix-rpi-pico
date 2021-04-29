@@ -15,7 +15,6 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 """
-import struct
 import sys
 import threading
 import time
@@ -505,7 +504,8 @@ class TelemetrixRpiPico(threading.Thread):
 
 
         callback returns a data list:
-        [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes,
+        [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
+        data bytes,
         time-stamp]
 
         I2C_READ_REPORT = 10
@@ -562,8 +562,6 @@ class TelemetrixRpiPico(threading.Thread):
         :param no_stop: If true, master retains control of the bus at the end of the
                        transfer (no Stop is issued), and the next transfer will
                        begin with a Restart rather than a Start.
-
-
 
         """
         if not i2c_port:
@@ -693,9 +691,9 @@ class TelemetrixRpiPico(threading.Thread):
 
         callback returns a data list:
 
-        [pin_type, pin_number, pin_value, raw_time_stamp]
+        [ANALOG_REPORT, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for analog input pins = 3
+        The ANALOG_REPORT  = 3
 
         """
         # make sure adc number is in range
@@ -715,9 +713,9 @@ class TelemetrixRpiPico(threading.Thread):
 
         callback returns a data list:
 
-        [pin_type, pin_number, pin_value, raw_time_stamp]
+        [DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins = 2
+        DIGITAL_REPORT = 2
 
         """
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT, callback=callback)
@@ -733,9 +731,9 @@ class TelemetrixRpiPico(threading.Thread):
 
         callback returns a data list:
 
-        [pin_type, pin_number, pin_value, raw_time_stamp]
+        [DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins with pullups enabled = 2
+        The DIGITAL_REPORT = 2
 
         """
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULLUP,
@@ -752,9 +750,9 @@ class TelemetrixRpiPico(threading.Thread):
 
         callback returns a data list:
 
-        [pin_type, pin_number, pin_value, raw_time_stamp]
+        [DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]
 
-        The pin_type for digital input pins with pullups enabled = 2
+        DIGITAL_REPORT= 2
 
         """
         self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULL_DOWN,
@@ -886,10 +884,12 @@ class TelemetrixRpiPico(threading.Thread):
 
       :param callback: callback function
 
+      callback returns a data list:
 
+    DHT REPORT, DHT_DATA=1, PIN, Humidity,  Temperature (c),Time]
 
+    DHT_REPORT =  12
 
-        Valid Data Callback: Callback 0=DHT REPORT, DHT_DATA=1, PIN, Humidity, Temperature Time]
         """
 
         if not callback:
@@ -897,7 +897,7 @@ class TelemetrixRpiPico(threading.Thread):
                 self.shutdown()
             raise RuntimeError('set_pin_mode_dht: A Callback must be specified')
 
-        if self.dht_count < PrivateConstants.MAX_DHTS :
+        if self.dht_count < PrivateConstants.MAX_DHTS:
             self.dht_callbacks[pin] = callback
             self.dht_count += 1
             self.pico_pins[pin] = PrivateConstants.AT_DHT
@@ -962,7 +962,11 @@ class TelemetrixRpiPico(threading.Thread):
 
         :param callback: callback
 
-        callback data: [PrivateConstants.SONAR_DISTANCE, trigger_pin, distance_value, time_stamp]
+       callback returns a data list:
+
+       [ SONAR_DISTANCE, trigger_pin, distance_value, time_stamp]
+
+       SONAR_DISTANCE =  11
 
         """
 
@@ -989,17 +993,29 @@ class TelemetrixRpiPico(threading.Thread):
         This method returns the pico_pins dictionary
 
         Pin Modes MAP:
+
             DIGITAL_INPUT = 0
+
             DIGITAL_OUTPUT = 1
+
             PWM_OUTPUT = 2
+
             DIGITAL_INPUT_PULLUP = 3
+
             DIGITAL_INPUT_PULL_DOWN = 4
+
             ANALOG_INPUT = 5
+
             SERVO = 6
+
             SONAR = 7
+
             DHT = 8
+
             I2C = 9
-            EO_PIXEL = 10
+
+            NEO_PIXEL = 10
+
             AT_MODE_NOT_SET = 255
 
         :return: pico_pins

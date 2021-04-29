@@ -1,21 +1,17 @@
 # Telemetrix-RPi-Pico
 
-This is an early version of a Telemetrix client for the Raspberry Pi Pico.
+Interact and monitor  a Raspberry  Pi Pico remotely  from your PC using Python.
 
-This is a work in progress.
+![](images/tmx.png)
 
 A full User's Guide is [available online.](https://mryslab.github.io/telemetrix-rpi-pico/)
 
-A Python API for may be found [here.](https://htmlpreview.github.io/?https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/html/telemetrix_rpi_pico/index.html) 
+Python API documentation  may be found [here.](https://htmlpreview.github.io/?https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/html/telemetrix_rpi_pico/index.html) 
 
 The Pico server code may be viewed [here.](https://github.com/MrYsLab/Telemetrix4RpiPico)
 
 The following functionality is implemented in this release:
 
-* Autodetect and connection to a PICO via USB Serial.
-* Automatic board reset of the PICO using the watchdog timer when application exits.
-    * Board will blink twice upon reset.
-* Retrieval of the PICO unique ID.
 * Analog Input
 * Digital Input, Digital Input Pullup, Digital Input Pulldown
 * PWM output
@@ -25,6 +21,10 @@ The following functionality is implemented in this release:
 * Servo Support
 * HC-SR04 Type Sonar Distance Sensor Support
 * DHT 11 and 22 Humidity/Temperature Sensor Support
+* Autodetect PICO device over USB Serial.
+* Automatic board reset of the PICO using the watchdog timer when application exits.
+    * Board will blink twice upon reset.
+* Retrieval of the PICO's unique ID.
 
 
 ## To install The Client Library:
