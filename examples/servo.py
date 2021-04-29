@@ -1,5 +1,5 @@
 """
- Copyright (c) 2020 Alan Yorinks All rights reserved.
+ Copyright (c) 2021 Alan Yorinks All rights reserved.
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -43,11 +43,11 @@ try:
     board.servo_write(SERVO_PIN, 180)
     time.sleep(1)
     board.servo_write(SERVO_PIN, 90)
-
 except KeyboardInterrupt:
     board.shutdown()
     sys.exit(0)
 
 board.shutdown()
+sys.exit(0)
 
 

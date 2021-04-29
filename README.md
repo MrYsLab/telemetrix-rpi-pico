@@ -6,13 +6,13 @@ This is a work in progress.
 
 A full User's Guide is [available online.](https://mryslab.github.io/telemetrix-rpi-pico/)
 
-A Python API for may be found [here.](https://htmlpreview.github.com/?https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/html/telemetrix_rpi_pico/index.html) 
+A Python API for may be found [here.](https://htmlpreview.github.io/?https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/html/telemetrix_rpi_pico/index.html) 
 
 The Pico server code may be viewed [here.](https://github.com/MrYsLab/Telemetrix4RpiPico)
 
 The following functionality is implemented in this release:
 
-* Autodetect and connection to a single PICO connected to the PC.
+* Autodetect and connection to a PICO via USB Serial.
 * Automatic board reset of the PICO using the watchdog timer when application exits.
     * Board will blink twice upon reset.
 * Retrieval of the PICO unique ID.
@@ -22,6 +22,9 @@ The following functionality is implemented in this release:
 * Loopback (for client/server link debugging)
 * I2C Support
 * NeoPixel Support
+* Servo Support
+* HC-SR04 Type Sonar Distance Sensor Support
+* DHT 11 and 22 Humidity/Temperature Sensor Support
 
 
 ## To install The Client Library:
