@@ -11,16 +11,25 @@ automatically transmitting the collected data back to local receiving equipment 
 processing.
 
 The 
-[Telemetrix Project](https://github.com/MrYsLab/telemetrix-rpi-pico)
-for the Raspberry Pi Pico does just that.  
+Telemetrix Project
+for the Raspberry Pi Pico does just that.
 
-It consists of two main software components. 
-A server resides on the Pico, and a client resides on a Windows, Linux, or macOS PC.  The server is 
+Telemetrix for the Raspberry Pi Pico consists of two main software components. 
+A resident Pico server, and a client, residing on a Windows, Linux, or macOS 
+PC.  
+The 
+server is 
 implemented using the 
 [Raspberry Pico C SDK,](https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf)
 providing full access to all Pico processor features 
 and providing the best possible performance. 
-The client is implemented in Python 3.
+There are two Python clients to choose from. 
+[Telemetrix-RPi-Pico](https://github.com/MrYsLab/telemetrix-rpi-pico)
+is implemented using Python threading to 
+implement concurrency, and 
+[Tmx-Pico-Aio](https://github.com/MrYsLab/tmx-pico-aio)
+uses Python asyncio for concurrency.
+
 
 The server and client are physically connected using a USB cable, and they
 communicate with each other over a serial transport running at 115000 baud.
@@ -33,9 +42,11 @@ Telemetrix, you can even have the Pico communicate with your favorite i2c device
 ![](./images/tmx.png)
 
 Telemetrix gives the appearance that the Pico is being _programmed_ using a
-[Python API.](http://htmlpreview.github.io/?https://github. com/MrYsLab/telemetrix-rpi-pico/blob/master/html/telemetrix_rpi_pico/index.html)
-But in fact, the Pico is running a fixed application and not being programmed in the 
-traditional sense. Code is not generated nor uploaded to the Pico. Instead, 
+[Traditional Python API.](https://htmlpreview.github.io/?https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/html/telemetrix_rpi_pico/index.html)
+or [Python asyncio API.](https://htmlpreview.github.io/?https://github.com/MrYsLab/tmx-pico-aio/blob/master/html/tmx_pico_aio/index.html)
+But in fact, the Pico is running a fixed application and is not programmed in the 
+traditional sense. Once the server is installed on the Pico, code is not generated nor 
+uploaded to the Pico. Instead, 
 the Pico awaits commands from the server and interprets and acts upon those commands.
 
 If the client commands the Pico to establish a GPIO pin as an input, the Pico 
@@ -47,17 +58,23 @@ Pico forms a report and relays it to the client over the serial link.
 
 # Summary Of Major Features
 
-* Applications are programmed using conventional Python 3.7 or greater.
+* Applications are programmed using conventional Python 3.8 or greater.
 * All Data change events are reported asynchronously via user registered callback functions. 
 * Each data change event is time-stamped.
-* Online [API Reference Documentation](http://htmlpreview.github.io/?https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/html/telemetrix_rpi_pico/index.html).
-* A [complete set of working examples is provided.](https://github.com/MrYsLab/telemetrix-rpi-pico/tree/master/examples)
-* Integrated debugging methods are included as part of the Pico SDK source code to aid in 
-  adding new features.
+* Online API Reference Documentation is provided:
+    * For the [Threaded Python Client.](https://htmlpreview.github.io/?https://github.
+      com/MrYsLab/telemetrix-rpi-pico/blob/master/html/telemetrix_rpi_pico/index.html)
+    * For the [Asyncio Python Client.](https://htmlpreview.github.io/?https://github.
+      com/MrYsLab/tmx-pico-aio/blob/master/html/tmx_pico_aio/index.html)
+* A complete set of working examples is provided for both [traditional Python](https://github.com/MrYsLab/telemetrix-rpi-pico/tree/master/examples)
+  and the [asyncio version.](https://github.com/MrYsLab/tmx-pico-aio/tree/master/examples)
+* Integrated debugging methods are included as part of the Pico Server 
+  SDK source code to aid in adding new features.
 
 # Intuitive And Easy To Use APIs
 
-For example, to receive asynchronous digital pin state data change notifications, you do the following:
+For example, to receive asynchronous digital pin state data change notifications using 
+traditional Python, you do the following:
 
 
 ### 1. Set a pin mode for the pin and register an associated callback function for the pin. 
@@ -88,9 +105,9 @@ For a digital data change, the list would contain the following:
 
 Each input pin type returns a unique list, as described in the API.
 
-The first element in the list is the pin-type. Knowing the pin-type, you may 
+The first element in the list is the pin type. Knowing the pin type, you may 
 optionally have a single callback function handle multiple event types using the 
-pin-type to identify the callback source.
+pin type to identify the callback source.
 
 ### 2. Have your application sit in a loop, waiting for notifications.
 
@@ -175,7 +192,8 @@ Report Type: 2 Pin: 15 Value: 1 Time Stamp: 2021-03-14 13:35:34
 
 
 ```
-
+A [similar example](https://github.com/MrYsLab/tmx-pico-aio/blob/master/examples/digital_input_pullup.py)
+is provided for asyncio.
 
 
 <br>
@@ -183,4 +201,4 @@ Report Type: 2 Pin: 15 Value: 1 Time Stamp: 2021-03-14 13:35:34
 
 Copyright (C) 2021 Alan Yorinks. All Rights Reserved.
 
-**Last updated 29 April 2021**
+**Last updated 04 May 2021**

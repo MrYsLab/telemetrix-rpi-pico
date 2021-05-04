@@ -6,7 +6,7 @@ nav:
         - Installing And Upgrading The Client API On Your PC: install_telemetrix.md
         - Installing And Upgrading The Pico Server Application: install_pico_server.md
     - Downloading And Running The Examples: examples.md
-    - The Python API:
+    - The Telemetrix-RPi-Pico API:
         - Design Notes: about_the_apis.md
         - Importing The Package And Instantiating The Library: importing.md
         - Analog Input Methods: analog_input.md
@@ -20,6 +20,20 @@ nav:
         - Servo Methods: servo.md
         - Shutting Down: management.md
         - Diagnostic Aids: debug.md
+    - The Tmx-Pico-Aio API:
+          - Design Notes: about_the_apis2.md
+          - Importing The Package And Instantiating The Library: importing2.md
+          - Analog Input Methods: analog_input2.md
+          - Digital Input Methods: digital_input2.md
+          - Digital Output Methods: digital_output2.md
+          - DHT Humidity/Temperature Sensor Methods: dht2.md
+          - HC-SR04 Sonar Distance Sensor Methods: sonar2.md
+          - I2C Methods: i2c2.md
+          - NeoPixel Methods: neopixel2.md
+          - PWM Methods: pwm2.md
+          - Servo Methods: servo2.md
+          - Shutting Down: management2.md
+          - Diagnostic Aids: debug2.md
     - About: about.md
     - License: license.md
 # theme: windmill

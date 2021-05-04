@@ -1,6 +1,6 @@
 ## set_pin_mode_dht
 ```python
- def set_pin_mode_dht(self, pin, callback=None)
+ async def set_pin_mode_dht(self, pin, callback=None)
 
     :param pin: connection pin
 
@@ -15,8 +15,10 @@
 ```
 A maximum of 2 DHT devices is supported. Reporting will begin immediately after
 executing this method. Reports are generated every 2 seconds.
+<br>
+<br>
 
-## Example: [dht.py](https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/examples/dht.py)
+## Example: [dht.py](https://github.com/MrYsLab/tmx-pico-aio/blob/master/examples/dht.py)
 
 ## Example Sample Output:
 
@@ -39,7 +41,5 @@ DHT Data Report:Pin: 15 Humidity: 45.7 Temperature:  23.79c  75f  Time: 2021-05-
 
 ```
 
-<br>
-<br>
 
 Copyright (C) 2021 Alan Yorinks. All Rights Reserved.

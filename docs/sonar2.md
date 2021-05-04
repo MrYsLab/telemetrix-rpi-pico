@@ -1,7 +1,7 @@
 ## set_pin_mode_sonar
 
 ```python
- def set_pin_mode_sonar(self, trigger_pin, echo_pin, callback=None)
+ async def set_pin_mode_sonar(self, trigger_pin, echo_pin, callback=None)
 
     :param trigger_pin: Sensor trigger gpio pin
 
@@ -21,7 +21,7 @@ when this method is invoked.
 <br>
 <br>
 
-## Example: [hc_sr04.py](https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/examples/hc_sr04.py)
+## Example: [hc_sr04.py](https://github.com/MrYsLab/tmx-pico-aio/blob/master/examples/hc_sr04.py)
 
 ## Example Sample Output (example modified for a single sensor):
 

@@ -29,7 +29,7 @@ describing the data change.
 
 The list contents vary from input pin type to input pin type and 
 are described in detail for each _set_pin_mode_XXX_ method in the
-[API documentation.](https://htmlpreview.github.io/?https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/html/telemetrix_rpi_pico/index.html) 
+[API documentation.](https://htmlpreview.github.io/?https://github.com/MrYsLab/tmx-pico-aio/blob/master/examples/digital_input_pullup.py) 
 The first element in the list identifies the pin type, and the last element
 is a timestamp of the data change occurrence. Other elements identify the GPIO pin, 
 and the current data value, in addition to any additional relevant information.
@@ -54,7 +54,7 @@ associates a user-provided function, named **_the_callback_** to be called whene
 the state of pin 12 changes.
 
 ```python
-board.set_pin_mode_digital_input_pullup(12, the_callback)
+await board.set_pin_mode_digital_input_pullup(12, the_callback)
 ```
 
 ### A Callback Function Example
@@ -70,7 +70,7 @@ separate thread so that your application may proceed.
 
 ```python
 
-def the_callback(data):
+async def the_callback(data):
     """
     A callback function to report data changes.
     This will print the pin number, its reported value and

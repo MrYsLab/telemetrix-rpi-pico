@@ -25,7 +25,7 @@ sudo pip3 install telemetrix-rpi-pico
 pip install telemetrix-rpi-pico 
 ```
 
-## If you are upgrading from a previously installed version
+## Upgrading Telemetrix-RPi-Pico from a previously installed version
 
 **Linux/macOS:**
 
@@ -42,7 +42,42 @@ pip install telemetrix-rpi-pico --upgrade
 ```
 
 
-You can find the source code for Telemetrix-RPi-Pico client on this [GitHub](https://github.com/MrYsLab/telemetrix-rpi-pico) repository.
+## Installing The Tmx-Pico_Aio Client
+
+To install the _tmx-pico-aio_ client API library on Linux (including Raspberry Pi) 
+and 
+macOS computers, open a terminal window and type:
+
+
+**Linux/macOS:**
+
+```bash
+sudo pip3 install tmx-pico-aio
+```
+
+
+**Windows:**
+
+
+```bash
+pip install tmx-pico-aio 
+```
+
+## Upgrading Tmx-Pico_Aio from a previously installed version
+
+**Linux/macOS:**
+
+```bash
+sudo pip3 install tmx-pico-aio --upgrade
+```
+
+
+**Windows:**
+
+
+```bash
+pip install tmx-pico-aio --upgrade
+```
 
 
 <br>
