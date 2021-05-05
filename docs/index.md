@@ -43,7 +43,7 @@ Telemetrix, you can even have the Pico communicate with your favorite i2c device
 
 Telemetrix gives the appearance that the Pico is being _programmed_ using a
 [Traditional Python API.](https://htmlpreview.github.io/?https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/html/telemetrix_rpi_pico/index.html)
-or [Python asyncio API.](https://htmlpreview.github.io/?https://github.com/MrYsLab/tmx-pico-aio/blob/master/html/tmx_pico_aio/index.html)
+or [Python asyncio API.](https://htmlpreview.github.io/?https://github.com/MrYsLab/tmx-pico-aio/blob/master/html/tmx_pico_aio/index.html#tmx_pico_aio.tmx_pico_aio.TmxPicoAio.reset_board)
 But in fact, the Pico is running a fixed application and is not programmed in the 
 traditional sense. Once the server is installed on the Pico, code is not generated nor 
 uploaded to the Pico. Instead, 
@@ -62,10 +62,8 @@ Pico forms a report and relays it to the client over the serial link.
 * All Data change events are reported asynchronously via user registered callback functions. 
 * Each data change event is time-stamped.
 * Online API Reference Documentation is provided:
-    * For the [Threaded Python Client.](https://htmlpreview.github.io/?https://github.
-      com/MrYsLab/telemetrix-rpi-pico/blob/master/html/telemetrix_rpi_pico/index.html)
-    * For the [Asyncio Python Client.](https://htmlpreview.github.io/?https://github.
-      com/MrYsLab/tmx-pico-aio/blob/master/html/tmx_pico_aio/index.html)
+    * For the [Threaded Python Client.](https://htmlpreview.github.io/?https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/html/telemetrix_rpi_pico/index.html)
+    * For the [Asyncio Python Client.](https://htmlpreview.github.io/?https://github.com/MrYsLab/tmx-pico-aio/blob/master/html/tmx_pico_aio/index.html)
 * A complete set of working examples is provided for both [traditional Python](https://github.com/MrYsLab/telemetrix-rpi-pico/tree/master/examples)
   and the [asyncio version.](https://github.com/MrYsLab/tmx-pico-aio/tree/master/examples)
 * Integrated debugging methods are included as part of the Pico Server 

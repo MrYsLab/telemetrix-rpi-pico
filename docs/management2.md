@@ -12,6 +12,16 @@ ensure that any streaming data coming from the Pico is halted.
 ```
 ## Example: All the examples call shutdown.
 
+## reset_board
+
+```python
+ async def reset_board(self)
+
+    Send a command to the Pico to perform a hardware reset
+```
+
+## Example: All the examples call shutdown.
+
 <br>
 <br>
 
