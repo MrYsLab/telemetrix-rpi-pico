@@ -15,7 +15,7 @@
     
     
       
-        <title>DHT Humidity/Temperature Sensor Methods - The Telemetrix User's Guide For The Raspberry Pi Pico</title>
+        <title>Design Notes - The Telemetrix User's Guide For The Raspberry Pi Pico</title>
       
     
     
@@ -48,7 +48,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#set_pin_mode_dht" class="md-skip">
+        <a href="#api-design-notes" class="md-skip">
           Skip to content
         </a>
       
@@ -76,7 +76,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              DHT Humidity/Temperature Sensor Methods
+              Design Notes
             
           </span>
         </div>
@@ -238,12 +238,10 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
     
     <label class="md-nav__link" for="nav-5">
       The Telemetrix-RPi-Pico API
@@ -325,63 +323,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        DHT Humidity/Temperature Sensor Methods
-        <span class="md-nav__icon md-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
-        </span>
-      </label>
-    
-    <a href="./" title="DHT Humidity/Temperature Sensor Methods" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../dht/" title="DHT Humidity/Temperature Sensor Methods" class="md-nav__link">
       DHT Humidity/Temperature Sensor Methods
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-      </span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#set_pin_mode_dht" class="md-nav__link">
-    set_pin_mode_dht
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example-dhtpy" class="md-nav__link">
-    Example: dht.py
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example-sample-output" class="md-nav__link">
-    Example Sample Output:
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -478,10 +424,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6" checked>
     
     <label class="md-nav__link" for="nav-6">
       The Tmx-Pico-Aio API
@@ -503,11 +451,103 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../about_the_apis2/" title="Design Notes" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Design Notes
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="Design Notes" class="md-nav__link md-nav__link--active">
       Design Notes
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#api-design-notes" class="md-nav__link">
+    API Design Notes
+  </a>
+  
+    <nav class="md-nav" aria-label="API Design Notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pin-modes" class="md-nav__link">
+    Pin Modes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#callbacks" class="md-nav__link">
+    Callbacks
+  </a>
+  
+    <nav class="md-nav" aria-label="Callbacks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pin-types" class="md-nav__link">
+    Pin Types
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#converting-the-raw-timestamp" class="md-nav__link">
+    Converting The Raw Timestamp
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registering-a-callback" class="md-nav__link">
+    Registering A Callback
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-callback-function-example" class="md-nav__link">
+    A Callback Function Example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -708,23 +748,63 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#set_pin_mode_dht" class="md-nav__link">
-    set_pin_mode_dht
+  <a href="#api-design-notes" class="md-nav__link">
+    API Design Notes
+  </a>
+  
+    <nav class="md-nav" aria-label="API Design Notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pin-modes" class="md-nav__link">
+    Pin Modes
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#example-dhtpy" class="md-nav__link">
-    Example: dht.py
+        
+          <li class="md-nav__item">
+  <a href="#callbacks" class="md-nav__link">
+    Callbacks
+  </a>
+  
+    <nav class="md-nav" aria-label="Callbacks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pin-types" class="md-nav__link">
+    Pin Types
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#example-sample-output" class="md-nav__link">
-    Example Sample Output:
+        
+          <li class="md-nav__item">
+  <a href="#converting-the-raw-timestamp" class="md-nav__link">
+    Converting The Raw Timestamp
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registering-a-callback" class="md-nav__link">
+    Registering A Callback
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-callback-function-example" class="md-nav__link">
+    A Callback Function Example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -744,43 +824,99 @@
                   
                 
                 
-                  <h1>DHT Humidity/Temperature Sensor Methods</h1>
+                  <h1>Design Notes</h1>
                 
-                <h2 id="set_pin_mode_dht">set_pin_mode_dht</h2>
-<pre><code class="python"> def set_pin_mode_dht(self, pin, callback=None)
+                <h2 id="api-design-notes">API Design Notes</h2>
+<h3 id="pin-modes">Pin Modes</h3>
+<p>If you look at the Pico pin-out diagram, you will see that a GPIO pin may be 
+configured to operate in one of several operational modes. </p>
+<p><img alt="" src="../images/pinout.png" /></p>
+<p>No matter the mode, when using Telemetrix, you must first explicitly set the mode 
+by calling one of the <em>set_pin_mode_XXX</em> methods for the pin. For output modes, if you try 
+to perform a <em>write</em> operation and have not first set the pin's mode, a RunTimeError 
+exception is thrown.</p>
+<h3 id="callbacks">Callbacks</h3>
+<p>When you set a pin mode for input, a callback function is required to be registered to 
+notify 
+the application of any data changes on the pin.  </p>
+<p><strong>Telemetrix does not support polling or direct 
+read methods for inputs. Instead, as soon as a data change is detected, 
+the pin's associated callback is called, allowing for immediate response to data 
+changes, and in general, simpler application design.</strong></p>
+<p>When you create a callback function, you must specify a single input
+parameter. The client automatically fills in this parameter in the form of a list
+describing the data change.</p>
+<p>The list contents vary from input pin type to input pin type and 
+are described in detail for each <em>set_pin_mode_XXX</em> method in the
+<a href="https://htmlpreview.github.io/?https://github.com/MrYsLab/tmx-pico-aio/blob/master/examples/digital_input_pullup.py">API documentation.</a> 
+The first element in the list identifies the pin type, and the last element
+is a timestamp of the data change occurrence. Other elements identify the GPIO pin, 
+and the current data value, in addition to any additional relevant information.</p>
+<h4 id="pin-types">Pin Types</h4>
+<table>
+<thead>
+<tr>
+<th align="center">Pin Mode</th>
+<th align="center">Pin Mode Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Digital Input (including pullup and pulldown)</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">Analog Input (ADC)</td>
+<td align="center">3</td>
+</tr>
+<tr>
+<td align="center">i2c Read</td>
+<td align="center">10</td>
+</tr>
+<tr>
+<td align="center">SONAR Distance</td>
+<td align="center">11</td>
+</tr>
+<tr>
+<td align="center">DHT</td>
+<td align="center">12</td>
+</tr>
+</tbody>
+</table>
+<h4 id="converting-the-raw-timestamp">Converting The Raw Timestamp</h4>
+<p>To convert the raw timestamp field to a human-readable time, use <strong>time.localtime()</strong>.</p>
+<h3 id="registering-a-callback">Registering A Callback</h3>
+<p>The line below establishes GPIO pin 12 as a digital input pin with pull-ups enabled and
+associates a user-provided function, named <strong><em>the_callback</em></strong> to be called whenever 
+the state of pin 12 changes.</p>
+<pre><code class="python">await board.set_pin_mode_digital_input_pullup(12, the_callback)
+</code></pre>
 
-    :param pin: connection pin
+<h3 id="a-callback-function-example">A Callback Function Example</h3>
+<p>Here is the implementation for the callback method that services pin 12. 
+It prints out a notification of the change to the console. Your callback function may do 
+something like store the latest value or perhaps issue a command to control on an LED 
+or other device. </p>
+<p><strong>NOTE:</strong> The callback function is blocking, so you will want to keep it as short as 
+possible. If you need to do some extended processing, you may want to create a 
+separate thread so that your application may proceed.</p>
+<pre><code class="python">
+async def the_callback(data):
+    &quot;&quot;&quot;
+    A callback function to report data changes.
+    This will print the pin number, its reported value and
+    the date and time when the change occurred
 
-    :param callback: callback function
-
-    callback returns a data list:
-
-    DHT REPORT, DHT_DATA=1, PIN, Humidity, Temperature (c),Time]
-
-    DHT_REPORT = 12
+    :param data: [pin mode, pin, current reported value, pin_mode, timestamp]
+    &quot;&quot;&quot;
+    date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(data[CB_TIME]))
+    print(f'Report Type: {data[CB_PIN_MODE]} Pin: {data[CB_PIN]} '
+          f'Value: {data[CB_VALUE]} Time Stamp: {date}')
 
 </code></pre>
 
-<p>A maximum of 2 DHT devices is supported. Reporting will begin immediately after
-executing this method. Reports are generated every 2 seconds.</p>
-<h2 id="example-dhtpy">Example: <a href="https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/examples/dht.py">dht.py</a></h2>
-<h2 id="example-sample-output">Example Sample Output:</h2>
-<pre><code class="python">TelemetrixRpiPicoAio:  Version 1.0
-
-Copyright (c) 2021 Alan Yorinks All Rights Reserved.
-
-Opening all potential serial ports...
-    /dev/ttyACM0
-Retrieving pico ID...
-Pico Unique ID: [230, 96, 88, 56, 131, 120, 0, 0]
-Telemetrix4RPiPico Version Number: 1.0
-DHT Data Report:Pin: 2 Humidity: 39.0 Temperature:  25.0c  77f  Time: 2021-05-04 17:14:20
-DHT Data Report:Pin: 15 Humidity: 49.79 Temperature:  24.1c  75f  Time: 2021-05-04 17:14:22
-DHT Data Report:Pin: 2 Humidity: 42.0 Temperature:  24.0c  75f  Time: 2021-05-04 17:14:24
-DHT Data Report:Pin: 15 Humidity: 45.79 Temperature:  23.79c  75f  Time: 2021-05-04 17:14:26
-DHT Data Report:Pin: 2 Humidity: 40.0 Temperature:  24.0c  75f  Time: 2021-05-04 17:14:28
-DHT Data Report:Pin: 15 Humidity: 45.7 Temperature:  23.79c  75f  Time: 2021-05-04 17:14:30
-
+<p>And here is the output printed by the callback function:</p>
+<pre><code class="python">Report Type: 2 Pin: 12 Value: 1 Time Stamp: 2021-03-15 16:41:08
 </code></pre>
 
 <p><br>
@@ -804,7 +940,7 @@ DHT Data Report:Pin: 15 Humidity: 45.7 Temperature:  23.79c  75f  Time: 2021-05-
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../digital_output/" title="Digital Output Methods" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../debug/" title="Diagnostic Aids" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -813,19 +949,19 @@ DHT Data Report:Pin: 15 Humidity: 45.7 Temperature:  23.79c  75f  Time: 2021-05-
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Digital Output Methods
+                Diagnostic Aids
               </div>
             </div>
           </a>
         
         
-          <a href="../sonar/" title="HC-SR04 Sonar Distance Sensor Methods" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../importing2/" title="Importing The Package And Instantiating The Library" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                HC-SR04 Sonar Distance Sensor Methods
+                Importing The Package And Instantiating The Library
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">

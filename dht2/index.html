@@ -238,12 +238,10 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
     
     <label class="md-nav__link" for="nav-5">
       The Telemetrix-RPi-Pico API
@@ -325,63 +323,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        DHT Humidity/Temperature Sensor Methods
-        <span class="md-nav__icon md-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
-        </span>
-      </label>
-    
-    <a href="./" title="DHT Humidity/Temperature Sensor Methods" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../dht/" title="DHT Humidity/Temperature Sensor Methods" class="md-nav__link">
       DHT Humidity/Temperature Sensor Methods
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-      </span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#set_pin_mode_dht" class="md-nav__link">
-    set_pin_mode_dht
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example-dhtpy" class="md-nav__link">
-    Example: dht.py
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example-sample-output" class="md-nav__link">
-    Example Sample Output:
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -478,10 +424,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6" checked>
     
     <label class="md-nav__link" for="nav-6">
       The Tmx-Pico-Aio API
@@ -563,11 +511,63 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../dht2/" title="DHT Humidity/Temperature Sensor Methods" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        DHT Humidity/Temperature Sensor Methods
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="DHT Humidity/Temperature Sensor Methods" class="md-nav__link md-nav__link--active">
       DHT Humidity/Temperature Sensor Methods
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#set_pin_mode_dht" class="md-nav__link">
+    set_pin_mode_dht
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-dhtpy" class="md-nav__link">
+    Example: dht.py
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-sample-output" class="md-nav__link">
+    Example Sample Output:
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -747,7 +747,7 @@
                   <h1>DHT Humidity/Temperature Sensor Methods</h1>
                 
                 <h2 id="set_pin_mode_dht">set_pin_mode_dht</h2>
-<pre><code class="python"> def set_pin_mode_dht(self, pin, callback=None)
+<pre><code class="python"> async def set_pin_mode_dht(self, pin, callback=None)
 
     :param pin: connection pin
 
@@ -762,8 +762,10 @@
 </code></pre>
 
 <p>A maximum of 2 DHT devices is supported. Reporting will begin immediately after
-executing this method. Reports are generated every 2 seconds.</p>
-<h2 id="example-dhtpy">Example: <a href="https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/examples/dht.py">dht.py</a></h2>
+executing this method. Reports are generated every 2 seconds.
+<br>
+<br></p>
+<h2 id="example-dhtpy">Example: <a href="https://github.com/MrYsLab/tmx-pico-aio/blob/master/examples/dht.py">dht.py</a></h2>
 <h2 id="example-sample-output">Example Sample Output:</h2>
 <pre><code class="python">TelemetrixRpiPicoAio:  Version 1.0
 
@@ -783,8 +785,6 @@ DHT Data Report:Pin: 15 Humidity: 45.7 Temperature:  23.79c  75f  Time: 2021-05-
 
 </code></pre>
 
-<p><br>
-<br></p>
 <p>Copyright (C) 2021 Alan Yorinks. All Rights Reserved.</p>
                 
               
@@ -804,7 +804,7 @@ DHT Data Report:Pin: 15 Humidity: 45.7 Temperature:  23.79c  75f  Time: 2021-05-
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../digital_output/" title="Digital Output Methods" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../digital_output2/" title="Digital Output Methods" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -819,7 +819,7 @@ DHT Data Report:Pin: 15 Humidity: 45.7 Temperature:  23.79c  75f  Time: 2021-05-
           </a>
         
         
-          <a href="../sonar/" title="HC-SR04 Sonar Distance Sensor Methods" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../sonar2/" title="HC-SR04 Sonar Distance Sensor Methods" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">

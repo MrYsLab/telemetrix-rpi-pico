@@ -15,7 +15,7 @@
     
     
       
-        <title>DHT Humidity/Temperature Sensor Methods - The Telemetrix User's Guide For The Raspberry Pi Pico</title>
+        <title>PWM Methods - The Telemetrix User's Guide For The Raspberry Pi Pico</title>
       
     
     
@@ -48,7 +48,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#set_pin_mode_dht" class="md-skip">
+        <a href="#set_pin_mode_pwm_output" class="md-skip">
           Skip to content
         </a>
       
@@ -76,7 +76,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              DHT Humidity/Temperature Sensor Methods
+              PWM Methods
             
           </span>
         </div>
@@ -238,12 +238,10 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
     
     <label class="md-nav__link" for="nav-5">
       The Telemetrix-RPi-Pico API
@@ -325,63 +323,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        DHT Humidity/Temperature Sensor Methods
-        <span class="md-nav__icon md-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
-        </span>
-      </label>
-    
-    <a href="./" title="DHT Humidity/Temperature Sensor Methods" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../dht/" title="DHT Humidity/Temperature Sensor Methods" class="md-nav__link">
       DHT Humidity/Temperature Sensor Methods
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-      </span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#set_pin_mode_dht" class="md-nav__link">
-    set_pin_mode_dht
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example-dhtpy" class="md-nav__link">
-    Example: dht.py
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example-sample-output" class="md-nav__link">
-    Example Sample Output:
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -478,10 +424,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6" checked>
     
     <label class="md-nav__link" for="nav-6">
       The Tmx-Pico-Aio API
@@ -611,11 +559,63 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../pwm2/" title="PWM Methods" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        PWM Methods
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="PWM Methods" class="md-nav__link md-nav__link--active">
       PWM Methods
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#set_pin_mode_pwm_output" class="md-nav__link">
+    set_pin_mode_pwm_output
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pwm_write" class="md-nav__link">
+    pwm_write
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-fadepy" class="md-nav__link">
+    Example: fade.py
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -708,22 +708,22 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#set_pin_mode_dht" class="md-nav__link">
-    set_pin_mode_dht
+  <a href="#set_pin_mode_pwm_output" class="md-nav__link">
+    set_pin_mode_pwm_output
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-dhtpy" class="md-nav__link">
-    Example: dht.py
+  <a href="#pwm_write" class="md-nav__link">
+    pwm_write
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-sample-output" class="md-nav__link">
-    Example Sample Output:
+  <a href="#example-fadepy" class="md-nav__link">
+    Example: fade.py
   </a>
   
 </li>
@@ -744,45 +744,40 @@
                   
                 
                 
-                  <h1>DHT Humidity/Temperature Sensor Methods</h1>
+                  <h1>PWM Methods</h1>
                 
-                <h2 id="set_pin_mode_dht">set_pin_mode_dht</h2>
-<pre><code class="python"> def set_pin_mode_dht(self, pin, callback=None)
+                <h2 id="set_pin_mode_pwm_output">set_pin_mode_pwm_output</h2>
+<pre><code class="python"> async def set_pin_mode_pwm_output(self, pin_number):
+    &quot;&quot;&quot;
+    Enable a pin as a PWM pin. Maximum number of PWMs is 16.
+    The frequency is fixed at 50 hz.
 
-    :param pin: connection pin
+    Note: There are up to 16 pins that can be assigned as
+    PWM. Servo pins share the 16 PWM pins.
 
-    :param callback: callback function
 
-    callback returns a data list:
-
-    DHT REPORT, DHT_DATA=1, PIN, Humidity, Temperature (c),Time]
-
-    DHT_REPORT = 12
-
-</code></pre>
-
-<p>A maximum of 2 DHT devices is supported. Reporting will begin immediately after
-executing this method. Reports are generated every 2 seconds.</p>
-<h2 id="example-dhtpy">Example: <a href="https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/examples/dht.py">dht.py</a></h2>
-<h2 id="example-sample-output">Example Sample Output:</h2>
-<pre><code class="python">TelemetrixRpiPicoAio:  Version 1.0
-
-Copyright (c) 2021 Alan Yorinks All Rights Reserved.
-
-Opening all potential serial ports...
-    /dev/ttyACM0
-Retrieving pico ID...
-Pico Unique ID: [230, 96, 88, 56, 131, 120, 0, 0]
-Telemetrix4RPiPico Version Number: 1.0
-DHT Data Report:Pin: 2 Humidity: 39.0 Temperature:  25.0c  77f  Time: 2021-05-04 17:14:20
-DHT Data Report:Pin: 15 Humidity: 49.79 Temperature:  24.1c  75f  Time: 2021-05-04 17:14:22
-DHT Data Report:Pin: 2 Humidity: 42.0 Temperature:  24.0c  75f  Time: 2021-05-04 17:14:24
-DHT Data Report:Pin: 15 Humidity: 45.79 Temperature:  23.79c  75f  Time: 2021-05-04 17:14:26
-DHT Data Report:Pin: 2 Humidity: 40.0 Temperature:  24.0c  75f  Time: 2021-05-04 17:14:28
-DHT Data Report:Pin: 15 Humidity: 45.7 Temperature:  23.79c  75f  Time: 2021-05-04 17:14:30
+    :param pin_number: pico GPIO pin number
 
 </code></pre>
 
+<p>The Pico allows up to 16 GPIO pins to be assigned as PWM outputs.</p>
+<p><strong>NOTE:</strong> Servo assigned pins are a special case of PWM so they share in the 16 pins.</p>
+<h2 id="pwm_write">pwm_write</h2>
+<pre><code class="python"> async def pwm_write(self, pin, duty_cycle=0, raw=False)
+
+    Set the specified pin to the specified value.
+
+    :param pin: pico GPIO pin number
+
+    :param duty_cycle: if the raw parameter is False, then this is expressed as a percentage between 0 and 100
+
+                    if the raw parameter is True, then the valid range
+                    of values is from 0 - 19999
+
+    :param raw: Sets how the duty-cycle parameter is perceived.
+</code></pre>
+
+<h2 id="example-fadepy">Example: <a href="https://github.com/MrYsLab/tmx-pico-aio/blob/master/examples/fade.py">fade.py</a></h2>
 <p><br>
 <br></p>
 <p>Copyright (C) 2021 Alan Yorinks. All Rights Reserved.</p>
@@ -804,7 +799,7 @@ DHT Data Report:Pin: 15 Humidity: 45.7 Temperature:  23.79c  75f  Time: 2021-05-
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../digital_output/" title="Digital Output Methods" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../neopixel2/" title="NeoPixel Methods" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -813,19 +808,19 @@ DHT Data Report:Pin: 15 Humidity: 45.7 Temperature:  23.79c  75f  Time: 2021-05-
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Digital Output Methods
+                NeoPixel Methods
               </div>
             </div>
           </a>
         
         
-          <a href="../sonar/" title="HC-SR04 Sonar Distance Sensor Methods" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../servo2/" title="Servo Methods" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                HC-SR04 Sonar Distance Sensor Methods
+                Servo Methods
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">
