@@ -58,7 +58,7 @@ Pico forms a report and relays it to the client over the serial link.
 
 # Summary Of Major Features
 
-* Applications are programmed using conventional Python 3.8 or greater.
+* Applications are programmed using conventional Python 3.7 or greater.
 * All Data change events are reported asynchronously via user registered callback functions. 
 * Each data change event is time-stamped.
 * Online API Reference Documentation is provided:
