@@ -14,7 +14,7 @@
     
     
       
-        <title>The Telemetrix User's Guide For The Raspberry Pi Pico</title>
+        <title>Shutting Down - The Telemetrix User's Guide For The Raspberry Pi Pico</title>
       
     
     
@@ -59,7 +59,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#summary-of-major-features" class="md-skip">
+        <a href="#cleanly-shutting-down" class="md-skip">
           Skip to content
         </a>
       
@@ -89,7 +89,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Introduction
+              Shutting Down
             
           </span>
         </div>
@@ -167,21 +167,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="index.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
         Introduction
       </a>
-      
     </li>
   
 
@@ -462,12 +452,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
       
       <label class="md-nav__link" for="__nav_6">
         The Tmx-Pico-Aio API
@@ -615,11 +607,72 @@
             
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="management2.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Shutting Down
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="management2.html" class="md-nav__link md-nav__link--active">
         Shutting Down
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#shutdown" class="md-nav__link">
+    shutdown
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-all-the-examples-call-shutdown" class="md-nav__link">
+    Example: All the examples call shutdown.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reset_board" class="md-nav__link">
+    reset_board
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-all-the-examples-call-shutdown_1" class="md-nav__link">
+    Example: All the examples call shutdown.
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -691,6 +744,42 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#shutdown" class="md-nav__link">
+    shutdown
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-all-the-examples-call-shutdown" class="md-nav__link">
+    Example: All the examples call shutdown.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reset_board" class="md-nav__link">
+    reset_board
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-all-the-examples-call-shutdown_1" class="md-nav__link">
+    Example: All the examples call shutdown.
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -702,169 +791,25 @@
               
                 
                 
-                <div style="text-align:center;color:#990033; font-family:times, serif;font-size:3em"><i>The Telemetrix User's Guide</i></div>
-<div style="text-align:center;color:#990033; font-family:times, serif;font-size:3em"><i>For The Raspberry Pi Pico  </i></div>
+                <h1 id="cleanly-shutting-down">Cleanly Shutting Down</h1>
+<h2 id="shutdown">shutdown</h2>
+<p>You should always call the shutdown method to exit your application cleanly and
+ensure that any streaming data coming from the Pico is halted.</p>
+<pre><code class="language-python"> async def shutdown(self)
 
-<p><br></p>
-<p><em>Telemetry</em> is a system for collecting data on a remote device and then 
-automatically transmitting the collected data back to local receiving equipment for 
-processing.</p>
-<p>The 
-Telemetrix Project
-for the Raspberry Pi Pico does just that.</p>
-<p>Telemetrix for the Raspberry Pi Pico consists of two main software components. 
-A resident Pico server, and a client, residing on a Windows, Linux, or macOS 
-PC.<br />
-The 
-server is 
-implemented using the 
-<a href="https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf">Raspberry Pico C SDK,</a>
-providing full access to all Pico processor features 
-and providing the best possible performance. 
-There are two Python clients to choose from. 
-<a href="https://github.com/MrYsLab/telemetrix-rpi-pico">Telemetrix-RPi-Pico</a>
-is implemented using Python threading to 
-implement concurrency, and 
-<a href="https://github.com/MrYsLab/tmx-pico-aio">Tmx-Pico-Aio</a>
-uses Python asyncio for concurrency.</p>
-<p>The server and client are physically connected using a USB cable, and they
-communicate with each other over a serial transport running at 115000 baud.</p>
-<p>With Telemetrix, you can do things such as establish a GPIO pin as a PWM output pin, 
-and set its value to run a DC motor, or perhaps establish the pin as a control pin for a 
-NeoPixel strip. With 
-Telemetrix, you can even have the Pico communicate with your favorite i2c device.</p>
-<p><img alt="" src="images/tmx.png" /></p>
-<p>Telemetrix gives the appearance that the Pico is being <em>programmed</em> using a
-<a href="https://htmlpreview.github.io/?https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/html/telemetrix_rpi_pico/index.html">Traditional Python API.</a>
-or <a href="https://htmlpreview.github.io/?https://github.com/MrYsLab/tmx-pico-aio/blob/master/html/tmx_pico_aio/index.html#tmx_pico_aio.tmx_pico_aio.TmxPicoAio.reset_board">Python asyncio API.</a>
-But in fact, the Pico is running a fixed application and is not programmed in the 
-traditional sense. Once the server is installed on the Pico, code is not generated nor 
-uploaded to the Pico. Instead, 
-the Pico awaits commands from the server and interprets and acts upon those commands.</p>
-<p>If the client commands the Pico to establish a GPIO pin as an input, the Pico 
-autonomously monitors the pin for data changes. When a change is detected, the 
-Pico forms a report and relays it to the client over the serial link.</p>
-<p><br></p>
-<h1 id="summary-of-major-features">Summary Of Major Features</h1>
-<ul>
-<li>Applications are programmed using conventional Python 3.7 or greater.</li>
-<li>All Data change events are reported asynchronously via user registered callback functions. </li>
-<li>Each data change event is time-stamped.</li>
-<li>Online API Reference Documentation is provided:<ul>
-<li>For the <a href="https://htmlpreview.github.io/?https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/html/telemetrix_rpi_pico/index.html">Threaded Python Client.</a></li>
-<li>For the <a href="https://htmlpreview.github.io/?https://github.com/MrYsLab/tmx-pico-aio/blob/master/html/tmx_pico_aio/index.html">Asyncio Python Client.</a></li>
-</ul>
-</li>
-<li>A complete set of working examples is provided for both <a href="https://github.com/MrYsLab/telemetrix-rpi-pico/tree/master/examples">traditional Python</a>
-  and the <a href="https://github.com/MrYsLab/tmx-pico-aio/tree/master/examples">asyncio version.</a></li>
-<li>Integrated debugging methods are included as part of the Pico Server 
-  SDK source code to aid in adding new features.</li>
-</ul>
-<h1 id="intuitive-and-easy-to-use-apis">Intuitive And Easy To Use APIs</h1>
-<p>For example, to receive asynchronous digital pin state data change notifications using 
-traditional Python, you do the following:</p>
-<h3 id="1-set-a-pin-mode-for-the-pin-and-register-an-associated-callback-function-for-the-pin">1. Set a pin mode for the pin and register an associated callback function for the pin.</h3>
-<p>The example below illustrates how this is done.</p>
-<h4 id="callbacks">Callbacks</h4>
-<p>All callbacks are written to accept a single parameter. In the example below, this 
-parameter is named <em>data</em>. </p>
-<pre><code class="language-python">        def the_callback(data):
-
-            # Your code here.
+    This method attempts an orderly shutdown.
+    If any exceptions are thrown, they are ignored.
 </code></pre>
-<p>Upon receiving a data change report message from the Pico,
-the client 
-creates a 
-list containing the data describing the change event and calls the associated callback 
-function 
-passing in the list as a parameter.</p>
-<p>For a digital data change, the list would contain the following:</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>[pin_type=digital input, pin_number, pin_value, time stamp]</strong></p>
-<p>Each input pin type returns a unique list, as described in the API.</p>
-<p>The first element in the list is the pin type. Knowing the pin type, you may 
-optionally have a single callback function handle multiple event types using the 
-pin type to identify the callback source.</p>
-<h3 id="2-have-your-application-sit-in-a-loop-waiting-for-notifications">2. Have your application sit in a loop, waiting for notifications.</h3>
-<h1 id="a-working-example">A Working Example</h1>
-<p>Here is a Telemetrix example that monitors several digital input pins:</p>
-<pre><code class="language-python">import sys
-import time
+<h2 id="example-all-the-examples-call-shutdown">Example: All the examples call shutdown.</h2>
+<h2 id="reset_board">reset_board</h2>
+<pre><code class="language-python"> async def reset_board(self)
 
-from telemetrix_rpi_pico import telemetrix_rpi_pico
-
-&quot;&quot;&quot;
-Monitor 4 digital input pins with pull-up enabled for each
-&quot;&quot;&quot;
-
-
-# Callback data indices
-# When the callback function is called, the client fills in 
-# the data parameter. Data is a list of values, and the following are 
-# indexes into the list to retrieve report information
-
-CB_PIN_MODE = 0 # The mode of the reporting pin (input, output, PWM, etc.)
-CB_PIN = 1      # The GPIO pin number associated with this report
-CB_VALUE = 2    # The data value reported
-CB_TIME = 3     # A time stamp when the data change occurred
-
-
-def the_callback(data):
-    &quot;&quot;&quot;
-    A callback function to report data changes.
-    This will print the pin number, its reported value and
-    the date and time when the change occurred
-    :param data: [pin mode, pin, current reported value, pin_mode, timestamp]
-    &quot;&quot;&quot;
-    date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(data[CB_TIME]))
-    print(f'Report Type: {data[CB_PIN_MODE]} Pin: {data[CB_PIN]} '
-          f'Value: {data[CB_VALUE]} Time Stamp: {date}')
-
-
-board = telemetrix_rpi_pico.TelemetrixRpiPico()
-board.set_pin_mode_digital_input_pullup(12, the_callback)
-board.set_pin_mode_digital_input_pullup(13, the_callback)
-board.set_pin_mode_digital_input_pullup(14, the_callback)
-board.set_pin_mode_digital_input_pullup(15, the_callback)
-
-try:
-    while True:
-        time.sleep(.0001)
-except KeyboardInterrupt:
-    board.shutdown()
-    sys.exit(0)
+    Send a command to the Pico to perform a hardware reset
 </code></pre>
-<p>And here is some sample output:</p>
-<pre><code class="language-python">TelemetrixRpiPico:  Version 0.7
-
-Copyright (c) 2020 Alan Yorinks All Rights Reserved.
-
-Opening all potential serial ports...
-    /dev/ttyACM0
-Serial compatible device found and connected to /dev/ttyACM0
-Retrieving pico ID...
-Pico Unique ID: [230, 96, 68, 48, 67, 85, 0, 0]
-
-Retrieving Telemetrix4pico firmware ID...
-Telemetrix4pico firmware version: 0.3
-Report Type: 2 Pin: 12 Value: 1 Time Stamp: 2021-03-14 13:34:52
-Report Type: 2 Pin: 13 Value: 1 Time Stamp: 2021-03-14 13:34:52
-Report Type: 2 Pin: 14 Value: 1 Time Stamp: 2021-03-14 13:34:52
-Report Type: 2 Pin: 15 Value: 1 Time Stamp: 2021-03-14 13:34:52
-Report Type: 2 Pin: 13 Value: 0 Time Stamp: 2021-03-14 13:35:21
-Report Type: 2 Pin: 13 Value: 1 Time Stamp: 2021-03-14 13:35:22
-Report Type: 2 Pin: 14 Value: 0 Time Stamp: 2021-03-14 13:35:29
-Report Type: 2 Pin: 14 Value: 1 Time Stamp: 2021-03-14 13:35:31
-Report Type: 2 Pin: 15 Value: 0 Time Stamp: 2021-03-14 13:35:33
-Report Type: 2 Pin: 15 Value: 1 Time Stamp: 2021-03-14 13:35:34
-
-
-</code></pre>
-<p>A <a href="https://github.com/MrYsLab/tmx-pico-aio/blob/master/examples/digital_input_pullup.py">similar example</a>
-is provided for asyncio.</p>
+<h2 id="example-all-the-examples-call-shutdown_1">Example: All the examples call shutdown.</h2>
 <p><br>
 <br></p>
 <p>Copyright (C) 2021 Alan Yorinks. All Rights Reserved.</p>
-<p><strong>Last updated 11 June 2021</strong></p>
                 
               
               
@@ -883,15 +828,30 @@ is provided for asyncio.</p>
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
+        
+        <a href="servo2.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Servo Methods" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Servo Methods
+            </div>
+          </div>
+        </a>
+      
       
         
-        <a href="python_3_verify.html" class="md-footer__link md-footer__link--next" aria-label="Next: Checking If You Have The Correct Version Of Python Installed" rel="next">
+        <a href="debug2.html" class="md-footer__link md-footer__link--next" aria-label="Next: Diagnostic Aids" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Checking If You Have The Correct Version Of Python Installed
+              Diagnostic Aids
             </div>
           </div>
           <div class="md-footer__button md-icon">
