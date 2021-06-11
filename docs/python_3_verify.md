@@ -1,6 +1,6 @@
 # Verifying The Python Version
 
-Python 3.8 or greater is required before installing and running this package.
+Python 3.7 or greater is required before installing and running this package.
 
 To check that you have the correct version of Python 3 installed,
 open a command window and type:
