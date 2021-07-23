@@ -4,6 +4,16 @@
 * July 21 2021
   * Created the spi branch.
 
+* July 23 2021
+  * Created stubs for the SPI methods. API can be viewed [here.](https://htmlpreview.github.io/?https://github.com/MrYsLab/telemetrix-rpi-pico/blob/spi/html/telemetrix_rpi_pico/index.html)
+    * set_pin_mode spi
+    * spi_read16_blocking
+    * spi_read_blocking
+    * spi_set_format
+    * spi_write16_blocking
+    * spi_write16_read16_blocking
+    * spi_write_blocking
+    * spi_write_read_blocking
   
 
 # Telemetrix-RPi-Pico
