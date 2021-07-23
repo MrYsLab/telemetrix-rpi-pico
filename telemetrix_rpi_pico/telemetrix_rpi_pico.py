@@ -929,6 +929,29 @@ class TelemetrixRpiPico(threading.Thread):
         self._set_pin_mode(pin_number, PrivateConstants.AT_SERVO, min_pulse, max_pulse)
         self.pico_pins[pin_number] = PrivateConstants.AT_SERVO
 
+    def set_pin_mode_spi(self, spi_port=0, miso=16, mosi=19, clock_pin=18,
+                         clk_frequency=500000, chip_select_list=None):
+        """
+        Specify the SPI port, SPI pins, clock frequency and an optional
+        list of chip select pins. The SPI port is configured as a "master".
+
+        :param spi_port: 0 = spi0, 1 = spi1
+
+        :param miso: SPI data receive pin
+
+        :param mosi: SPI data transmit pin
+
+        :param clock_pin: clock pin
+
+        :param clk_frequency: clock frequency in Hz.
+
+        :param chip_select_list: this is a list of pins to be used for chip select.
+                           The pins will be configured as output, and set to high
+                           ready to be used for chip select.
+
+        """
+        raise NotImplemented
+
     def servo_write(self, pin_number, value):
         """
         Write the value to the specified servo
@@ -987,6 +1010,138 @@ class TelemetrixRpiPico(threading.Thread):
             if self.shutdown_on_exception:
                 self.shutdown()
             raise RuntimeError('Maximum number of supported sonar devices exceeded.')
+
+    def spi_read_blocking(self, number_of_bytes, spi_port=0, call_back=None,
+                          chip_select_pin=17,
+                          repeated_tx_data=0):
+        """
+        Read the specified number of bytes from the specified SPI port and
+        call the callback function with the reported data.
+
+        :param number_of_bytes: Number of bytes to read
+
+        :param spi_port: SPI port 0 or 1
+
+        :param call_back: Required callback function to report i2c data as a
+                   result of read command
+
+        :param chip_select_pin: chip select pin number
+
+        :param repeated_tx_data: repeated data to send
+
+        """
+
+        raise NotImplemented
+
+    def spi_read16_blocking(self, number_of_bytes, spi_port=0, call_back=None,
+                            chip_select_pin=17,
+                            repeated_tx_data=0):
+        """
+        Read the specified number of 16 bi values from the specified SPI port and
+        call the callback function with the reported data.
+
+        :param number_of_bytes: Number of bytes to read
+
+        :param spi_port: SPI port 0 or 1
+
+        :param call_back: Required callback function to report i2c data as a
+                   result of read command
+
+        :param chip_select_pin: chip select pin number
+
+        :param repeated_tx_data: repeated data to send
+
+        """
+
+        raise NotImplementedError
+
+    def spi_set_format(self, spi_port=0, data_bits=8, spi_polarity=0, spi_phase=0):
+        """
+        Configure how the SPI serializes and de-serializes data on the wire.
+
+        :param spi_port: SPI port 0 or 1
+
+        :param data_bits: Number of data bits per transfer. Valid range = 4-16
+
+        :param spi_polarity: clock polarity. 0 or 1.
+
+        :param spi_phase: clock phase. 0 or 1.
+        """
+
+        raise NotImplementedError
+
+    def spi_write_blocking(self, bytes_to_write, spi_port=0, chip_select_pin=17):
+        """
+        Write a list of bytes to the SPI device.
+
+        :param bytes_to_write: A list of bytes to write. This must be in the form of a
+        list.
+
+        :param spi_port: SPI port 0 or 1
+
+        :param chip_select_pin: chip select pin number
+        """
+
+        raise NotImplementedError
+
+    def spi_write16_blocking(self, bytes_to_write, spi_port=0, chip_select_pin=17):
+        """
+        Write a list of 16 bit values to the SPI device.
+
+        :param bytes_to_write: A list of 16 bit values to write. This must be in the form
+        of a list.
+
+        :param spi_port: SPI port 0 or 1
+
+        :param chip_select_pin: chip select pin number
+        """
+
+        raise NotImplementedError
+
+    def spi_write_read_blocking(self, number_of_bytes_to_read,
+                                bytes_to_write, spi_port=0, call_back=None,
+                                chip_select_pin=17):
+        """
+        Write a list of bytes to the SPI and simultaneously read the specified number
+        of bytes. The callback will contain the data read.
+
+        :param number_of_bytes_to_read: the number of bytes to read
+
+        :param bytes_to_write: a list of bytes to write
+
+        :param spi_port: SPI port 0 or 1
+
+        :param call_back: Required callback function to report i2c data as a
+                   result of read command
+
+        :param chip_select_pin: chip select pin number
+
+        """
+
+        raise NotImplementedError
+
+    def spi_write16_read16_blocking(self, number_of_values_to_read,
+                                    values_to_write, spi_port=0, call_back=None,
+                                    chip_select_pin=17):
+        """
+        Write a list of 16 bit values to the SPI and simultaneously read the specified
+        number of 16 bit values from the SPI device. The callback will contains the 16 bit
+        values read.
+
+        :param number_of_values_to_read: the number of bytes to read
+
+        :param values_to_write: a list of bytes to write
+
+        :param spi_port: SPI port 0 or 1
+
+        :param call_back: Required callback function to report i2c data as a
+                   result of read command
+
+        :param chip_select_pin: chip select pin number
+
+        """
+
+        raise NotImplementedError
 
     def get_pico_pins(self):
         """
