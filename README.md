@@ -14,6 +14,10 @@
     * spi_write16_read16_blocking
     * spi_write_blocking
     * spi_write_read_blocking
+    
+* July 24 2021
+    * Coded set_pin_mode_spi. Not yet tested.
+    * Added message definitions for various SPI commands to private constants file.
   
 
 # Telemetrix-RPi-Pico

@@ -129,6 +129,7 @@ class TelemetrixRpiPico(threading.Thread):
         self.report_dispatch.update(
             {PrivateConstants.SONAR_DISTANCE: self._sonar_distance_report})
         self.report_dispatch.update({PrivateConstants.DHT_REPORT: self._dht_report})
+        self.report_dispatch.update({PrivateConstants.SPI_REPORT: self._spi_report})
 
         # up to 16 pwm pins may be simultaneously active
         self.pwm_active_count = 0
@@ -143,6 +144,13 @@ class TelemetrixRpiPico(threading.Thread):
 
         self.i2c_0_active = False
         self.i2c_1_active = False
+
+        # spi
+        self.spi_callback = None
+        self.spi_callback2 = None
+
+        self.spi_0_active = False
+        self.spi_1_active = False
 
         # the trigger pin will be the key to retrieve
         # the callback for a specific HC-SR04
@@ -578,6 +586,9 @@ class TelemetrixRpiPico(threading.Thread):
                 raise RuntimeError(
                     'I2C Write: set_pin_mode i2c never called for i2c port 2.')
 
+        if type(args) != list:
+            raise RuntimeError('args must be in the form of a list')
+
         command = [PrivateConstants.I2C_WRITE, i2c_port, address, len(args), no_stop]
 
         for item in args:
@@ -948,9 +959,62 @@ class TelemetrixRpiPico(threading.Thread):
         :param chip_select_list: this is a list of pins to be used for chip select.
                            The pins will be configured as output, and set to high
                            ready to be used for chip select.
+                           NOTE: You must specify the chips select pins here!
 
         """
-        raise NotImplemented
+        # determine if the i2c port is specified correctly
+        if spi_port not in [0, 1]:
+            raise RuntimeError('spi port must be either a 0 or 1')
+        # determine if the spi gpio's are valid
+        if spi_port == 0:
+            if mosi != 19:
+                raise RuntimeError('For spi0 mosi must be 19.')
+            if miso != 16:
+                raise RuntimeError('For spi0 miso must be 16.')
+            if clock_pin != 18:
+                raise RuntimeError('For spi0 clock must be 18.')
+        else:
+            if mosi != 15:
+                raise RuntimeError('For spi1 mosi must be 15.')
+            if miso != 12:
+                raise RuntimeError('For spi1 miso must be 12.')
+            if clock_pin != 14:
+                raise RuntimeError('For spi0 clock must be 14.')
+
+        # check if mosi, miso or clock pins have already been assigned
+        if self.pico_pins[mosi] != PrivateConstants.AT_MODE_NOT_SET:
+            raise RuntimeError('MOSI pin currently in use')
+        if self.pico_pins[miso] != PrivateConstants.AT_MODE_NOT_SET:
+            raise RuntimeError('MISO pin currently in use')
+        if self.pico_pins[clock_pin] != PrivateConstants.AT_MODE_NOT_SET:
+            raise RuntimeError('Clock Pin pin currently in use')
+
+        if type(chip_select_list) != list:
+            raise RuntimeError('chip_select_list must be in the form of a list')
+        if not chip_select_list:
+            raise RuntimeError('Chip select pins were not specified')
+        # validate chip select pins
+        for pin in chip_select_list:
+            if self.pico_pins[pin] != PrivateConstants.AT_MODE_NOT_SET:
+                raise RuntimeError(f'SPI Chip select pin {pin} is already in use!')
+
+        # test for spi port 0
+        if not spi_port:
+            self.spi_0_active = True
+        # port 1
+        else:
+            self.spi_1_active = True
+
+        freq_msb = clk_frequency >> 8
+        freq_lsb = clk_frequency & 0x00ff
+
+        command = [PrivateConstants.SPI_INIT, spi_port, mosi, miso, clock_pin,
+                   freq_msb, freq_lsb, len(chip_select_list)]
+
+        for item in chip_select_list:
+            command.append(item)
+
+        self._send_command(command)
 
     def servo_write(self, pin_number, value):
         """
@@ -1022,7 +1086,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         :param spi_port: SPI port 0 or 1
 
-        :param call_back: Required callback function to report i2c data as a
+        :param call_back: Required callback function to report spi data as a
                    result of read command
 
         :param chip_select_pin: chip select pin number
@@ -1044,7 +1108,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         :param spi_port: SPI port 0 or 1
 
-        :param call_back: Required callback function to report i2c data as a
+        :param call_back: Required callback function to report spi data as a
                    result of read command
 
         :param chip_select_pin: chip select pin number
@@ -1111,7 +1175,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         :param spi_port: SPI port 0 or 1
 
-        :param call_back: Required callback function to report i2c data as a
+        :param call_back: Required callback function to report spi data as a
                    result of read command
 
         :param chip_select_pin: chip select pin number
@@ -1134,7 +1198,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         :param spi_port: SPI port 0 or 1
 
-        :param call_back: Required callback function to report i2c data as a
+        :param call_back: Required callback function to report spi data as a
                    result of read command
 
         :param chip_select_pin: chip select pin number
@@ -1486,6 +1550,9 @@ class TelemetrixRpiPico(threading.Thread):
                        (report[1] + (report[2] / 100)), time.time()]
 
         cb(cb_list)
+
+    def _spi_report(self):
+        raise NotImplementedError
 
     def _run_threads(self):
         self.run_event.set()
