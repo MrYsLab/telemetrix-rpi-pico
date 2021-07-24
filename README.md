@@ -18,6 +18,10 @@
 * July 24 2021
     * Coded set_pin_mode_spi. Not yet tested.
     * Added message definitions for various SPI commands to private constants file.
+    * Coded spi_read_blocking. Not yet tested.
+    * Coded spi_write_blocking. Not yet tested.
+    NOTE: I am going to code the pico side to test the new commands and return to code 
+      the rest when I get basics working across the interface.
   
 
 # Telemetrix-RPi-Pico
