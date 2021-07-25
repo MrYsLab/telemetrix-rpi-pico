@@ -26,7 +26,7 @@
 * July 25
     * Implemented read_blocking_spi method. Not yet tested.
     * Began to implement example to test with mpu9250. Not yet tested.
-    * Seperated chip select and deselect as a seperate method from reads and writes.
+    * Seperated chip select and deselect as a separate method from reads and writes.
   
 
 # Telemetrix-RPi-Pico
