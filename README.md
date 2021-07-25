@@ -22,6 +22,10 @@
     * Coded spi_write_blocking. Not yet tested.
     NOTE: I am going to code the pico side to test the new commands and return to code 
       the rest when I get basics working across the interface.
+      
+* July 25
+    * Implemented read_blocking_spi method. Not yet tested.
+    * Began to implement example to test with mpu9250. Not yet tested.
   
 
 # Telemetrix-RPi-Pico

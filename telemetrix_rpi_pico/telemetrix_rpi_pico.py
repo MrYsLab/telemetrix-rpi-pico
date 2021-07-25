@@ -962,7 +962,7 @@ class TelemetrixRpiPico(threading.Thread):
                            NOTE: You must specify the chips select pins here!
 
         """
-        # determine if the i2c port is specified correctly
+        # determine if the spi port is specified correctly
         if spi_port not in [0, 1]:
             if self.shutdown_on_exception:
                 self.shutdown()
@@ -1492,7 +1492,6 @@ class TelemetrixRpiPico(threading.Thread):
 
         self.firmware_version = [data[0], data[1]]
 
-    # TBD
     def _i2c_read_report(self, data):
         """
         Execute callback for i2c reads.
@@ -1618,8 +1617,22 @@ class TelemetrixRpiPico(threading.Thread):
 
         cb(cb_list)
 
-    def _spi_report(self):
-        raise NotImplementedError
+    def _spi_report(self, report):
+        """
+        Execute callback for spi reads.
+
+        :param report: [SPI_READ_REPORT, spi_port, number of bytes read, data]
+
+        """
+
+        cb_list = [PrivateConstants.SPI_REPORT, report[0], report[1]] + report[2:]
+
+        cb_list.append(time.time())
+
+        if cb_list[1]:
+            self.spi_callback2(cb_list)
+        else:
+            self.spi_callback(cb_list)
 
     def _run_threads(self):
         self.run_event.set()
