@@ -941,7 +941,8 @@ class TelemetrixRpiPico(threading.Thread):
         self.pico_pins[pin_number] = PrivateConstants.AT_SERVO
 
     def set_pin_mode_spi(self, spi_port=0, miso=16, mosi=19, clock_pin=18,
-                         clk_frequency=500000, chip_select_list=None):
+                         clk_frequency=500000, chip_select_list=None,
+                         qualify_pins=True):
         """
         Specify the SPI port, SPI pins, clock frequency and an optional
         list of chip select pins. The SPI port is configured as a "master".
@@ -950,7 +951,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         :param miso: SPI data receive pin
 
-        :param mosi: SPI data transmit pin
+        :param mosi: SPI data transmit pin (19 for
 
         :param clock_pin: clock pin
 
@@ -961,39 +962,57 @@ class TelemetrixRpiPico(threading.Thread):
                            ready to be used for chip select.
                            NOTE: You must specify the chips select pins here!
 
+        :param qualify_pins: If true validate
+
+                            for spi0:
+                                 MOSI=19
+
+                                 MISO=16
+
+                                 CLOCK=18
+
+                             for spi1:
+
+                                 MOSI=15
+
+                                 MISO=12
+
+                                 CLOCK=14
         """
         # determine if the spi port is specified correctly
         if spi_port not in [0, 1]:
             if self.shutdown_on_exception:
                 self.shutdown()
             raise RuntimeError('spi port must be either a 0 or 1')
-        # determine if the spi gpio's are valid
-        if spi_port == 0:
-            if mosi != 19:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError('For spi0 mosi must be 19.')
-            if miso != 16:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError('For spi0 miso must be 16.')
-            if clock_pin != 18:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError('For spi0 clock must be 18.')
-        else:
-            if mosi != 15:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError('For spi1 mosi must be 15.')
-            if miso != 12:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError('For spi1 miso must be 12.')
-            if clock_pin != 14:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError('For spi0 clock must be 14.')
+
+        # determine if the spi gpio's are valid if qualify_pin is True.
+        if qualify_pins:
+            if spi_port == 0:
+                if mosi != 19:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError('For spi0 mosi must be 19.')
+                if miso != 16:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError('For spi0 miso must be 16.')
+                if clock_pin != 18:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError('For spi0 clock must be 18.')
+            else:
+                if mosi != 15:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError('For spi1 mosi must be 15.')
+                if miso != 12:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError('For spi1 miso must be 12.')
+                if clock_pin != 14:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError('For spi0 clock must be 14.')
 
         # check if mosi, miso or clock pins have already been assigned
         if self.pico_pins[mosi] != PrivateConstants.AT_MODE_NOT_SET:
@@ -1106,8 +1125,23 @@ class TelemetrixRpiPico(threading.Thread):
                 self.shutdown()
             raise RuntimeError('Maximum number of supported sonar devices exceeded.')
 
+    def spi_cs_control(self, chip_select_pin, select):
+        """
+        Control an SPI chip select line
+        :param chip_select_pin: pin connected to CS
+
+        :param select: True=select, False=deselect
+        """
+
+        if self.pico_pins[chip_select_pin] != PrivateConstants.AT_SPI:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(f'spi_read_blocking: Invalid chip select pin'
+                               f' {chip_select_pin}.')
+        command = [PrivateConstants.SPI_CS_CONTROL, chip_select_pin, select]
+        self._send_command(command)
+
     def spi_read_blocking(self, number_of_bytes, spi_port=0, call_back=None,
-                          chip_select_pin=17,
                           repeated_tx_data=0):
         """
         Read the specified number of bytes from the specified SPI port and
@@ -1119,8 +1153,6 @@ class TelemetrixRpiPico(threading.Thread):
 
         :param call_back: Required callback function to report spi data as a
                    result of read command
-
-        :param chip_select_pin: chip select pin number
 
         :param repeated_tx_data: repeated data to send
 
@@ -1135,18 +1167,11 @@ class TelemetrixRpiPico(threading.Thread):
         else:
             self.spi_callback2 = call_back
 
-        if self.pico_pins[chip_select_pin] != PrivateConstants.AT_SPI:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(f'spi_read_blocking: Invalid chip select pin'
-                               f' {chip_select_pin}.')
-
         command = [PrivateConstants.SPI_READ_BLOCKING, spi_port, number_of_bytes,
-                   chip_select_pin, repeated_tx_data]
+                   repeated_tx_data]
         self._send_command(command)
 
     def spi_read16_blocking(self, number_of_bytes, spi_port=0, call_back=None,
-                            chip_select_pin=17,
                             repeated_tx_data=0):
         """
         Read the specified number of 16 bi values from the specified SPI port and
@@ -1158,8 +1183,6 @@ class TelemetrixRpiPico(threading.Thread):
 
         :param call_back: Required callback function to report spi data as a
                    result of read command
-
-        :param chip_select_pin: chip select pin number
 
         :param repeated_tx_data: repeated data to send
 
@@ -1182,7 +1205,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         raise NotImplementedError
 
-    def spi_write_blocking(self, bytes_to_write, spi_port=0, chip_select_pin=17):
+    def spi_write_blocking(self, bytes_to_write, spi_port=0):
         """
         Write a list of bytes to the SPI device.
 
@@ -1191,23 +1214,8 @@ class TelemetrixRpiPico(threading.Thread):
 
         :param spi_port: SPI port 0 or 1
 
-        :param chip_select_pin: chip select pin number
         """
-
-        if self.pico_pins[chip_select_pin] != PrivateConstants.AT_SPI:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(f'spi_write_blocking: Invalid chip select pin'
-                               f' {chip_select_pin}.')
-
-        if type(bytes_to_write) != list:
-            if self.pico_pins[chip_select_pin] != PrivateConstants.AT_SPI:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(f'spi_write_blocking: data must be supplied in the '
-                                   f'form of a list.')
-
-        command = [PrivateConstants.SPI_WRITE_BLOCKING, spi_port, chip_select_pin,
+        command = [PrivateConstants.SPI_WRITE_BLOCKING, spi_port,
                    len(bytes_to_write)]
 
         for data in bytes_to_write:
@@ -1215,7 +1223,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         self._send_command(command)
 
-    def spi_write16_blocking(self, bytes_to_write, spi_port=0, chip_select_pin=17):
+    def spi_write16_blocking(self, bytes_to_write, spi_port=0):
         """
         Write a list of 16 bit values to the SPI device.
 
@@ -1224,14 +1232,12 @@ class TelemetrixRpiPico(threading.Thread):
 
         :param spi_port: SPI port 0 or 1
 
-        :param chip_select_pin: chip select pin number
         """
 
         raise NotImplementedError
 
     def spi_write_read_blocking(self, number_of_bytes_to_read,
-                                bytes_to_write, spi_port=0, call_back=None,
-                                chip_select_pin=17):
+                                bytes_to_write, spi_port=0, call_back=None):
         """
         Write a list of bytes to the SPI and simultaneously read the specified number
         of bytes. The callback will contain the data read.
@@ -1245,15 +1251,12 @@ class TelemetrixRpiPico(threading.Thread):
         :param call_back: Required callback function to report spi data as a
                    result of read command
 
-        :param chip_select_pin: chip select pin number
-
         """
 
         raise NotImplementedError
 
     def spi_write16_read16_blocking(self, number_of_values_to_read,
-                                    values_to_write, spi_port=0, call_back=None,
-                                    chip_select_pin=17):
+                                    values_to_write, spi_port=0, call_back=None):
         """
         Write a list of 16 bit values to the SPI and simultaneously read the specified
         number of 16 bit values from the SPI device. The callback will contains the 16 bit
@@ -1267,8 +1270,6 @@ class TelemetrixRpiPico(threading.Thread):
 
         :param call_back: Required callback function to report spi data as a
                    result of read command
-
-        :param chip_select_pin: chip select pin number
 
         """
 

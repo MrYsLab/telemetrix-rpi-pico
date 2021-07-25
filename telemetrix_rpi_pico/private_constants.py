@@ -55,6 +55,7 @@ class PrivateConstants:
     SPI_WRITE16_BLOCKING = 29
     SPI_READ16_BLOCKING = 30
     SPI_SET_FORMAT = 31
+    SPI_CS_CONTROL = 32
 
     # reports
     # debug data from Arduino
