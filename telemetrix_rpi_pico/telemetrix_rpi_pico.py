@@ -222,7 +222,7 @@ class TelemetrixRpiPico(threading.Thread):
         self.neopixels_initiated = False
 
         print(f"TelemetrixRpiPico:  Version {PrivateConstants.TELEMETRIX_VERSION}\n\n"
-              f"Copyright (c) 2020 Alan Yorinks All Rights Reserved.\n")
+              f"Copyright (c) 2020-2021 Alan Yorinks All Rights Reserved.\n")
 
         # using the serial link
 
