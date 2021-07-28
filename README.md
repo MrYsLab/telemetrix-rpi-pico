@@ -28,6 +28,9 @@
     * Began to implement example to test with mpu9250. Not yet tested.
     * Seperated chip select and deselect as a separate method from reads and writes.
   
+* July 28
+    * First candidate releae.
+
 
 # Telemetrix-RPi-Pico
 

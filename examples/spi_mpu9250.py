@@ -1,3 +1,4 @@
+# noinspection GrazieInspection
 """
  Copyright (c) 2021 Alan Yorinks All rights reserved.
 
@@ -15,122 +16,124 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+"""
+This example initializes an MPU9250 and then reads the accelerometer
+and gyro values and prints them to the screen.
+
+The processing of the data returned from the MPU9250 is done within 
+the callback functions.
+"""
+
 import sys
 import time
+
 from telemetrix_rpi_pico import telemetrix_rpi_pico
+
+# Instantiate the TelemetrixRpiPico class accepting all default parameters.
+pico = telemetrix_rpi_pico.TelemetrixRpiPico()
+
 """
-This example sets up and control an MPU9250 spi accelerometer.
-It will continuously print data the raw xyz data from the device.
+ CALLBACKS
+ 
+ These functions process the data returned from the MPU9250
 """
 
-class MPU9250_SPI:
+
+def the_device_callback(report):
     """
-        This class provides control of an MPU9250 accelerometer using SPI.
+    Verify the device ID
+    :param report: [SPI_REPORT, SPI_PORT, Number of bytes, device id]
     """
-    def __init__(self, spi_port, miso,  mosi, clock_pin,
-                              chip_select_list, qualify_pins):
-        """
-
-        :param spi_port: 0 or 1
-        :param miso: miso pin
-        :param mosi: mosi pin
-        :param clock_pin: clock pin
-        :param chip_select_list: chip select pin list
-        :param qualify_pins: qualify pins again standard set
-        """
-        self.spi_port = spi_port
-        self.mosi = mosi
-        self.miso = miso
-        self.clock_pin = clock_pin
-        self.chip_select_list = chip_select_list
-        self.cs = chip_select_list[0]
-
-        self.pico = telemetrix_rpi_pico.TelemetrixRpiPico()
-
-        # initialize the spi0 to use a "non-standard" set of pins
-        self.pico.set_pin_mode_spi(spi_port, miso=self.miso, mosi=self.mosi,
-                                   clock_pin=self.clock_pin,
-                                  chip_select_list=[5], qualify_pins=False)
-        self.run_the_example()
-
-    def run_the_example(self):
-        """
-        configure the mpu9250 to get x, y, and z values.
-        """
-
-        # reset the mpu9250
-        self.reset_mpu9250()
-
-        # get the
-
-    def reset_mpu9250(self):
-        """
-        Reset the chip
-        """
-        self.pico.write_blocking_spi([0x6B, 0x00], spi_port=self.spi_port,
-                                     chip_select_pin=self.cs)
+    if report[3] == 0x71:
+        print('MPU9250 Device ID confirmed.')
+    else:
+        print(f'Unexpected device ID: {report[3]}')
 
 
-    def read_registers(self):
-
-# the call back function to print the adxl345 data
-def the_callback(data):
+# noinspection GrazieInspection
+def accel_callback(report):
     """
-    Data is supplied by the library.
-    :param data: [report_type, i2c port, Device address, device read register,
-    number of bytes returned, x data pair, y data pair, z data pair
-    time_stamp]
+    Print the AX, AY and AZ values.
+    :param report: [SPI_REPORT, SPI_PORT, Number of bytes, AX-msb, AX-lsb
+    AY-msb, AY-lsb, AX-msb, AX-lsb]
     """
-
-    print(data)
-    time_stamp = data.pop()
-    date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time_stamp))
-    print(f'Raw Data:  {data}')
-    print(f'MPU9250 Report On: {date}: ')
-    print(f'\t\ti2c_port={ data[1]} x-pair={data[5]}, '
-          f'{data[6]}  y-pair={data[7]}, '
-          f'{data[8]} z-pair={data[9]}, '
-          f'{data[10]}')
-    print()
+    print(f"AX = {int.from_bytes(report[3:5], byteorder='big', signed=True)}  "
+          f"AY = {int.from_bytes(report[5:7], byteorder='big', signed=True)}  "
+          f"AZ = {int.from_bytes(report[7:9], byteorder='big', signed=True)}  ")
 
 
-def mpu9250(my_board):
-    # initialize spi0 with MOSI=7  MISO=5  CLK=6 CS=5
-    my_board.set_pin_mode_spi(0, miso=5, mosi=7, clock_pin=6,
-                              chip_select_list=5, qualify_pins=False)
-    time.sleep(.2)
+def gyro_callback(report):
+    # noinspection GrazieInspection
+    """
+        Print the GX, GY, and GZ values.
 
-    # reset the mpu9250
-    my_board.write_blocking_spi([0x6B, 0x00], spi_port=0, chip_select_pin=5)
-
-
-
-    # set up power and control register
-    my_board.i2c_write(83, [45, 0])
-    # time.sleep(.2)
-    my_board.i2c_write(83, [45, 8])
-    # time.sleep(.2)
-
-    # set up the data format register
-    my_board.i2c_write(83, [49, 8])
-    # time.sleep(.5)
-    my_board.i2c_write(83, [49, 3])
-    # time.sleep(.1)
-
-    # read_count = 20
-    while True:
-        # read 6 bytes from the data register
-        try:
-            my_board.i2c_read(83, 50, 6, the_callback)
-            # time.sleep(.3)
-        except (KeyboardInterrupt, RuntimeError):
-            my_board.shutdown()
-            sys.exit(0)
+        :param report: [SPI_REPORT, SPI_PORT, Number of bytes, GX-msb, GX-lsb
+        GY-msb, GY-lsb, GX-msb, GX-lsb]
+        """
+    print(f"GX = {int.from_bytes(report[3:5], byteorder='big', signed=True)}  "
+          f"GY = {int.from_bytes(report[5:7], byteorder='big', signed=True)}  "
+          f"GZ = {int.from_bytes(report[7:9], byteorder='big', signed=True)}  ")
 
 
-board = telemetrix_rpi_pico.TelemetrixRpiPico()
-try:
-    mpu9250(board)
-except KeyboardInterrupt:
-    board.shutdown()
-    sys.exit(0)
+# This is a utility function to read SPI data
+def read_data_from_device(register, number_of_bytes, callback):
+    # noinspection GrazieInspection
+    """
+    This function reads the number of bytes using the register value.
+    Data is returned via the specified callback.
+
+    :param register: register value
+    :param number_of_bytes: number of bytes to read
+    :param callback: callback function
+    """
+    # OR in the read bit
+    data = register | 0x80
+
+    # activate chip select
+    pico.spi_cs_control(5, 0)
+
+    # select the register
+    pico.spi_write_blocking([data], 0)
+    time.sleep(.1)
+
+    # read the data back
+    pico.spi_read_blocking(number_of_bytes, 0, call_back=callback)
+
+    # deactivate chip select
+    pico.spi_cs_control(5, 1)
+    time.sleep(.1)
+
+
+# Convenience values for the pins.
+# Note that the CS value is within a list
+
+# These are "non-standard" pin-numbers, and therefore
+# the qualify_pins parameter is set to FALSe
+
+SPI_PORT = 0
+MISO = 4
+MOSI = 7
+CLK = 6
+CS = [5]
+
+NUM_BYTES_TO_READ = 6
+FREQ = 500000
+
+# initialize the device
+pico.set_pin_mode_spi(SPI_PORT, MISO, MOSI, NUM_BYTES_TO_READ,
+                      FREQ, CS, qualify_pins=False)
+
+# get the device ID
+read_data_from_device(0x75, 1, the_device_callback)
+
+while True:
+    try:
+        # get the acceleration values
+        read_data_from_device(0x3b | 0x80, 6, accel_callback)
+
+        # get the gyro values
+        read_data_from_device(0x43 | 0x80, 6, gyro_callback)
+        time.sleep(.1)
+    except KeyboardInterrupt:
+        pico.shutdown()
+        sys.exit(0)
