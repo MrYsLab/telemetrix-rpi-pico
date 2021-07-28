@@ -1192,7 +1192,8 @@ class TelemetrixRpiPico(threading.Thread):
         :param spi_phase: clock phase. 0 or 1.
         """
 
-        command = [PrivateConstants.SPI_SET_FORMAT, spi_port, data_bits, spi_phase]
+        command = [PrivateConstants.SPI_SET_FORMAT, spi_port, data_bits,
+                   spi_polarity, spi_phase]
         self._send_command(command)
 
     def spi_write_blocking(self, bytes_to_write, spi_port=0):
