@@ -18,6 +18,7 @@ nav:
         - NeoPixel Methods: neopixel.md
         - PWM Methods: pwm.md
         - Servo Methods: servo.md
+        - SPI Methods: spi.md
         - Shutting Down: management.md
         - Diagnostic Aids: debug.md
     - The Tmx-Pico-Aio API:
@@ -32,6 +33,7 @@ nav:
           - NeoPixel Methods: neopixel2.md
           - PWM Methods: pwm2.md
           - Servo Methods: servo2.md
+          - SPI Methods: spi2.md
           - Shutting Down: management2.md
           - Diagnostic Aids: debug2.md
     - About: about.md
