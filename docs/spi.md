@@ -15,9 +15,9 @@ manufacturer's datasheet.
         :param mosi: SPI data transmit pin 
         :param clock_pin: clock pin
         :param clk_frequency: clock frequency in Hz.
-        :param chip_select_list: this is a list of pins to be used for chip select.
-                           The pins will be configured as output, and set to high
-                           ready to be used for chip select.
+        :param chip_select_list: this is a list of pins to be used for
+                           chip select. The pins will be configured as output,
+                           and set to high ready to be used for chip select.
                            NOTE: You must specify the chips select pins here!
         :param qualify_pins: If true validate
                             for spi0:
@@ -48,79 +48,67 @@ All chip select pins for the select SPI port are specified when calling this met
     :param select: 0=select, 1=deselect
     
 ```
-## i2c_read
+This method is used to state of the selected chip select pin. The chip select pin must be
+one of the pins specified when calling set_pin_mode_spi.
+
+
+## spi_read_blocking
 
 ```python
- def i2c_read(self, address, register, number_of_bytes, callback=None, i2c_port=0, no_stop=False)
+ def spi_read_blocking(self, number_of_bytes, spi_port=0, call_back=None, 
+                       repeated_tx_data=0)
 
-    Read the specified number of bytes from the specified register for the i2c device.
+    Read the specified number of bytes from the specified SPI port and call 
+    the callback function with the reported data.
 
-    :param address: i2c device address
+    :param number_of_bytes: Number of bytes to read
 
-    :param register: i2c register (or None if no register selection is needed)
+    :param spi_port: SPI port 0 or 1
 
-    :param number_of_bytes: number of bytes to be read
+    :param call_back: Required callback function to report spi data as a result 
+                      of read command
 
-    :param callback: Required callback function to report i2c data as a result of read command
+    :param repeated_tx_data: repeated data to send
 
-    :param i2c_port: 0 = port 0, 1 = port 1
-
-    :param no_stop: If true, master retains control of the bus at the end of the transfer (no Stop is issued), and the next transfer will begin with a Restart rather than a Start.
-
-    callback returns a data list: [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes, time-stamp]
-
-    I2C_READ_REPORT = 10
 ```
+This method retrieves the requested number of bytes and returns 
+the result within the specified callback method. 
 
-This method allows you to read a specified number of bytes from the device. 
+The callback argument is not optional and must be specified.
 
-The **address** parameter specifies the i2c address of the device.
-
-The **register** parameter specifies the i2c register to use. If the device does not 
-require a register to be specified, this parameter is set to None.
-
-The **number_of_bytes** parameter specifies how many bytes are to be read from the device.
-Data is returned via callback, and therefore you must specify a **callback** parameter.
-
-The **i2c_port** specifies which of the two i2c ports to use for this device. The SDA 
-and SCL pins are implied as a result of the call to  _set_pin_mode_i2c_.
-
-Some devices require that after a read, the i2c master retain control of the bus. The 
-**no_stop** parameter allows you to select this behavior.
-
-The data returned to the callback is similar to all other callbacks. The items in the 
-list passed to the callback function are:
-
-[I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes, data bytes, time-stamp]
-
-The first element is the report type, and I2C_READ_REPORT has a value of 10. The 
-i2c_port, the device's i2c address, the number of the bytes returned, the actual data 
-bytes, and a time-stamp are also contained in the report.
-
-## i2c_write
+## spi_write_blocking
 
 ```python
- def i2c_write(self, address, args, i2c_port=0, no_stop=False)
+ def spi_write_blocking(self, bytes_to_write, spi_port=0)
 
-    Write data to an i2c device.
+    Write a list of bytes to the SPI device.
 
-    :param address: i2c device address
+    :param bytes_to_write: A list of bytes to write. This must be in the form of a list.
 
-    :param args: A variable number of bytes to be sent to the device passed in as a list. 
-                  NOTE: THIS MUST BE IN THE FORM OF A LIST.
+    :param spi_port: SPI port 0 or 1
 
-    :param i2c_port: 0= port 0, 1 = port 1
-
-    :param no_stop: If true, master retains control of the bus at the end of the 
-                    transfer (no Stop is issued), and the next transfer will begin with a 
-                    Restart rather than a Start.
 ```
-This method is used to write a variable number of bytes to an i2c device. You specify 
-the i2c address, a list of the bytes to send, the i2c port to use, and a flag to 
-indicate if the master retains control of the bus at the end of the transfer.
+This method writes a list of bytes to the specified SPI port.
+
+## spi_set_format
+
+```python
+ def spi_set_format(self, spi_port=0, data_bits=8, spi_polarity=0, spi_phase=0)
+
+    Configure how the SPI serializes and de-serializes data on the wire.
+
+    :param spi_port: SPI port 0 or 1
+
+    :param data_bits: Number of data bits per transfer. Valid range = 4-16
+
+    :param spi_polarity: clock polarity. 0 or 1.
+
+    :param spi_phase: clock phase. 0 or 1.
+```
+This method allows you to specify serialization specifics for SPI data transfers.
 
 
-## Example: [i2c_adxl345_accelerometer.py](https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/examples/i2c_adxl345_accelerometer.py)
+## Example: [i2c_adxl345_accelerometer.py](https://github.com/MrYsLab/telemetrix-rpi-pico/blob/master/examples/spi_mpu9250.py)
 
 ## Example Sample Output:
 ```python
