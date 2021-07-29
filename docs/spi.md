@@ -33,12 +33,21 @@ manufacturer's datasheet.
         """
 ```
 
-This method must be called before calling any other spi method. Using this 
-method, select one of the i2c ports and associate the SDA and SCL pins with that port.
+This method must be called before calling any other spi method. You may choose
+to use the "standard" MOSI, MISO and Clock pins as listed above, or if you wish to use
+a different set of pins, set *qualify_pins* to False. 
 
+All chip select pins for the select SPI port are specified when calling this method.
 
+## spi_cs_control
+```python
+ def spi_cs_control(self, chip_select_pin, select)
 
+    Control an SPI chip select line :param chip_select_pin: pin connected to CS
 
+    :param select: 0=select, 1=deselect
+    
+```
 ## i2c_read
 
 ```python
