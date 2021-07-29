@@ -115,6 +115,7 @@ MISO = 4
 MOSI = 7
 CLK = 6
 CS = [5]
+CS_PIN = 5
 
 NUM_BYTES_TO_READ = 6
 FREQ = 500000
@@ -122,6 +123,13 @@ FREQ = 500000
 # initialize the device
 pico.set_pin_mode_spi(SPI_PORT, MISO, MOSI, NUM_BYTES_TO_READ,
                       FREQ, CS, qualify_pins=False)
+
+# reset the device
+pico.spi_cs_control(CS_PIN, 0)
+pico.spi_write_blocking([0x6B, 0], SPI_PORT)
+pico.spi_cs_control(CS_PIN, 1)
+
+time.sleep(.3)
 
 # get the device ID
 read_data_from_device(0x75, 1, the_device_callback)
