@@ -951,7 +951,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         :param miso: SPI data receive pin
 
-        :param mosi: SPI data transmit pin (19 for
+        :param mosi: SPI data transmit pin
 
         :param clock_pin: clock pin
 
