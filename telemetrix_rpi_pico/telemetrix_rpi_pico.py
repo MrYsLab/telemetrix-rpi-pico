@@ -1165,6 +1165,19 @@ class TelemetrixRpiPico(threading.Thread):
         :param repeated_tx_data: repeated data to send
 
         """
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    'spi_read_blocking: set_pin_mode_spi never called for spi port 0.')
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    'spi_read_blocking: set_pin_mode_spi never called for spi port 1.')
 
         if not call_back:
             if self.shutdown_on_exception:
@@ -1192,6 +1205,20 @@ class TelemetrixRpiPico(threading.Thread):
         :param spi_phase: clock phase. 0 or 1.
         """
 
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    'spi_set_format: set_pin_mode_spi never called for spi port 0.')
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    'spi_set_format: set_pin_mode_spi never called for spi port 1.')
+
         command = [PrivateConstants.SPI_SET_FORMAT, spi_port, data_bits,
                    spi_polarity, spi_phase]
         self._send_command(command)
@@ -1206,6 +1233,19 @@ class TelemetrixRpiPico(threading.Thread):
         :param spi_port: SPI port 0 or 1
 
         """
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    'spi_write_blocking: set_pin_mode_spi never called for spi port 0.')
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    'spi_write_blocking: set_pin_mode_spi never called for spi port 1.')
         command = [PrivateConstants.SPI_WRITE_BLOCKING, spi_port,
                    len(bytes_to_write)]
 
