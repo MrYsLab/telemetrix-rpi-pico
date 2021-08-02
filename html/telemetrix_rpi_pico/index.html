@@ -265,7 +265,7 @@ class TelemetrixRpiPico(threading.Thread):
         self.neopixels_initiated = False
 
         print(f&#34;TelemetrixRpiPico:  Version {PrivateConstants.TELEMETRIX_VERSION}\n\n&#34;
-              f&#34;Copyright (c) 2020 Alan Yorinks All Rights Reserved.\n&#34;)
+              f&#34;Copyright (c) 2020-2021 Alan Yorinks All Rights Reserved.\n&#34;)
 
         # using the serial link
 
@@ -556,8 +556,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         callback returns a data list:
         [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
-        data bytes,
-        time-stamp]
+        data bytes, time-stamp]
 
         I2C_READ_REPORT = 10
 
@@ -994,7 +993,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         :param miso: SPI data receive pin
 
-        :param mosi: SPI data transmit pin (19 for
+        :param mosi: SPI data transmit pin
 
         :param clock_pin: clock pin
 
@@ -1207,7 +1206,25 @@ class TelemetrixRpiPico(threading.Thread):
 
         :param repeated_tx_data: repeated data to send
 
+        callback returns a data list:
+        [SPI_READ_REPORT, spi_port, count of data bytes, data bytes, time-stamp]
+
+        SPI_READ_REPORT = 13
+
         &#34;&#34;&#34;
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_read_blocking: set_pin_mode_spi never called for spi port 0.&#39;)
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_read_blocking: set_pin_mode_spi never called for spi port 1.&#39;)
 
         if not call_back:
             if self.shutdown_on_exception:
@@ -1235,7 +1252,22 @@ class TelemetrixRpiPico(threading.Thread):
         :param spi_phase: clock phase. 0 or 1.
         &#34;&#34;&#34;
 
-        command = [PrivateConstants.SPI_SET_FORMAT, spi_port, data_bits, spi_phase]
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_set_format: set_pin_mode_spi never called for spi port 0.&#39;)
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_set_format: set_pin_mode_spi never called for spi port 1.&#39;)
+
+        command = [PrivateConstants.SPI_SET_FORMAT, spi_port, data_bits,
+                   spi_polarity, spi_phase]
         self._send_command(command)
 
     def spi_write_blocking(self, bytes_to_write, spi_port=0):
@@ -1248,6 +1280,19 @@ class TelemetrixRpiPico(threading.Thread):
         :param spi_port: SPI port 0 or 1
 
         &#34;&#34;&#34;
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_write_blocking: set_pin_mode_spi never called for spi port 0.&#39;)
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_write_blocking: set_pin_mode_spi never called for spi port 1.&#39;)
         command = [PrivateConstants.SPI_WRITE_BLOCKING, spi_port,
                    len(bytes_to_write)]
 
@@ -1917,7 +1962,7 @@ receiving a KeyboardInterrupt exception</p>
         self.neopixels_initiated = False
 
         print(f&#34;TelemetrixRpiPico:  Version {PrivateConstants.TELEMETRIX_VERSION}\n\n&#34;
-              f&#34;Copyright (c) 2020 Alan Yorinks All Rights Reserved.\n&#34;)
+              f&#34;Copyright (c) 2020-2021 Alan Yorinks All Rights Reserved.\n&#34;)
 
         # using the serial link
 
@@ -2208,8 +2253,7 @@ receiving a KeyboardInterrupt exception</p>
 
         callback returns a data list:
         [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
-        data bytes,
-        time-stamp]
+        data bytes, time-stamp]
 
         I2C_READ_REPORT = 10
 
@@ -2646,7 +2690,7 @@ receiving a KeyboardInterrupt exception</p>
 
         :param miso: SPI data receive pin
 
-        :param mosi: SPI data transmit pin (19 for
+        :param mosi: SPI data transmit pin
 
         :param clock_pin: clock pin
 
@@ -2859,7 +2903,25 @@ receiving a KeyboardInterrupt exception</p>
 
         :param repeated_tx_data: repeated data to send
 
+        callback returns a data list:
+        [SPI_READ_REPORT, spi_port, count of data bytes, data bytes, time-stamp]
+
+        SPI_READ_REPORT = 13
+
         &#34;&#34;&#34;
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_read_blocking: set_pin_mode_spi never called for spi port 0.&#39;)
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_read_blocking: set_pin_mode_spi never called for spi port 1.&#39;)
 
         if not call_back:
             if self.shutdown_on_exception:
@@ -2887,7 +2949,22 @@ receiving a KeyboardInterrupt exception</p>
         :param spi_phase: clock phase. 0 or 1.
         &#34;&#34;&#34;
 
-        command = [PrivateConstants.SPI_SET_FORMAT, spi_port, data_bits, spi_phase]
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_set_format: set_pin_mode_spi never called for spi port 0.&#39;)
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_set_format: set_pin_mode_spi never called for spi port 1.&#39;)
+
+        command = [PrivateConstants.SPI_SET_FORMAT, spi_port, data_bits,
+                   spi_polarity, spi_phase]
         self._send_command(command)
 
     def spi_write_blocking(self, bytes_to_write, spi_port=0):
@@ -2900,6 +2977,19 @@ receiving a KeyboardInterrupt exception</p>
         :param spi_port: SPI port 0 or 1
 
         &#34;&#34;&#34;
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_write_blocking: set_pin_mode_spi never called for spi port 0.&#39;)
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_write_blocking: set_pin_mode_spi never called for spi port 1.&#39;)
         command = [PrivateConstants.SPI_WRITE_BLOCKING, spi_port,
                    len(bytes_to_write)]
 
@@ -3570,8 +3660,7 @@ transfer (no Stop is issued), and the next transfer will
 begin with a Restart rather than a Start.</p>
 <p>callback returns a data list:
 [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
-data bytes,
-time-stamp]</p>
+data bytes, time-stamp]</p>
 <p>I2C_READ_REPORT = 10</p></div>
 <details class="source">
 <summary>
@@ -3602,8 +3691,7 @@ time-stamp]</p>
 
     callback returns a data list:
     [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
-    data bytes,
-    time-stamp]
+    data bytes, time-stamp]
 
     I2C_READ_REPORT = 10
 
@@ -4417,7 +4505,7 @@ Sensor trigger gpio pin</p>
 list of chip select pins. The SPI port is configured as a "master".</p>
 <p>:param spi_port: 0 = spi0, 1 = spi1</p>
 <p>:param miso: SPI data receive pin</p>
-<p>:param mosi: SPI data transmit pin (19 for</p>
+<p>:param mosi: SPI data transmit pin</p>
 <p>:param clock_pin: clock pin</p>
 <p>:param clk_frequency: clock frequency in Hz.</p>
 <p>:param chip_select_list: this is a list of pins to be used for chip select.
@@ -4457,7 +4545,7 @@ freq 3, freq 2, freq 1, number of cs pins, cs pins&hellip;]</p></div>
 
     :param miso: SPI data receive pin
 
-    :param mosi: SPI data transmit pin (19 for
+    :param mosi: SPI data transmit pin
 
     :param clock_pin: clock pin
 
@@ -4651,7 +4739,10 @@ call the callback function with the reported data.</p>
 <p>:param spi_port: SPI port 0 or 1</p>
 <p>:param call_back: Required callback function to report spi data as a
 result of read command</p>
-<p>:param repeated_tx_data: repeated data to send</p></div>
+<p>:param repeated_tx_data: repeated data to send</p>
+<p>callback returns a data list:
+[SPI_READ_REPORT, spi_port, count of data bytes, data bytes, time-stamp]</p>
+<p>SPI_READ_REPORT = 13</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4671,7 +4762,25 @@ result of read command</p>
 
     :param repeated_tx_data: repeated data to send
 
+    callback returns a data list:
+    [SPI_READ_REPORT, spi_port, count of data bytes, data bytes, time-stamp]
+
+    SPI_READ_REPORT = 13
+
     &#34;&#34;&#34;
+    if not spi_port:
+        if not self.spi_0_active:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(
+                &#39;spi_read_blocking: set_pin_mode_spi never called for spi port 0.&#39;)
+
+    elif spi_port:
+        if not self.spi_1_active:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(
+                &#39;spi_read_blocking: set_pin_mode_spi never called for spi port 1.&#39;)
 
     if not call_back:
         if self.shutdown_on_exception:
@@ -4713,7 +4822,22 @@ result of read command</p>
     :param spi_phase: clock phase. 0 or 1.
     &#34;&#34;&#34;
 
-    command = [PrivateConstants.SPI_SET_FORMAT, spi_port, data_bits, spi_phase]
+    if not spi_port:
+        if not self.spi_0_active:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(
+                &#39;spi_set_format: set_pin_mode_spi never called for spi port 0.&#39;)
+
+    elif spi_port:
+        if not self.spi_1_active:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(
+                &#39;spi_set_format: set_pin_mode_spi never called for spi port 1.&#39;)
+
+    command = [PrivateConstants.SPI_SET_FORMAT, spi_port, data_bits,
+               spi_polarity, spi_phase]
     self._send_command(command)</code></pre>
 </details>
 </dd>
@@ -4739,6 +4863,19 @@ list.</p>
     :param spi_port: SPI port 0 or 1
 
     &#34;&#34;&#34;
+    if not spi_port:
+        if not self.spi_0_active:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(
+                &#39;spi_write_blocking: set_pin_mode_spi never called for spi port 0.&#39;)
+
+    elif spi_port:
+        if not self.spi_1_active:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(
+                &#39;spi_write_blocking: set_pin_mode_spi never called for spi port 1.&#39;)
     command = [PrivateConstants.SPI_WRITE_BLOCKING, spi_port,
                len(bytes_to_write)]
 
