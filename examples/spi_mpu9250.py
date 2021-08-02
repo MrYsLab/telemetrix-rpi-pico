@@ -121,7 +121,7 @@ NUM_BYTES_TO_READ = 6
 FREQ = 500000
 
 # initialize the device
-pico.set_pin_mode_spi(SPI_PORT, MISO, MOSI, NUM_BYTES_TO_READ,
+pico.set_pin_mode_spi(SPI_PORT, MISO, MOSI, CLK,
                       FREQ, CS, qualify_pins=False)
 
 # reset the device

@@ -513,8 +513,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         callback returns a data list:
         [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
-        data bytes,
-        time-stamp]
+        data bytes, time-stamp]
 
         I2C_READ_REPORT = 10
 
@@ -1163,6 +1162,11 @@ class TelemetrixRpiPico(threading.Thread):
                    result of read command
 
         :param repeated_tx_data: repeated data to send
+
+        callback returns a data list:
+        [SPI_READ_REPORT, spi_port, count of data bytes, data bytes, time-stamp]
+
+        SPI_READ_REPORT = 13
 
         """
         if not spi_port:
