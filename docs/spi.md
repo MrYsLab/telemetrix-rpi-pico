@@ -30,6 +30,8 @@ manufacturer's datasheet.
                                  CLOCK=14
         cammand message: [command, spi port, mosi, miso, clock, freq msb,
                           freq 3, freq 2, freq 1, number of cs pins, cs pins...]
+                          
+        
         """
 ```
 
@@ -69,6 +71,11 @@ one of the pins specified when calling set_pin_mode_spi.
                       of read command
 
     :param repeated_tx_data: repeated data to send
+
+    callback returns a data list:
+        [SPI_READ_REPORT, spi_port, count of data bytes, data bytes, time-stamp]
+
+        SPI_READ_REPORT = 13
 
 ```
 This method retrieves the requested number of bytes and returns 
