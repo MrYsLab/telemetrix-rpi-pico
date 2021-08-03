@@ -1,40 +1,9 @@
-# This is a working branch to implement an SPI interface.
-## An update log is below:
-
-* July 21 2021
-  * Created the spi branch.
-
-* July 23 2021
-  * Created stubs for the SPI methods. API can be viewed [here.](https://htmlpreview.github.io/?https://github.com/MrYsLab/telemetrix-rpi-pico/blob/spi/html/telemetrix_rpi_pico/index.html)
-    * set_pin_mode spi
-    * spi_read16_blocking
-    * spi_read_blocking
-    * spi_set_format
-    * spi_write16_blocking
-    * spi_write16_read16_blocking
-    * spi_write_blocking
-    * spi_write_read_blocking
-    
-* July 24 2021
-    * Coded set_pin_mode_spi. Not yet tested.
-    * Added message definitions for various SPI commands to private constants file.
-    * Coded spi_read_blocking. Not yet tested.
-    * Coded spi_write_blocking. Not yet tested.
-    NOTE: I am going to code the pico side to test the new commands and return to code 
-      the rest when I get basics working across the interface.
-      
-* July 25
-    * Implemented read_blocking_spi method. Not yet tested.
-    * Began to implement example to test with mpu9250. Not yet tested.
-    * Seperated chip select and deselect as a separate method from reads and writes.
-  
-* July 28
-    * First candidate releae.
-
 
 # Telemetrix-RPi-Pico
 
 Interact and monitor  a Raspberry  Pi Pico remotely  from your PC using Python.
+It is similar to Arduino Firmata, but written specifically for the Raspberry Pi
+Pico.
 
 ![](images/tmx.png)
 
@@ -51,6 +20,7 @@ The following functionality is implemented in this release:
 * PWM output
 * Loopback (for client/server link debugging)
 * I2C Support
+* SPI Support
 * NeoPixel Support
 * Servo Support
 * HC-SR04 Type Sonar Distance Sensor Support
