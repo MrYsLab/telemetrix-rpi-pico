@@ -1,6 +1,9 @@
+
 # Telemetrix-RPi-Pico
 
 Interact and monitor  a Raspberry  Pi Pico remotely  from your PC using Python.
+It is similar to Arduino Firmata, but written specifically for the Raspberry Pi
+Pico.
 
 ![](images/tmx.png)
 
@@ -17,6 +20,7 @@ The following functionality is implemented in this release:
 * PWM output
 * Loopback (for client/server link debugging)
 * I2C Support
+* SPI Support
 * NeoPixel Support
 * Servo Support
 * HC-SR04 Type Sonar Distance Sensor Support

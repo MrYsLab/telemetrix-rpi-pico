@@ -47,6 +47,11 @@ class PrivateConstants:
     SET_NEO_PIXEL = 21
     CLEAR_ALL_NEO_PIXELS = 22
     FILL_ALL_NEO_PIXELS = 23
+    SPI_INIT = 24
+    SPI_WRITE_BLOCKING = 25
+    SPI_READ_BLOCKING = 26
+    SPI_SET_FORMAT = 27
+    SPI_CS_CONTROL = 28
 
     # reports
     # debug data from Arduino
@@ -60,6 +65,7 @@ class PrivateConstants:
     I2C_READ_REPORT = 10
     SONAR_DISTANCE = 11
     DHT_REPORT = 12
+    SPI_REPORT = 13
 
     DEBUG_PRINT = 99
 
@@ -85,6 +91,7 @@ class PrivateConstants:
     AT_DHT = 8
     AT_I2C = 9
     AT_NEO_PIXEL = 10
+    AT_SPI = 11
     AT_MODE_NOT_SET = 255
 
     # flag to indicate that an i2c command does not specify a register

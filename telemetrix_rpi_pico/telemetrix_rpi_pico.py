@@ -129,6 +129,7 @@ class TelemetrixRpiPico(threading.Thread):
         self.report_dispatch.update(
             {PrivateConstants.SONAR_DISTANCE: self._sonar_distance_report})
         self.report_dispatch.update({PrivateConstants.DHT_REPORT: self._dht_report})
+        self.report_dispatch.update({PrivateConstants.SPI_REPORT: self._spi_report})
 
         # up to 16 pwm pins may be simultaneously active
         self.pwm_active_count = 0
@@ -143,6 +144,13 @@ class TelemetrixRpiPico(threading.Thread):
 
         self.i2c_0_active = False
         self.i2c_1_active = False
+
+        # spi
+        self.spi_callback = None
+        self.spi_callback2 = None
+
+        self.spi_0_active = False
+        self.spi_1_active = False
 
         # the trigger pin will be the key to retrieve
         # the callback for a specific HC-SR04
@@ -214,7 +222,7 @@ class TelemetrixRpiPico(threading.Thread):
         self.neopixels_initiated = False
 
         print(f"TelemetrixRpiPico:  Version {PrivateConstants.TELEMETRIX_VERSION}\n\n"
-              f"Copyright (c) 2020 Alan Yorinks All Rights Reserved.\n")
+              f"Copyright (c) 2020-2021 Alan Yorinks All Rights Reserved.\n")
 
         # using the serial link
 
@@ -505,8 +513,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         callback returns a data list:
         [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
-        data bytes,
-        time-stamp]
+        data bytes, time-stamp]
 
         I2C_READ_REPORT = 10
 
@@ -577,6 +584,9 @@ class TelemetrixRpiPico(threading.Thread):
                     self.shutdown()
                 raise RuntimeError(
                     'I2C Write: set_pin_mode i2c never called for i2c port 2.')
+
+        if type(args) != list:
+            raise RuntimeError('args must be in the form of a list')
 
         command = [PrivateConstants.I2C_WRITE, i2c_port, address, len(args), no_stop]
 
@@ -929,6 +939,140 @@ class TelemetrixRpiPico(threading.Thread):
         self._set_pin_mode(pin_number, PrivateConstants.AT_SERVO, min_pulse, max_pulse)
         self.pico_pins[pin_number] = PrivateConstants.AT_SERVO
 
+    def set_pin_mode_spi(self, spi_port=0, miso=16, mosi=19, clock_pin=18,
+                         clk_frequency=500000, chip_select_list=None,
+                         qualify_pins=True):
+        """
+        Specify the SPI port, SPI pins, clock frequency and an optional
+        list of chip select pins. The SPI port is configured as a "master".
+
+        :param spi_port: 0 = spi0, 1 = spi1
+
+        :param miso: SPI data receive pin
+
+        :param mosi: SPI data transmit pin
+
+        :param clock_pin: clock pin
+
+        :param clk_frequency: clock frequency in Hz.
+
+        :param chip_select_list: this is a list of pins to be used for chip select.
+                           The pins will be configured as output, and set to high
+                           ready to be used for chip select.
+                           NOTE: You must specify the chips select pins here!
+
+        :param qualify_pins: If true validate
+
+                            for spi0:
+                                 MOSI=19
+
+                                 MISO=16
+
+                                 CLOCK=18
+
+                             for spi1:
+
+                                 MOSI=15
+
+                                 MISO=12
+
+                                 CLOCK=14
+
+        cammand message: [command, spi port, mosi, miso, clock, freq msb,
+                          freq 3, freq 2, freq 1, number of cs pins, cs pins...]
+        """
+        # determine if the spi port is specified correctly
+        if spi_port not in [0, 1]:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError('spi port must be either a 0 or 1')
+
+        # determine if the spi gpio's are valid if qualify_pin is True.
+        if qualify_pins:
+            if spi_port == 0:
+                if mosi != 19:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError('For spi0 mosi must be 19.')
+                if miso != 16:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError('For spi0 miso must be 16.')
+                if clock_pin != 18:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError('For spi0 clock must be 18.')
+            else:
+                if mosi != 15:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError('For spi1 mosi must be 15.')
+                if miso != 12:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError('For spi1 miso must be 12.')
+                if clock_pin != 14:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError('For spi0 clock must be 14.')
+
+        # check if mosi, miso or clock pins have already been assigned
+        if self.pico_pins[mosi] != PrivateConstants.AT_MODE_NOT_SET:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError('MOSI pin currently in use')
+        if self.pico_pins[miso] != PrivateConstants.AT_MODE_NOT_SET:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError('MISO pin currently in use')
+        if self.pico_pins[clock_pin] != PrivateConstants.AT_MODE_NOT_SET:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError('Clock Pin pin currently in use')
+
+        if type(chip_select_list) != list:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError('chip_select_list must be in the form of a list')
+        if not chip_select_list:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError('Chip select pins were not specified')
+        # validate chip select pins
+        for pin in chip_select_list:
+            if self.pico_pins[pin] != PrivateConstants.AT_MODE_NOT_SET:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(f'SPI Chip select pin {pin} is already in use!')
+
+        # test for spi port 0
+        if not spi_port:
+            self.spi_0_active = True
+        # port 1
+        else:
+            self.spi_1_active = True
+
+        # freq_msb = clk_frequency >> 8
+        # freq_lsb = clk_frequency & 0x00ff
+        freq_bytes = clk_frequency.to_bytes(4, byteorder='big')
+
+        self.pico_pins[mosi] = PrivateConstants.AT_SPI
+        self.pico_pins[miso] = PrivateConstants.AT_SPI
+        self.pico_pins[clock_pin] = PrivateConstants.AT_SPI
+
+        command = [PrivateConstants.SPI_INIT, spi_port, mosi, miso, clock_pin]
+
+        for i in range(len(freq_bytes)):
+            command.append(freq_bytes[i])
+
+        command.append(len(chip_select_list))
+
+        for pin in chip_select_list:
+            command.append(pin)
+            self.pico_pins[pin] = PrivateConstants.AT_SPI
+
+        self._send_command(command)
+
     def servo_write(self, pin_number, value):
         """
         Write the value to the specified servo
@@ -987,6 +1131,132 @@ class TelemetrixRpiPico(threading.Thread):
             if self.shutdown_on_exception:
                 self.shutdown()
             raise RuntimeError('Maximum number of supported sonar devices exceeded.')
+
+    def spi_cs_control(self, chip_select_pin, select):
+        """
+        Control an SPI chip select line
+        :param chip_select_pin: pin connected to CS
+
+        :param select: 0=select, 1=deselect
+        """
+
+        if self.pico_pins[chip_select_pin] != PrivateConstants.AT_SPI:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(f'spi_read_blocking: Invalid chip select pin'
+                               f' {chip_select_pin}.')
+        command = [PrivateConstants.SPI_CS_CONTROL, chip_select_pin, select]
+        self._send_command(command)
+
+    def spi_read_blocking(self, number_of_bytes, spi_port=0, call_back=None,
+                          repeated_tx_data=0):
+        """
+        Read the specified number of bytes from the specified SPI port and
+        call the callback function with the reported data.
+
+        :param number_of_bytes: Number of bytes to read
+
+        :param spi_port: SPI port 0 or 1
+
+        :param call_back: Required callback function to report spi data as a
+                   result of read command
+
+        :param repeated_tx_data: repeated data to send
+
+        callback returns a data list:
+        [SPI_READ_REPORT, spi_port, count of data bytes, data bytes, time-stamp]
+
+        SPI_READ_REPORT = 13
+
+        """
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    'spi_read_blocking: set_pin_mode_spi never called for spi port 0.')
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    'spi_read_blocking: set_pin_mode_spi never called for spi port 1.')
+
+        if not call_back:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError('spi_read_blocking: A Callback must be specified')
+        if spi_port == 0:
+            self.spi_callback = call_back
+        else:
+            self.spi_callback2 = call_back
+
+        command = [PrivateConstants.SPI_READ_BLOCKING, spi_port, number_of_bytes,
+                   repeated_tx_data]
+        self._send_command(command)
+
+    def spi_set_format(self, spi_port=0, data_bits=8, spi_polarity=0, spi_phase=0):
+        """
+        Configure how the SPI serializes and de-serializes data on the wire.
+
+        :param spi_port: SPI port 0 or 1
+
+        :param data_bits: Number of data bits per transfer. Valid range = 4-16
+
+        :param spi_polarity: clock polarity. 0 or 1.
+
+        :param spi_phase: clock phase. 0 or 1.
+        """
+
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    'spi_set_format: set_pin_mode_spi never called for spi port 0.')
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    'spi_set_format: set_pin_mode_spi never called for spi port 1.')
+
+        command = [PrivateConstants.SPI_SET_FORMAT, spi_port, data_bits,
+                   spi_polarity, spi_phase]
+        self._send_command(command)
+
+    def spi_write_blocking(self, bytes_to_write, spi_port=0):
+        """
+        Write a list of bytes to the SPI device.
+
+        :param bytes_to_write: A list of bytes to write. This must be in the form of a
+        list.
+
+        :param spi_port: SPI port 0 or 1
+
+        """
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    'spi_write_blocking: set_pin_mode_spi never called for spi port 0.')
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    'spi_write_blocking: set_pin_mode_spi never called for spi port 1.')
+        command = [PrivateConstants.SPI_WRITE_BLOCKING, spi_port,
+                   len(bytes_to_write)]
+
+        for data in bytes_to_write:
+            command.append(data)
+
+        self._send_command(command)
 
     def get_pico_pins(self):
         """
@@ -1123,6 +1393,7 @@ class TelemetrixRpiPico(threading.Thread):
         This method attempts an orderly shutdown
         If any exceptions are thrown, they are ignored.
         """
+
         self.shutdown_flag = True
 
         self._stop_threads()
@@ -1135,6 +1406,8 @@ class TelemetrixRpiPico(threading.Thread):
             command = [PrivateConstants.RESET_BOARD]
             self._send_command(command)
             time.sleep(.2)
+        self.serial_port.close()
+        self.serial_port = None
 
     '''
     report message handlers
@@ -1206,7 +1479,6 @@ class TelemetrixRpiPico(threading.Thread):
 
         self.firmware_version = [data[0], data[1]]
 
-    # TBD
     def _i2c_read_report(self, data):
         """
         Execute callback for i2c reads.
@@ -1331,6 +1603,23 @@ class TelemetrixRpiPico(threading.Thread):
                        (report[1] + (report[2] / 100)), time.time()]
 
         cb(cb_list)
+
+    def _spi_report(self, report):
+        """
+        Execute callback for spi reads.
+
+        :param report: [spi_port, number of bytes read, data]
+
+        """
+
+        cb_list = [PrivateConstants.SPI_REPORT, report[0], report[1]] + report[2:]
+
+        cb_list.append(time.time())
+
+        if cb_list[1]:
+            self.spi_callback2(cb_list)
+        else:
+            self.spi_callback(cb_list)
 
     def _run_threads(self):
         self.run_event.set()
