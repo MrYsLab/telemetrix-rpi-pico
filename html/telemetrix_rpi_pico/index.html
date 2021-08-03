@@ -3,15 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.8.1" />
+<meta name="generator" content="pdoc 0.9.2" />
 <title>telemetrix_rpi_pico.telemetrix_rpi_pico API documentation</title>
 <meta name="description" content="Copyright (c) 2021 Alan Yorinks All rights reserved …" />
-<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
-<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
-<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
 </head>
 <body>
 <main>
@@ -170,6 +172,7 @@ class TelemetrixRpiPico(threading.Thread):
         self.report_dispatch.update(
             {PrivateConstants.SONAR_DISTANCE: self._sonar_distance_report})
         self.report_dispatch.update({PrivateConstants.DHT_REPORT: self._dht_report})
+        self.report_dispatch.update({PrivateConstants.SPI_REPORT: self._spi_report})
 
         # up to 16 pwm pins may be simultaneously active
         self.pwm_active_count = 0
@@ -184,6 +187,13 @@ class TelemetrixRpiPico(threading.Thread):
 
         self.i2c_0_active = False
         self.i2c_1_active = False
+
+        # spi
+        self.spi_callback = None
+        self.spi_callback2 = None
+
+        self.spi_0_active = False
+        self.spi_1_active = False
 
         # the trigger pin will be the key to retrieve
         # the callback for a specific HC-SR04
@@ -255,7 +265,7 @@ class TelemetrixRpiPico(threading.Thread):
         self.neopixels_initiated = False
 
         print(f&#34;TelemetrixRpiPico:  Version {PrivateConstants.TELEMETRIX_VERSION}\n\n&#34;
-              f&#34;Copyright (c) 2020 Alan Yorinks All Rights Reserved.\n&#34;)
+              f&#34;Copyright (c) 2020-2021 Alan Yorinks All Rights Reserved.\n&#34;)
 
         # using the serial link
 
@@ -546,8 +556,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         callback returns a data list:
         [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
-        data bytes,
-        time-stamp]
+        data bytes, time-stamp]
 
         I2C_READ_REPORT = 10
 
@@ -618,6 +627,9 @@ class TelemetrixRpiPico(threading.Thread):
                     self.shutdown()
                 raise RuntimeError(
                     &#39;I2C Write: set_pin_mode i2c never called for i2c port 2.&#39;)
+
+        if type(args) != list:
+            raise RuntimeError(&#39;args must be in the form of a list&#39;)
 
         command = [PrivateConstants.I2C_WRITE, i2c_port, address, len(args), no_stop]
 
@@ -970,6 +982,140 @@ class TelemetrixRpiPico(threading.Thread):
         self._set_pin_mode(pin_number, PrivateConstants.AT_SERVO, min_pulse, max_pulse)
         self.pico_pins[pin_number] = PrivateConstants.AT_SERVO
 
+    def set_pin_mode_spi(self, spi_port=0, miso=16, mosi=19, clock_pin=18,
+                         clk_frequency=500000, chip_select_list=None,
+                         qualify_pins=True):
+        &#34;&#34;&#34;
+        Specify the SPI port, SPI pins, clock frequency and an optional
+        list of chip select pins. The SPI port is configured as a &#34;master&#34;.
+
+        :param spi_port: 0 = spi0, 1 = spi1
+
+        :param miso: SPI data receive pin
+
+        :param mosi: SPI data transmit pin
+
+        :param clock_pin: clock pin
+
+        :param clk_frequency: clock frequency in Hz.
+
+        :param chip_select_list: this is a list of pins to be used for chip select.
+                           The pins will be configured as output, and set to high
+                           ready to be used for chip select.
+                           NOTE: You must specify the chips select pins here!
+
+        :param qualify_pins: If true validate
+
+                            for spi0:
+                                 MOSI=19
+
+                                 MISO=16
+
+                                 CLOCK=18
+
+                             for spi1:
+
+                                 MOSI=15
+
+                                 MISO=12
+
+                                 CLOCK=14
+
+        cammand message: [command, spi port, mosi, miso, clock, freq msb,
+                          freq 3, freq 2, freq 1, number of cs pins, cs pins...]
+        &#34;&#34;&#34;
+        # determine if the spi port is specified correctly
+        if spi_port not in [0, 1]:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;spi port must be either a 0 or 1&#39;)
+
+        # determine if the spi gpio&#39;s are valid if qualify_pin is True.
+        if qualify_pins:
+            if spi_port == 0:
+                if mosi != 19:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError(&#39;For spi0 mosi must be 19.&#39;)
+                if miso != 16:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError(&#39;For spi0 miso must be 16.&#39;)
+                if clock_pin != 18:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError(&#39;For spi0 clock must be 18.&#39;)
+            else:
+                if mosi != 15:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError(&#39;For spi1 mosi must be 15.&#39;)
+                if miso != 12:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError(&#39;For spi1 miso must be 12.&#39;)
+                if clock_pin != 14:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError(&#39;For spi0 clock must be 14.&#39;)
+
+        # check if mosi, miso or clock pins have already been assigned
+        if self.pico_pins[mosi] != PrivateConstants.AT_MODE_NOT_SET:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;MOSI pin currently in use&#39;)
+        if self.pico_pins[miso] != PrivateConstants.AT_MODE_NOT_SET:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;MISO pin currently in use&#39;)
+        if self.pico_pins[clock_pin] != PrivateConstants.AT_MODE_NOT_SET:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;Clock Pin pin currently in use&#39;)
+
+        if type(chip_select_list) != list:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;chip_select_list must be in the form of a list&#39;)
+        if not chip_select_list:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;Chip select pins were not specified&#39;)
+        # validate chip select pins
+        for pin in chip_select_list:
+            if self.pico_pins[pin] != PrivateConstants.AT_MODE_NOT_SET:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(f&#39;SPI Chip select pin {pin} is already in use!&#39;)
+
+        # test for spi port 0
+        if not spi_port:
+            self.spi_0_active = True
+        # port 1
+        else:
+            self.spi_1_active = True
+
+        # freq_msb = clk_frequency &gt;&gt; 8
+        # freq_lsb = clk_frequency &amp; 0x00ff
+        freq_bytes = clk_frequency.to_bytes(4, byteorder=&#39;big&#39;)
+
+        self.pico_pins[mosi] = PrivateConstants.AT_SPI
+        self.pico_pins[miso] = PrivateConstants.AT_SPI
+        self.pico_pins[clock_pin] = PrivateConstants.AT_SPI
+
+        command = [PrivateConstants.SPI_INIT, spi_port, mosi, miso, clock_pin]
+
+        for i in range(len(freq_bytes)):
+            command.append(freq_bytes[i])
+
+        command.append(len(chip_select_list))
+
+        for pin in chip_select_list:
+            command.append(pin)
+            self.pico_pins[pin] = PrivateConstants.AT_SPI
+
+        self._send_command(command)
+
     def servo_write(self, pin_number, value):
         &#34;&#34;&#34;
         Write the value to the specified servo
@@ -1028,6 +1174,132 @@ class TelemetrixRpiPico(threading.Thread):
             if self.shutdown_on_exception:
                 self.shutdown()
             raise RuntimeError(&#39;Maximum number of supported sonar devices exceeded.&#39;)
+
+    def spi_cs_control(self, chip_select_pin, select):
+        &#34;&#34;&#34;
+        Control an SPI chip select line
+        :param chip_select_pin: pin connected to CS
+
+        :param select: 0=select, 1=deselect
+        &#34;&#34;&#34;
+
+        if self.pico_pins[chip_select_pin] != PrivateConstants.AT_SPI:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(f&#39;spi_read_blocking: Invalid chip select pin&#39;
+                               f&#39; {chip_select_pin}.&#39;)
+        command = [PrivateConstants.SPI_CS_CONTROL, chip_select_pin, select]
+        self._send_command(command)
+
+    def spi_read_blocking(self, number_of_bytes, spi_port=0, call_back=None,
+                          repeated_tx_data=0):
+        &#34;&#34;&#34;
+        Read the specified number of bytes from the specified SPI port and
+        call the callback function with the reported data.
+
+        :param number_of_bytes: Number of bytes to read
+
+        :param spi_port: SPI port 0 or 1
+
+        :param call_back: Required callback function to report spi data as a
+                   result of read command
+
+        :param repeated_tx_data: repeated data to send
+
+        callback returns a data list:
+        [SPI_READ_REPORT, spi_port, count of data bytes, data bytes, time-stamp]
+
+        SPI_READ_REPORT = 13
+
+        &#34;&#34;&#34;
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_read_blocking: set_pin_mode_spi never called for spi port 0.&#39;)
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_read_blocking: set_pin_mode_spi never called for spi port 1.&#39;)
+
+        if not call_back:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;spi_read_blocking: A Callback must be specified&#39;)
+        if spi_port == 0:
+            self.spi_callback = call_back
+        else:
+            self.spi_callback2 = call_back
+
+        command = [PrivateConstants.SPI_READ_BLOCKING, spi_port, number_of_bytes,
+                   repeated_tx_data]
+        self._send_command(command)
+
+    def spi_set_format(self, spi_port=0, data_bits=8, spi_polarity=0, spi_phase=0):
+        &#34;&#34;&#34;
+        Configure how the SPI serializes and de-serializes data on the wire.
+
+        :param spi_port: SPI port 0 or 1
+
+        :param data_bits: Number of data bits per transfer. Valid range = 4-16
+
+        :param spi_polarity: clock polarity. 0 or 1.
+
+        :param spi_phase: clock phase. 0 or 1.
+        &#34;&#34;&#34;
+
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_set_format: set_pin_mode_spi never called for spi port 0.&#39;)
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_set_format: set_pin_mode_spi never called for spi port 1.&#39;)
+
+        command = [PrivateConstants.SPI_SET_FORMAT, spi_port, data_bits,
+                   spi_polarity, spi_phase]
+        self._send_command(command)
+
+    def spi_write_blocking(self, bytes_to_write, spi_port=0):
+        &#34;&#34;&#34;
+        Write a list of bytes to the SPI device.
+
+        :param bytes_to_write: A list of bytes to write. This must be in the form of a
+        list.
+
+        :param spi_port: SPI port 0 or 1
+
+        &#34;&#34;&#34;
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_write_blocking: set_pin_mode_spi never called for spi port 0.&#39;)
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_write_blocking: set_pin_mode_spi never called for spi port 1.&#39;)
+        command = [PrivateConstants.SPI_WRITE_BLOCKING, spi_port,
+                   len(bytes_to_write)]
+
+        for data in bytes_to_write:
+            command.append(data)
+
+        self._send_command(command)
 
     def get_pico_pins(self):
         &#34;&#34;&#34;
@@ -1164,6 +1436,7 @@ class TelemetrixRpiPico(threading.Thread):
         This method attempts an orderly shutdown
         If any exceptions are thrown, they are ignored.
         &#34;&#34;&#34;
+
         self.shutdown_flag = True
 
         self._stop_threads()
@@ -1176,6 +1449,8 @@ class TelemetrixRpiPico(threading.Thread):
             command = [PrivateConstants.RESET_BOARD]
             self._send_command(command)
             time.sleep(.2)
+        self.serial_port.close()
+        self.serial_port = None
 
     &#39;&#39;&#39;
     report message handlers
@@ -1247,7 +1522,6 @@ class TelemetrixRpiPico(threading.Thread):
 
         self.firmware_version = [data[0], data[1]]
 
-    # TBD
     def _i2c_read_report(self, data):
         &#34;&#34;&#34;
         Execute callback for i2c reads.
@@ -1372,6 +1646,23 @@ class TelemetrixRpiPico(threading.Thread):
                        (report[1] + (report[2] / 100)), time.time()]
 
         cb(cb_list)
+
+    def _spi_report(self, report):
+        &#34;&#34;&#34;
+        Execute callback for spi reads.
+
+        :param report: [spi_port, number of bytes read, data]
+
+        &#34;&#34;&#34;
+
+        cb_list = [PrivateConstants.SPI_REPORT, report[0], report[1]] + report[2:]
+
+        cb_list.append(time.time())
+
+        if cb_list[1]:
+            self.spi_callback2(cb_list)
+        else:
+            self.spi_callback(cb_list)
 
     def _run_threads(self):
         self.run_event.set()
@@ -1578,6 +1869,7 @@ receiving a KeyboardInterrupt exception</p>
         self.report_dispatch.update(
             {PrivateConstants.SONAR_DISTANCE: self._sonar_distance_report})
         self.report_dispatch.update({PrivateConstants.DHT_REPORT: self._dht_report})
+        self.report_dispatch.update({PrivateConstants.SPI_REPORT: self._spi_report})
 
         # up to 16 pwm pins may be simultaneously active
         self.pwm_active_count = 0
@@ -1592,6 +1884,13 @@ receiving a KeyboardInterrupt exception</p>
 
         self.i2c_0_active = False
         self.i2c_1_active = False
+
+        # spi
+        self.spi_callback = None
+        self.spi_callback2 = None
+
+        self.spi_0_active = False
+        self.spi_1_active = False
 
         # the trigger pin will be the key to retrieve
         # the callback for a specific HC-SR04
@@ -1663,7 +1962,7 @@ receiving a KeyboardInterrupt exception</p>
         self.neopixels_initiated = False
 
         print(f&#34;TelemetrixRpiPico:  Version {PrivateConstants.TELEMETRIX_VERSION}\n\n&#34;
-              f&#34;Copyright (c) 2020 Alan Yorinks All Rights Reserved.\n&#34;)
+              f&#34;Copyright (c) 2020-2021 Alan Yorinks All Rights Reserved.\n&#34;)
 
         # using the serial link
 
@@ -1954,8 +2253,7 @@ receiving a KeyboardInterrupt exception</p>
 
         callback returns a data list:
         [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
-        data bytes,
-        time-stamp]
+        data bytes, time-stamp]
 
         I2C_READ_REPORT = 10
 
@@ -2026,6 +2324,9 @@ receiving a KeyboardInterrupt exception</p>
                     self.shutdown()
                 raise RuntimeError(
                     &#39;I2C Write: set_pin_mode i2c never called for i2c port 2.&#39;)
+
+        if type(args) != list:
+            raise RuntimeError(&#39;args must be in the form of a list&#39;)
 
         command = [PrivateConstants.I2C_WRITE, i2c_port, address, len(args), no_stop]
 
@@ -2378,6 +2679,140 @@ receiving a KeyboardInterrupt exception</p>
         self._set_pin_mode(pin_number, PrivateConstants.AT_SERVO, min_pulse, max_pulse)
         self.pico_pins[pin_number] = PrivateConstants.AT_SERVO
 
+    def set_pin_mode_spi(self, spi_port=0, miso=16, mosi=19, clock_pin=18,
+                         clk_frequency=500000, chip_select_list=None,
+                         qualify_pins=True):
+        &#34;&#34;&#34;
+        Specify the SPI port, SPI pins, clock frequency and an optional
+        list of chip select pins. The SPI port is configured as a &#34;master&#34;.
+
+        :param spi_port: 0 = spi0, 1 = spi1
+
+        :param miso: SPI data receive pin
+
+        :param mosi: SPI data transmit pin
+
+        :param clock_pin: clock pin
+
+        :param clk_frequency: clock frequency in Hz.
+
+        :param chip_select_list: this is a list of pins to be used for chip select.
+                           The pins will be configured as output, and set to high
+                           ready to be used for chip select.
+                           NOTE: You must specify the chips select pins here!
+
+        :param qualify_pins: If true validate
+
+                            for spi0:
+                                 MOSI=19
+
+                                 MISO=16
+
+                                 CLOCK=18
+
+                             for spi1:
+
+                                 MOSI=15
+
+                                 MISO=12
+
+                                 CLOCK=14
+
+        cammand message: [command, spi port, mosi, miso, clock, freq msb,
+                          freq 3, freq 2, freq 1, number of cs pins, cs pins...]
+        &#34;&#34;&#34;
+        # determine if the spi port is specified correctly
+        if spi_port not in [0, 1]:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;spi port must be either a 0 or 1&#39;)
+
+        # determine if the spi gpio&#39;s are valid if qualify_pin is True.
+        if qualify_pins:
+            if spi_port == 0:
+                if mosi != 19:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError(&#39;For spi0 mosi must be 19.&#39;)
+                if miso != 16:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError(&#39;For spi0 miso must be 16.&#39;)
+                if clock_pin != 18:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError(&#39;For spi0 clock must be 18.&#39;)
+            else:
+                if mosi != 15:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError(&#39;For spi1 mosi must be 15.&#39;)
+                if miso != 12:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError(&#39;For spi1 miso must be 12.&#39;)
+                if clock_pin != 14:
+                    if self.shutdown_on_exception:
+                        self.shutdown()
+                    raise RuntimeError(&#39;For spi0 clock must be 14.&#39;)
+
+        # check if mosi, miso or clock pins have already been assigned
+        if self.pico_pins[mosi] != PrivateConstants.AT_MODE_NOT_SET:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;MOSI pin currently in use&#39;)
+        if self.pico_pins[miso] != PrivateConstants.AT_MODE_NOT_SET:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;MISO pin currently in use&#39;)
+        if self.pico_pins[clock_pin] != PrivateConstants.AT_MODE_NOT_SET:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;Clock Pin pin currently in use&#39;)
+
+        if type(chip_select_list) != list:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;chip_select_list must be in the form of a list&#39;)
+        if not chip_select_list:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;Chip select pins were not specified&#39;)
+        # validate chip select pins
+        for pin in chip_select_list:
+            if self.pico_pins[pin] != PrivateConstants.AT_MODE_NOT_SET:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(f&#39;SPI Chip select pin {pin} is already in use!&#39;)
+
+        # test for spi port 0
+        if not spi_port:
+            self.spi_0_active = True
+        # port 1
+        else:
+            self.spi_1_active = True
+
+        # freq_msb = clk_frequency &gt;&gt; 8
+        # freq_lsb = clk_frequency &amp; 0x00ff
+        freq_bytes = clk_frequency.to_bytes(4, byteorder=&#39;big&#39;)
+
+        self.pico_pins[mosi] = PrivateConstants.AT_SPI
+        self.pico_pins[miso] = PrivateConstants.AT_SPI
+        self.pico_pins[clock_pin] = PrivateConstants.AT_SPI
+
+        command = [PrivateConstants.SPI_INIT, spi_port, mosi, miso, clock_pin]
+
+        for i in range(len(freq_bytes)):
+            command.append(freq_bytes[i])
+
+        command.append(len(chip_select_list))
+
+        for pin in chip_select_list:
+            command.append(pin)
+            self.pico_pins[pin] = PrivateConstants.AT_SPI
+
+        self._send_command(command)
+
     def servo_write(self, pin_number, value):
         &#34;&#34;&#34;
         Write the value to the specified servo
@@ -2436,6 +2871,132 @@ receiving a KeyboardInterrupt exception</p>
             if self.shutdown_on_exception:
                 self.shutdown()
             raise RuntimeError(&#39;Maximum number of supported sonar devices exceeded.&#39;)
+
+    def spi_cs_control(self, chip_select_pin, select):
+        &#34;&#34;&#34;
+        Control an SPI chip select line
+        :param chip_select_pin: pin connected to CS
+
+        :param select: 0=select, 1=deselect
+        &#34;&#34;&#34;
+
+        if self.pico_pins[chip_select_pin] != PrivateConstants.AT_SPI:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(f&#39;spi_read_blocking: Invalid chip select pin&#39;
+                               f&#39; {chip_select_pin}.&#39;)
+        command = [PrivateConstants.SPI_CS_CONTROL, chip_select_pin, select]
+        self._send_command(command)
+
+    def spi_read_blocking(self, number_of_bytes, spi_port=0, call_back=None,
+                          repeated_tx_data=0):
+        &#34;&#34;&#34;
+        Read the specified number of bytes from the specified SPI port and
+        call the callback function with the reported data.
+
+        :param number_of_bytes: Number of bytes to read
+
+        :param spi_port: SPI port 0 or 1
+
+        :param call_back: Required callback function to report spi data as a
+                   result of read command
+
+        :param repeated_tx_data: repeated data to send
+
+        callback returns a data list:
+        [SPI_READ_REPORT, spi_port, count of data bytes, data bytes, time-stamp]
+
+        SPI_READ_REPORT = 13
+
+        &#34;&#34;&#34;
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_read_blocking: set_pin_mode_spi never called for spi port 0.&#39;)
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_read_blocking: set_pin_mode_spi never called for spi port 1.&#39;)
+
+        if not call_back:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(&#39;spi_read_blocking: A Callback must be specified&#39;)
+        if spi_port == 0:
+            self.spi_callback = call_back
+        else:
+            self.spi_callback2 = call_back
+
+        command = [PrivateConstants.SPI_READ_BLOCKING, spi_port, number_of_bytes,
+                   repeated_tx_data]
+        self._send_command(command)
+
+    def spi_set_format(self, spi_port=0, data_bits=8, spi_polarity=0, spi_phase=0):
+        &#34;&#34;&#34;
+        Configure how the SPI serializes and de-serializes data on the wire.
+
+        :param spi_port: SPI port 0 or 1
+
+        :param data_bits: Number of data bits per transfer. Valid range = 4-16
+
+        :param spi_polarity: clock polarity. 0 or 1.
+
+        :param spi_phase: clock phase. 0 or 1.
+        &#34;&#34;&#34;
+
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_set_format: set_pin_mode_spi never called for spi port 0.&#39;)
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_set_format: set_pin_mode_spi never called for spi port 1.&#39;)
+
+        command = [PrivateConstants.SPI_SET_FORMAT, spi_port, data_bits,
+                   spi_polarity, spi_phase]
+        self._send_command(command)
+
+    def spi_write_blocking(self, bytes_to_write, spi_port=0):
+        &#34;&#34;&#34;
+        Write a list of bytes to the SPI device.
+
+        :param bytes_to_write: A list of bytes to write. This must be in the form of a
+        list.
+
+        :param spi_port: SPI port 0 or 1
+
+        &#34;&#34;&#34;
+        if not spi_port:
+            if not self.spi_0_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_write_blocking: set_pin_mode_spi never called for spi port 0.&#39;)
+
+        elif spi_port:
+            if not self.spi_1_active:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(
+                    &#39;spi_write_blocking: set_pin_mode_spi never called for spi port 1.&#39;)
+        command = [PrivateConstants.SPI_WRITE_BLOCKING, spi_port,
+                   len(bytes_to_write)]
+
+        for data in bytes_to_write:
+            command.append(data)
+
+        self._send_command(command)
 
     def get_pico_pins(self):
         &#34;&#34;&#34;
@@ -2572,6 +3133,7 @@ receiving a KeyboardInterrupt exception</p>
         This method attempts an orderly shutdown
         If any exceptions are thrown, they are ignored.
         &#34;&#34;&#34;
+
         self.shutdown_flag = True
 
         self._stop_threads()
@@ -2584,6 +3146,8 @@ receiving a KeyboardInterrupt exception</p>
             command = [PrivateConstants.RESET_BOARD]
             self._send_command(command)
             time.sleep(.2)
+        self.serial_port.close()
+        self.serial_port = None
 
     &#39;&#39;&#39;
     report message handlers
@@ -2655,7 +3219,6 @@ receiving a KeyboardInterrupt exception</p>
 
         self.firmware_version = [data[0], data[1]]
 
-    # TBD
     def _i2c_read_report(self, data):
         &#34;&#34;&#34;
         Execute callback for i2c reads.
@@ -2780,6 +3343,23 @@ receiving a KeyboardInterrupt exception</p>
                        (report[1] + (report[2] / 100)), time.time()]
 
         cb(cb_list)
+
+    def _spi_report(self, report):
+        &#34;&#34;&#34;
+        Execute callback for spi reads.
+
+        :param report: [spi_port, number of bytes read, data]
+
+        &#34;&#34;&#34;
+
+        cb_list = [PrivateConstants.SPI_REPORT, report[0], report[1]] + report[2:]
+
+        cb_list.append(time.time())
+
+        if cb_list[1]:
+            self.spi_callback2(cb_list)
+        else:
+            self.spi_callback(cb_list)
 
     def _run_threads(self):
         self.run_event.set()
@@ -3080,8 +3660,7 @@ transfer (no Stop is issued), and the next transfer will
 begin with a Restart rather than a Start.</p>
 <p>callback returns a data list:
 [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
-data bytes,
-time-stamp]</p>
+data bytes, time-stamp]</p>
 <p>I2C_READ_REPORT = 10</p></div>
 <details class="source">
 <summary>
@@ -3112,8 +3691,7 @@ time-stamp]</p>
 
     callback returns a data list:
     [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
-    data bytes,
-    time-stamp]
+    data bytes, time-stamp]
 
     I2C_READ_REPORT = 10
 
@@ -3201,6 +3779,9 @@ begin with a Restart rather than a Start.</p></div>
                 self.shutdown()
             raise RuntimeError(
                 &#39;I2C Write: set_pin_mode i2c never called for i2c port 2.&#39;)
+
+    if type(args) != list:
+        raise RuntimeError(&#39;args must be in the form of a list&#39;)
 
     command = [PrivateConstants.I2C_WRITE, i2c_port, address, len(args), no_stop]
 
@@ -3916,6 +4497,178 @@ Sensor trigger gpio pin</p>
         raise RuntimeError(&#39;Maximum number of supported sonar devices exceeded.&#39;)</code></pre>
 </details>
 </dd>
+<dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_spi"><code class="name flex">
+<span>def <span class="ident">set_pin_mode_spi</span></span>(<span>self, spi_port=0, miso=16, mosi=19, clock_pin=18, clk_frequency=500000, chip_select_list=None, qualify_pins=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Specify the SPI port, SPI pins, clock frequency and an optional
+list of chip select pins. The SPI port is configured as a "master".</p>
+<p>:param spi_port: 0 = spi0, 1 = spi1</p>
+<p>:param miso: SPI data receive pin</p>
+<p>:param mosi: SPI data transmit pin</p>
+<p>:param clock_pin: clock pin</p>
+<p>:param clk_frequency: clock frequency in Hz.</p>
+<p>:param chip_select_list: this is a list of pins to be used for chip select.
+The pins will be configured as output, and set to high
+ready to be used for chip select.
+NOTE: You must specify the chips select pins here!</p>
+<p>:param qualify_pins: If true validate</p>
+<pre><code>                for spi0:
+                     MOSI=19
+
+                     MISO=16
+
+                     CLOCK=18
+
+                 for spi1:
+
+                     MOSI=15
+
+                     MISO=12
+
+                     CLOCK=14
+</code></pre>
+<p>cammand message: [command, spi port, mosi, miso, clock, freq msb,
+freq 3, freq 2, freq 1, number of cs pins, cs pins&hellip;]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_pin_mode_spi(self, spi_port=0, miso=16, mosi=19, clock_pin=18,
+                     clk_frequency=500000, chip_select_list=None,
+                     qualify_pins=True):
+    &#34;&#34;&#34;
+    Specify the SPI port, SPI pins, clock frequency and an optional
+    list of chip select pins. The SPI port is configured as a &#34;master&#34;.
+
+    :param spi_port: 0 = spi0, 1 = spi1
+
+    :param miso: SPI data receive pin
+
+    :param mosi: SPI data transmit pin
+
+    :param clock_pin: clock pin
+
+    :param clk_frequency: clock frequency in Hz.
+
+    :param chip_select_list: this is a list of pins to be used for chip select.
+                       The pins will be configured as output, and set to high
+                       ready to be used for chip select.
+                       NOTE: You must specify the chips select pins here!
+
+    :param qualify_pins: If true validate
+
+                        for spi0:
+                             MOSI=19
+
+                             MISO=16
+
+                             CLOCK=18
+
+                         for spi1:
+
+                             MOSI=15
+
+                             MISO=12
+
+                             CLOCK=14
+
+    cammand message: [command, spi port, mosi, miso, clock, freq msb,
+                      freq 3, freq 2, freq 1, number of cs pins, cs pins...]
+    &#34;&#34;&#34;
+    # determine if the spi port is specified correctly
+    if spi_port not in [0, 1]:
+        if self.shutdown_on_exception:
+            self.shutdown()
+        raise RuntimeError(&#39;spi port must be either a 0 or 1&#39;)
+
+    # determine if the spi gpio&#39;s are valid if qualify_pin is True.
+    if qualify_pins:
+        if spi_port == 0:
+            if mosi != 19:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(&#39;For spi0 mosi must be 19.&#39;)
+            if miso != 16:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(&#39;For spi0 miso must be 16.&#39;)
+            if clock_pin != 18:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(&#39;For spi0 clock must be 18.&#39;)
+        else:
+            if mosi != 15:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(&#39;For spi1 mosi must be 15.&#39;)
+            if miso != 12:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(&#39;For spi1 miso must be 12.&#39;)
+            if clock_pin != 14:
+                if self.shutdown_on_exception:
+                    self.shutdown()
+                raise RuntimeError(&#39;For spi0 clock must be 14.&#39;)
+
+    # check if mosi, miso or clock pins have already been assigned
+    if self.pico_pins[mosi] != PrivateConstants.AT_MODE_NOT_SET:
+        if self.shutdown_on_exception:
+            self.shutdown()
+        raise RuntimeError(&#39;MOSI pin currently in use&#39;)
+    if self.pico_pins[miso] != PrivateConstants.AT_MODE_NOT_SET:
+        if self.shutdown_on_exception:
+            self.shutdown()
+        raise RuntimeError(&#39;MISO pin currently in use&#39;)
+    if self.pico_pins[clock_pin] != PrivateConstants.AT_MODE_NOT_SET:
+        if self.shutdown_on_exception:
+            self.shutdown()
+        raise RuntimeError(&#39;Clock Pin pin currently in use&#39;)
+
+    if type(chip_select_list) != list:
+        if self.shutdown_on_exception:
+            self.shutdown()
+        raise RuntimeError(&#39;chip_select_list must be in the form of a list&#39;)
+    if not chip_select_list:
+        if self.shutdown_on_exception:
+            self.shutdown()
+        raise RuntimeError(&#39;Chip select pins were not specified&#39;)
+    # validate chip select pins
+    for pin in chip_select_list:
+        if self.pico_pins[pin] != PrivateConstants.AT_MODE_NOT_SET:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(f&#39;SPI Chip select pin {pin} is already in use!&#39;)
+
+    # test for spi port 0
+    if not spi_port:
+        self.spi_0_active = True
+    # port 1
+    else:
+        self.spi_1_active = True
+
+    # freq_msb = clk_frequency &gt;&gt; 8
+    # freq_lsb = clk_frequency &amp; 0x00ff
+    freq_bytes = clk_frequency.to_bytes(4, byteorder=&#39;big&#39;)
+
+    self.pico_pins[mosi] = PrivateConstants.AT_SPI
+    self.pico_pins[miso] = PrivateConstants.AT_SPI
+    self.pico_pins[clock_pin] = PrivateConstants.AT_SPI
+
+    command = [PrivateConstants.SPI_INIT, spi_port, mosi, miso, clock_pin]
+
+    for i in range(len(freq_bytes)):
+        command.append(freq_bytes[i])
+
+    command.append(len(chip_select_list))
+
+    for pin in chip_select_list:
+        command.append(pin)
+        self.pico_pins[pin] = PrivateConstants.AT_SPI
+
+    self._send_command(command)</code></pre>
+</details>
+</dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.shutdown"><code class="name flex">
 <span>def <span class="ident">shutdown</span></span>(<span>self)</span>
 </code></dt>
@@ -3931,6 +4684,7 @@ If any exceptions are thrown, they are ignored.</p></div>
     This method attempts an orderly shutdown
     If any exceptions are thrown, they are ignored.
     &#34;&#34;&#34;
+
     self.shutdown_flag = True
 
     self._stop_threads()
@@ -3942,7 +4696,193 @@ If any exceptions are thrown, they are ignored.</p></div>
     if self.reset_on_shutdown:
         command = [PrivateConstants.RESET_BOARD]
         self._send_command(command)
-        time.sleep(.2)</code></pre>
+        time.sleep(.2)
+    self.serial_port.close()
+    self.serial_port = None</code></pre>
+</details>
+</dd>
+<dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_cs_control"><code class="name flex">
+<span>def <span class="ident">spi_cs_control</span></span>(<span>self, chip_select_pin, select)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Control an SPI chip select line
+:param chip_select_pin: pin connected to CS</p>
+<p>:param select: 0=select, 1=deselect</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def spi_cs_control(self, chip_select_pin, select):
+    &#34;&#34;&#34;
+    Control an SPI chip select line
+    :param chip_select_pin: pin connected to CS
+
+    :param select: 0=select, 1=deselect
+    &#34;&#34;&#34;
+
+    if self.pico_pins[chip_select_pin] != PrivateConstants.AT_SPI:
+        if self.shutdown_on_exception:
+            self.shutdown()
+        raise RuntimeError(f&#39;spi_read_blocking: Invalid chip select pin&#39;
+                           f&#39; {chip_select_pin}.&#39;)
+    command = [PrivateConstants.SPI_CS_CONTROL, chip_select_pin, select]
+    self._send_command(command)</code></pre>
+</details>
+</dd>
+<dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_read_blocking"><code class="name flex">
+<span>def <span class="ident">spi_read_blocking</span></span>(<span>self, number_of_bytes, spi_port=0, call_back=None, repeated_tx_data=0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Read the specified number of bytes from the specified SPI port and
+call the callback function with the reported data.</p>
+<p>:param number_of_bytes: Number of bytes to read</p>
+<p>:param spi_port: SPI port 0 or 1</p>
+<p>:param call_back: Required callback function to report spi data as a
+result of read command</p>
+<p>:param repeated_tx_data: repeated data to send</p>
+<p>callback returns a data list:
+[SPI_READ_REPORT, spi_port, count of data bytes, data bytes, time-stamp]</p>
+<p>SPI_READ_REPORT = 13</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def spi_read_blocking(self, number_of_bytes, spi_port=0, call_back=None,
+                      repeated_tx_data=0):
+    &#34;&#34;&#34;
+    Read the specified number of bytes from the specified SPI port and
+    call the callback function with the reported data.
+
+    :param number_of_bytes: Number of bytes to read
+
+    :param spi_port: SPI port 0 or 1
+
+    :param call_back: Required callback function to report spi data as a
+               result of read command
+
+    :param repeated_tx_data: repeated data to send
+
+    callback returns a data list:
+    [SPI_READ_REPORT, spi_port, count of data bytes, data bytes, time-stamp]
+
+    SPI_READ_REPORT = 13
+
+    &#34;&#34;&#34;
+    if not spi_port:
+        if not self.spi_0_active:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(
+                &#39;spi_read_blocking: set_pin_mode_spi never called for spi port 0.&#39;)
+
+    elif spi_port:
+        if not self.spi_1_active:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(
+                &#39;spi_read_blocking: set_pin_mode_spi never called for spi port 1.&#39;)
+
+    if not call_back:
+        if self.shutdown_on_exception:
+            self.shutdown()
+        raise RuntimeError(&#39;spi_read_blocking: A Callback must be specified&#39;)
+    if spi_port == 0:
+        self.spi_callback = call_back
+    else:
+        self.spi_callback2 = call_back
+
+    command = [PrivateConstants.SPI_READ_BLOCKING, spi_port, number_of_bytes,
+               repeated_tx_data]
+    self._send_command(command)</code></pre>
+</details>
+</dd>
+<dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_set_format"><code class="name flex">
+<span>def <span class="ident">spi_set_format</span></span>(<span>self, spi_port=0, data_bits=8, spi_polarity=0, spi_phase=0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Configure how the SPI serializes and de-serializes data on the wire.</p>
+<p>:param spi_port: SPI port 0 or 1</p>
+<p>:param data_bits: Number of data bits per transfer. Valid range = 4-16</p>
+<p>:param spi_polarity: clock polarity. 0 or 1.</p>
+<p>:param spi_phase: clock phase. 0 or 1.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def spi_set_format(self, spi_port=0, data_bits=8, spi_polarity=0, spi_phase=0):
+    &#34;&#34;&#34;
+    Configure how the SPI serializes and de-serializes data on the wire.
+
+    :param spi_port: SPI port 0 or 1
+
+    :param data_bits: Number of data bits per transfer. Valid range = 4-16
+
+    :param spi_polarity: clock polarity. 0 or 1.
+
+    :param spi_phase: clock phase. 0 or 1.
+    &#34;&#34;&#34;
+
+    if not spi_port:
+        if not self.spi_0_active:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(
+                &#39;spi_set_format: set_pin_mode_spi never called for spi port 0.&#39;)
+
+    elif spi_port:
+        if not self.spi_1_active:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(
+                &#39;spi_set_format: set_pin_mode_spi never called for spi port 1.&#39;)
+
+    command = [PrivateConstants.SPI_SET_FORMAT, spi_port, data_bits,
+               spi_polarity, spi_phase]
+    self._send_command(command)</code></pre>
+</details>
+</dd>
+<dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_write_blocking"><code class="name flex">
+<span>def <span class="ident">spi_write_blocking</span></span>(<span>self, bytes_to_write, spi_port=0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write a list of bytes to the SPI device.</p>
+<p>:param bytes_to_write: A list of bytes to write. This must be in the form of a
+list.</p>
+<p>:param spi_port: SPI port 0 or 1</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def spi_write_blocking(self, bytes_to_write, spi_port=0):
+    &#34;&#34;&#34;
+    Write a list of bytes to the SPI device.
+
+    :param bytes_to_write: A list of bytes to write. This must be in the form of a
+    list.
+
+    :param spi_port: SPI port 0 or 1
+
+    &#34;&#34;&#34;
+    if not spi_port:
+        if not self.spi_0_active:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(
+                &#39;spi_write_blocking: set_pin_mode_spi never called for spi port 0.&#39;)
+
+    elif spi_port:
+        if not self.spi_1_active:
+            if self.shutdown_on_exception:
+                self.shutdown()
+            raise RuntimeError(
+                &#39;spi_write_blocking: set_pin_mode_spi never called for spi port 1.&#39;)
+    command = [PrivateConstants.SPI_WRITE_BLOCKING, spi_port,
+               len(bytes_to_write)]
+
+    for data in bytes_to_write:
+        command.append(data)
+
+    self._send_command(command)</code></pre>
 </details>
 </dd>
 </dl>
@@ -3993,7 +4933,12 @@ If any exceptions are thrown, they are ignored.</p></div>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_pwm_output" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_pwm_output">set_pin_mode_pwm_output</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_servo" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_servo">set_pin_mode_servo</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_sonar" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_sonar">set_pin_mode_sonar</a></code></li>
+<li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_spi" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_spi">set_pin_mode_spi</a></code></li>
 <li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.shutdown" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.shutdown">shutdown</a></code></li>
+<li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_cs_control" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_cs_control">spi_cs_control</a></code></li>
+<li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_read_blocking" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_read_blocking">spi_read_blocking</a></code></li>
+<li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_set_format" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_set_format">spi_set_format</a></code></li>
+<li><code><a title="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_write_blocking" href="#telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_write_blocking">spi_write_blocking</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4002,9 +4947,7 @@ If any exceptions are thrown, they are ignored.</p></div>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
 </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad()</script>
 </body>
 </html>
