@@ -11,7 +11,7 @@ setup(
     packages=['telemetrix_rpi_pico'],
     install_requires=['pyserial'],
 
-    version='1.0',
+    version='1.1',
     description="Remotely Control And Monitor A Raspberry Pi Pico",
     long_description=long_description,
     long_description_content_type='text/markdown',
