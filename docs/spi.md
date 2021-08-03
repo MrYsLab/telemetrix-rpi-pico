@@ -36,7 +36,7 @@ manufacturer's datasheet.
 ```
 
 This method must be called before calling any other spi method. You may choose
-to use the "standard" MOSI, MISO and Clock pins as listed above, or if you wish to use
+to use the "standard" MOSI, MISO, and Clock pins as listed above, or if you wish to use
 a different set of pins, set *qualify_pins* to False. 
 
 All chip select pins for the select SPI port are specified when calling this method.
@@ -50,7 +50,8 @@ All chip select pins for the select SPI port are specified when calling this met
     :param select: 0=select, 1=deselect
     
 ```
-This method is used to state of the selected chip select pin. The chip select pin must be
+This method is used to set the state of the selected chip select pin. The chip select pin 
+must be
 one of the pins specified when calling set_pin_mode_spi.
 
 
