@@ -52,9 +52,6 @@ class PrivateConstants:
     SPI_READ_BLOCKING = 26
     SPI_SET_FORMAT = 27
     SPI_CS_CONTROL = 28
-    STEPPER_NEW = 29
-    STEPPER_MOVE = 30
-    GET_STEPPER_STATUS = 31
 
     # reports
     # debug data from Arduino
@@ -69,8 +66,6 @@ class PrivateConstants:
     SONAR_DISTANCE = 11
     DHT_REPORT = 12
     SPI_REPORT = 13
-    STEPPER_MOVE_FINISHED_REPORT = STEPPER_MOVE
-    STEPPER_STATUS_REPORT = GET_STEPPER_STATUS
 
     DEBUG_PRINT = 99
 
@@ -132,8 +127,3 @@ class PrivateConstants:
     RED = 0
     GREEN = 1
     BLUE = 2
-
-    # Stepper motor
-    MAX_STEPPER_COUNT = 16
-    NANOPOS_AT_ENDSTOP = 2**31 # half the range of uint32
-    NANOSTEP_PER_MICROSTEP = 256 # stepper resolution finer than microstep allows smooth speed control 

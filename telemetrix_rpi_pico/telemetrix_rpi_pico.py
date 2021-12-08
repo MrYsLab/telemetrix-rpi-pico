@@ -19,7 +19,6 @@ import sys
 import threading
 import time
 from collections import deque
-import struct
 
 import serial
 # noinspection PyPackageRequirementscd
@@ -131,10 +130,6 @@ class TelemetrixRpiPico(threading.Thread):
             {PrivateConstants.SONAR_DISTANCE: self._sonar_distance_report})
         self.report_dispatch.update({PrivateConstants.DHT_REPORT: self._dht_report})
         self.report_dispatch.update({PrivateConstants.SPI_REPORT: self._spi_report})
-        self.report_dispatch.update(
-            {PrivateConstants.STEPPER_MOVE_FINISHED_REPORT: self._stepper_move_finished_report})
-        self.report_dispatch.update(
-            {PrivateConstants.STEPPER_STATUS_REPORT: self._stepper_status_report})
 
         # up to 16 pwm pins may be simultaneously active
         self.pwm_active_count = 0
@@ -166,14 +161,6 @@ class TelemetrixRpiPico(threading.Thread):
         self.dht_callbacks = {}
 
         self.dht_count = 0
-
-        # stepper
-        self.endstop_expected = {}
-        self.stepper_action = {}
-        self.previously_at_endstop = {}
-        self.previous_target_position = {}
-        self._stepper_finished_callback = [] # (could not make a dict with lists as keys)
-        self._stepper_status_callback = {}
 
         # serial port in use
         self.serial_port = None
@@ -902,6 +889,7 @@ class TelemetrixRpiPico(threading.Thread):
 
     def set_pin_mode_dht(self, pin, callback=None):
         """
+
       :param pin: connection pin
 
       :param callback: callback function
@@ -1633,68 +1621,6 @@ class TelemetrixRpiPico(threading.Thread):
         else:
             self.spi_callback(cb_list)
 
-    def _stepper_move_finished_report(self, report): 
-        """
-        Executed once any stepper finishes movement, decides if the user-defined 
-        callback is to be called:
-
-        1) either if all steppers in group [if applicable] that were set to 
-        move by means of single command, have finished their movement,
-
-        2) or when unexpected situation regarding end switch occurs (that is, 
-        normal move triggers it, or homing move misses it).
-
-        :param report: [stepper_id, endstop_triggered]
-
-        """
-
-        stepper_id, endstop_reached = report
-
-        my_stepper_group, my_group_callback = None, None
-        # cannot make dict where groups make its keys (because list is not hashable)
-        # so brute-force searching helps
-        for stepper_group, group_callback in self._stepper_finished_callback:
-            if stepper_id in stepper_group: 
-                if not my_stepper_group:
-                    my_stepper_group = stepper_group 
-                    my_group_callback = group_callback 
-                else:
-                    print(f"Warning, stepper {stepper_id} finished movement but belongs to more" +
-                            "groups than 1, i.e. {my_stepper_group}, {stepper_group}")
-        if not my_stepper_group:
-            print(f"Warning, stepper {stepper_id} finished movement but does not belong to any " + 
-                        f"stepper group, no callback will be called (note groups are {self._stepper_finished_callback})")
-            return
-
-
-        if endstop_reached and not self.endstop_expected[stepper_id]:
-            error = "ENDSTOP_TRIGGERED"
-            message = f'Stepper {stepper_id} triggered endstop when not expected. \n' +\
-                    '\tCheck the movement ranges, prevent glitches in cables. The (default) value of \n' +\
-                    '\tendstop_override=None suppresses this error if previous move had endstop_expected set,\n' +\
-                    '\tand endstop_override=True suppresses it always. \n' 
-        elif self.endstop_expected[stepper_id] and not endstop_reached:
-            error = "ENDSTOP_NOT_REACHED"
-            message = f'Stepper {stepper_id} failed to reach endswitch. \n\tDid it move towards ' +\
-                    'the end switch? \n\tIs the homing range sufficient?\n\tIs the end switch connected?'
-        else:
-            error, message = None, None
-
-        if not error and any(self.stepper_action[id] for id in my_stepper_group if id!=stepper_id):
-            #print(f'  (stepper {stepper_id} waiting for others in group {my_stepper_group} - no callback)')
-            self.stepper_action[stepper_id] = None 
-        else:
-            self.stepper_action[stepper_id] = "callback" # evaluates like True until callback is finished
-            self._stepper_finished_callback.remove([my_stepper_group, my_group_callback])
-            my_group_callback(my_stepper_group, error, message)
-            if self.stepper_action[stepper_id] == "callback":  
-                self.stepper_action[stepper_id] = None 
-
-    def _stepper_status_report(self, report): 
-        """
-        """
-        self._stepper_status_callback[report[0]](report)
-
     def _run_threads(self):
         self.run_event.set()
 
@@ -1766,119 +1692,3 @@ class TelemetrixRpiPico(threading.Thread):
                     # continue
             except OSError:
                 pass
-
-    def stepper_new(self, stepper_id, dir_pin, step_pin, endswitch_pin, disable_pin=255,
-            motor_inertia=128):
-        """
-        Stepper motor control interfacing the Stepstick-compatible modules (A4988, DRV8825 and compatible). 
-        The direction and step output pins are software defined, as well as the endstop input pin and optional 
-        disable output pin. Update routine is called each 100us, enabling sufficiently high RPM. The concept of 
-        "nanoposition" provides sub-microstep resolution, thus enabling stepping speeds as low as one microstep per 
-        25.6ms.
-
-        :param stepper_id: arbitrary number between 0 and 15 denoting the stepper
-
-        :param dir_pin: output pin number that is connected to Stepstick's DIR
-
-        :param step_pin: output pin number that is connected to Stepstick's STEP
-
-        :param step_pin: input pin that enables to home the motor
-
-        :param disable_pin: output pin connected to Stepstick's ~ENA (optional), 
-        if defined, goes down whenever the stepper is moving and up when done
-
-        :param motor_inertia: the higher, the longer are the ramp-ups and ramp-downs
-        of stepper speed
-
-        """
-        command = [PrivateConstants.STEPPER_NEW, stepper_id, dir_pin, step_pin,
-                endswitch_pin, disable_pin, motor_inertia]
-        command_as_byte_list = [b for b in struct.pack(r'<BBBBBBI', *command)] # uint8 and uint32 in 1 msg
-        self.stepper_action[stepper_id] = None
-        self._send_command(command_as_byte_list) # necessary to transmit 32bit int etc.
-
-    def stepper_move(self, stepper_ids, target_micropos, max_speeds=256, endstop_expected=None, 
-            endstop_override=None, reset_nanopos=False, callback=None): # , callback=None
-        """ 
-        Sets the new target position of the selected stepper motor, along with the maximum speed 
-        to be used.
-
-        :param stepper_ids: Identifies the stepper number that has to be defined by stepper_new 
-        before. It can be an integer, or a list of integers. In the latter case, a group of
-        steppers is set to move (almost) simultaneously, and telemetrix will call only one
-        callback for the group when all steppers in it have finished their move. 
-
-        :param target_micropos: 
-        It can be an integer, or a list of integers corresponding to each stepper in a group. If 
-        single integer is provided for a group of more steppers, the number is propagated to each 
-        of them. 
-
-        :param max_speeds: Number of nanosteps per single update cycle, i.e. 1/256 of a microstep
-        per 100 microseconds. So minimum value of 1 corresponds to 39 microsteps per second, which 
-        is about 0.7 RPM for a typical NEMA17 stepper with 200 steps/revolution and 1/16 
-        microstepping. Maximum reasonable value is about 1000; most steppers would not turn faster.
-        It can be an integer, or a list of integers corresponding to each stepper in a group. If 
-        single integer is provided for a group of more steppers, it is propagated to each of them.
-
-        :param endstop_expected: Set to True if homing the motor, usually after initialization. 
-        Stepper will immediately stop when it triggers the end switch; by default the next move will
-        behave like if endstop_override and reset_nanopos were set (see below). If movement finishes 
-        and end stop is missed, an error is reported (this then applies to any stepper in the group). 
-
-        :param endstop_override: Set to True if it is OK for the motors trigger end switch. Otherwise, 
-        such situation immediately calls callback with an error. Telemetrix internally sets it true
-        for a move following successful homing. In special cases, you can set 
-        endstop_override=False (instead of None) to explicitly suppress this behaviour.
-
-        :reset_nanopos: Set to True to reset position (stored in Raspberry Pi) before the move; 
-        results in relative movement. Telemetrix internally sets it true for the first move that follows 
-        successful homing. You can set endstop_override=False (instead of None) to explicitly suppress 
-        this behaviour.
-
-        :param callback: The callback function that is called after all steppers in the group are
-        finished, or when any of them unexpectedly triggers end switch, or when endstop_expected=True
-        and any of them finishes move without reaching it.
-
-        """
-
-        if callback: ## if callback=None, the group is not registered in the list
-            self._stepper_finished_callback.append( [stepper_ids, callback] )
-
-        ## Accepts either numbers (for single stepper), or lists (to make a group)
-        if not isinstance(stepper_ids, (tuple, list)): 
-            stepper_ids = [stepper_ids]
-        if not isinstance(target_micropos, (tuple, list)): 
-            target_micropos = [target_micropos for _ in stepper_ids] # propagate 1 value for all
-        if not isinstance(max_speeds, (tuple, list)): 
-            max_speeds = [max_speeds for _ in stepper_ids] # propagate 1 value for all
-
-        for id, pos, speed in zip(stepper_ids, target_micropos, max_speeds):
-            if self.endstop_expected.get(id):  # makes motor homing easier
-                if endstop_override == None: endstop_override = True
-                if reset_nanopos == None: reset_nanopos = True
-            self.endstop_expected[id] = endstop_expected 
-            self.stepper_action[id] = 'moving'
-
-            target_nanopos = pos*PrivateConstants.NANOSTEP_PER_MICROSTEP + PrivateConstants.NANOPOS_AT_ENDSTOP
-            assert target_nanopos > 0 and target_nanopos < 2**32, 'Target position out of range'
-            command = [PrivateConstants.STEPPER_MOVE,
-                    id,
-                    target_nanopos,
-                    speed,
-                    1 if endstop_override else 0,
-                    1 if reset_nanopos else 0]
-            command_as_byte_list = [b for b in struct.pack(r'<BBIIBB', *command)] # uint8 and uint32 in 1 msg
-            self._send_command(command_as_byte_list)
-
-    def get_stepper_status(self, stepper_id, callback):
-        """ 
-        Returns a dict indicating whether the motor is running,
-        another whether it is on end switch and an integer of the motor's current microstep count. 
-
-        :param stepper_id: number of the stepper being asked about
-        """
-
-        self._stepper_status_callback[stepper_id] = callback
-        msg = struct.pack(r'<BB', PrivateConstants.GET_STEPPER_STATUS, stepper_id)
-        self._send_command([b for b in msg])
-
