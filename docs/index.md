@@ -197,6 +197,6 @@ is provided for asyncio.
 <br>
 <br>
 
-Copyright (C) 2021 Alan Yorinks. All Rights Reserved.
+Copyright (C) 2022 Alan Yorinks. All Rights Reserved.
 
-**Last updated 11 June 2021**
+**Last updated 1 July 2022**

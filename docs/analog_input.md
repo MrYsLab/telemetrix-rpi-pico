@@ -7,11 +7,21 @@ previously read value is set to zero. Therefore, the first report will be genera
 when the current value is non-zero.
 
 ```python
-def set_pin_mode_analog_input(self, adc_number, differential=0, callback=None)
+ def set_pin_mode_analog_input(self, adc_number, differential=0, callback=None)
 
     Set a pin as an analog input.
 
-    :param adc_number: ADC Number 0-3 - ADC 3 is the temp sensor
+    :param adc_number: ADC Number 0-4
+
+                   ADC numbers are mapped as following:
+                   ADC0 = GPIO 26 (Physical Pin 31)
+                   ADC1 = GPIO 27 (Physical Pin 32)
+                   ADC2 = GPIO 28 (Physical Pin 34)
+
+                   Internal Mapping
+                   ADC3 = GPIO 29 (Physical Pin 35) ADC Reference Voltage
+                   ADC4 = GPIO 30 (No Physical pin - mapped internally)
+                                  CPU temperature
 
     :param differential: difference in previous to current value before report will be generated
 
@@ -19,9 +29,10 @@ def set_pin_mode_analog_input(self, adc_number, differential=0, callback=None)
 
     callback returns a data list:
 
-    [pin_type, pin_number, pin_value, raw_time_stamp]
+    [ANALOG_REPORT, pin_number, pin_value, raw_time_stamp]
 
-    The pin_type for analog input pins = 3
+    The ANALOG_REPORT = 3
+
 ```
 ### Parameters:
 
@@ -30,12 +41,14 @@ def set_pin_mode_analog_input(self, adc_number, differential=0, callback=None)
 The Pico supports 4 ADC inputs. ADC3 is hardwired to the internal temperature sensor. 
 Associate the desired ADC port with your device using this parameter.
 
-|                    ADC Number                   | GPIO Number | Physical Pin Number |
-|:---------------------------------------------:|:--------------:|:----------------|
-|               ADC 0        |       26       |         31       |
-| ADC 1 |        27       |         32        |
-|                    ADC2                 |       28       |       34     |
-| ADC 3   | N/A (Internal Temperature Sensor) |N/A (Internal Temperature Sensor) 
+| ADC Number                     |       GPIO Number       | Physical Pin Number       |
+|--------------------------------|:-----------------------:|:--------------------------|
+| ADC 0                          |           26            | 31                        |
+| ADC 1                          |           27            | 32                        |
+| ADC2                           |           28            | 34                        |
+| ADC 3  (ADC Reference Voltage) |           29            | 35                        | 
+| ADC 4   (CPU Temperature)      | N/A (Mapped Internally) | N/A (Mapped Internally)   | 
+
 
 #### differential
 
