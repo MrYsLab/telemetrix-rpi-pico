@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>telemetrix_rpi_pico.telemetrix_rpi_pico API documentation</title>
 <meta name="description" content="Copyright (c) 2021 Alan Yorinks All rights reserved …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -237,7 +237,7 @@ class TelemetrixRpiPico(threading.Thread):
                           range(23)}
 
         # skip over unavailable pins
-        for pin in range(25, 29):
+        for pin in range(26, 29):
             self.pico_pins[pin] = PrivateConstants.AT_MODE_NOT_SET
 
         # creating a list of available sda and scl pins for i2c. If assigned the pins
@@ -734,7 +734,17 @@ class TelemetrixRpiPico(threading.Thread):
         &#34;&#34;&#34;
         Set a pin as an analog input.
 
-        :param adc_number: ADC Number 0-3 - ADC 3 is the temp sensor
+        :param adc_number: ADC Number 0-4
+
+                           ADC numbers are mapped as following:
+                           ADC0 = GPIO 26 (Physical Pin 31)
+                           ADC1 = GPIO 27 (Physical Pin 32)
+                           ADC2 = GPIO 28 (Physical Pin 34)
+
+                           Internal Mapping
+                           ADC3 = GPIO 29 (Physical Pin 35) ADC Reference Voltage
+                           ADC4 = GPIO 30 (No Physical pin - mapped internally)
+                                          CPU temperature
 
         :param differential: difference in previous to current value before
                              report will be generated
@@ -750,7 +760,7 @@ class TelemetrixRpiPico(threading.Thread):
 
         &#34;&#34;&#34;
         # make sure adc number is in range
-        if not 0 &lt; adc_number &lt; 5:
+        if not 0 &lt;= adc_number &lt; 5:
             raise RuntimeError(&#39;Invalid ADC Number&#39;)
         self._set_pin_mode(adc_number, PrivateConstants.AT_ANALOG, differential,
                            callback=callback)
@@ -1934,7 +1944,7 @@ receiving a KeyboardInterrupt exception</p>
                           range(23)}
 
         # skip over unavailable pins
-        for pin in range(25, 29):
+        for pin in range(26, 29):
             self.pico_pins[pin] = PrivateConstants.AT_MODE_NOT_SET
 
         # creating a list of available sda and scl pins for i2c. If assigned the pins
@@ -2431,7 +2441,17 @@ receiving a KeyboardInterrupt exception</p>
         &#34;&#34;&#34;
         Set a pin as an analog input.
 
-        :param adc_number: ADC Number 0-3 - ADC 3 is the temp sensor
+        :param adc_number: ADC Number 0-4
+
+                           ADC numbers are mapped as following:
+                           ADC0 = GPIO 26 (Physical Pin 31)
+                           ADC1 = GPIO 27 (Physical Pin 32)
+                           ADC2 = GPIO 28 (Physical Pin 34)
+
+                           Internal Mapping
+                           ADC3 = GPIO 29 (Physical Pin 35) ADC Reference Voltage
+                           ADC4 = GPIO 30 (No Physical pin - mapped internally)
+                                          CPU temperature
 
         :param differential: difference in previous to current value before
                              report will be generated
@@ -2447,7 +2467,7 @@ receiving a KeyboardInterrupt exception</p>
 
         &#34;&#34;&#34;
         # make sure adc number is in range
-        if not 0 &lt; adc_number &lt; 5:
+        if not 0 &lt;= adc_number &lt; 5:
             raise RuntimeError(&#39;Invalid ADC Number&#39;)
         self._set_pin_mode(adc_number, PrivateConstants.AT_ANALOG, differential,
                            callback=callback)
@@ -4045,7 +4065,17 @@ as a percentage between 0 and 100</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Set a pin as an analog input.</p>
-<p>:param adc_number: ADC Number 0-3 - ADC 3 is the temp sensor</p>
+<p>:param adc_number: ADC Number 0-4</p>
+<pre><code>               ADC numbers are mapped as following:
+               ADC0 = GPIO 26 (Physical Pin 31)
+               ADC1 = GPIO 27 (Physical Pin 32)
+               ADC2 = GPIO 28 (Physical Pin 34)
+
+               Internal Mapping
+               ADC3 = GPIO 29 (Physical Pin 35) ADC Reference Voltage
+               ADC4 = GPIO 30 (No Physical pin - mapped internally)
+                              CPU temperature
+</code></pre>
 <p>:param differential: difference in previous to current value before
 report will be generated</p>
 <p>:param callback: callback function</p>
@@ -4061,7 +4091,17 @@ report will be generated</p>
     &#34;&#34;&#34;
     Set a pin as an analog input.
 
-    :param adc_number: ADC Number 0-3 - ADC 3 is the temp sensor
+    :param adc_number: ADC Number 0-4
+
+                       ADC numbers are mapped as following:
+                       ADC0 = GPIO 26 (Physical Pin 31)
+                       ADC1 = GPIO 27 (Physical Pin 32)
+                       ADC2 = GPIO 28 (Physical Pin 34)
+
+                       Internal Mapping
+                       ADC3 = GPIO 29 (Physical Pin 35) ADC Reference Voltage
+                       ADC4 = GPIO 30 (No Physical pin - mapped internally)
+                                      CPU temperature
 
     :param differential: difference in previous to current value before
                          report will be generated
@@ -4077,7 +4117,7 @@ report will be generated</p>
 
     &#34;&#34;&#34;
     # make sure adc number is in range
-    if not 0 &lt; adc_number &lt; 5:
+    if not 0 &lt;= adc_number &lt; 5:
         raise RuntimeError(&#39;Invalid ADC Number&#39;)
     self._set_pin_mode(adc_number, PrivateConstants.AT_ANALOG, differential,
                        callback=callback)</code></pre>
@@ -4947,7 +4987,7 @@ list.</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>
