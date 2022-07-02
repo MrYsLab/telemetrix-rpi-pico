@@ -194,7 +194,7 @@ class TelemetrixRpiPico(threading.Thread):
                           range(23)}
 
         # skip over unavailable pins
-        for pin in range(26, 29):
+        for pin in range(25, 29):
             self.pico_pins[pin] = PrivateConstants.AT_MODE_NOT_SET
 
         # creating a list of available sda and scl pins for i2c. If assigned the pins
