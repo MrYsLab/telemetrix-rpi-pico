@@ -535,8 +535,8 @@ class TelemetrixRpiPico(threading.Thread):
                 self.i2c_callback = callback
 
         else:
-            if not i2c_port == 1:
-                if not self.i2c_0_active:
+            if i2c_port == 1:
+                if not self.i2c_1_active:
                     if self.shutdown_on_exception:
                         self.shutdown()
                     raise RuntimeError(
