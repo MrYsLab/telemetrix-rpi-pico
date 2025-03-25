@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages]
+find = {}  # Scan the project directory with the default parameters
+
+[project]
+name = "telemetrix-rpi-pico"
+version = "1.5"
+authors = [
+  { name="Alan Yorinks", email="MisterYsLab@gmail.com" },
+]
+description = "Telemetrix Client For The Raspberry Pi Pico"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "AGPL-3.0-or-later"}
+
+keywords=['telemetrix', 'asnyncio', 'Arduino', 'rp2040', 'Pico', 'Python']
+classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Environment :: Other Environment',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Education',
+        'Operating System :: OS Independent',
+        'Topic :: Software Development :: Libraries :: Python Modules'
+    ]
+
+dependencies = [
+    "pyserial"
+]
+
+[project.urls]
+Homepage = "https://github.com/MrYsLab/telemetrix-rpi-pico"
+Issues = "https://github.com/MrYsLab/telemetrix-rpi-pico/issues"
+
+
+
+
+
+
+

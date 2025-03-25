@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
 <title>telemetrix_rpi_pico.telemetrix_rpi_pico API documentation</title>
-<meta name="description" content="Copyright (c) 2021 Alan Yorinks All rights reserved …" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="Copyright (c) 2021-2025 Alan Yorinks All rights reserved …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -22,7 +36,7 @@
 <h1 class="title">Module <code>telemetrix_rpi_pico.telemetrix_rpi_pico</code></h1>
 </header>
 <section id="section-intro">
-<p>Copyright (c) 2021 Alan Yorinks All rights reserved.</p>
+<p>Copyright (c) 2021-2025 Alan Yorinks All rights reserved.</p>
 <p>This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
 Version 3 as published by the Free Software Foundation; either
@@ -37,1715 +51,6 @@ along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 02110-1301
 USA</p>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">&#34;&#34;&#34;
- Copyright (c) 2021 Alan Yorinks All rights reserved.
-
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- Version 3 as published by the Free Software Foundation; either
- or (at your option) any later version.
- This library is distributed in the hope that it will be useful,f
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- General Public License for more details.
-
- You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
- along with this library; if not, write to the Free Software
- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-&#34;&#34;&#34;
-import sys
-import threading
-import time
-from collections import deque
-
-import serial
-# noinspection PyPackageRequirementscd
-from serial.serialutil import SerialException
-# noinspection PyPackageRequirements
-from serial.tools import list_ports
-
-# noinspection PyUnresolvedReferences
-from telemetrix_rpi_pico.private_constants import PrivateConstants
-
-
-# noinspection PyPep8,PyMethodMayBeStatic,GrazieInspection
-class TelemetrixRpiPico(threading.Thread):
-    &#34;&#34;&#34;
-    This class exposes and implements a Telemetrix type
-    API for the Raspberry Pi Pico.
-    It uses threading to accommodate concurrency.
-    It includes the public API methods as well as
-    a set of private methods.
-
-    &#34;&#34;&#34;
-
-    def __init__(self, com_port=None, pico_instance_id=None,
-                 sleep_tune=0.000001,
-                 shutdown_on_exception=True,
-                 reset_on_shutdown=True):
-
-        &#34;&#34;&#34;
-
-        :param com_port: e.g. COM3 or /dev/ttyACM0.
-                         Only use if you wish to bypass auto com port
-                         detection.
-
-        :param pico_instance_id: If not specified, than don&#39;t do id check.
-                                 Else contains a board&#39; s pico unique ID.
-                                 This is passed as an array.
-
-        :param sleep_tune: A tuning parameter (typically not changed by user)
-
-        :param shutdown_on_exception: call shutdown before raising
-                                      a RunTimeError exception, or
-                                      receiving a KeyboardInterrupt exception
-
-        :para reset_on_shutdown: Reset the board upon shutdown
-        &#34;&#34;&#34;
-
-        # initialize threading parent
-        threading.Thread.__init__(self)
-
-        # create the threads and set them as daemons so
-        # that they stop when the program is closed
-
-        # create a thread to interpret received serial data
-        self.the_reporter_thread = threading.Thread(target=self._reporter)
-        self.the_reporter_thread.daemon = True
-
-        self.the_data_receive_thread = threading.Thread(target=self._serial_receiver)
-
-        # flag to allow the reporter and receive threads to run.
-        self.run_event = threading.Event()
-
-        # check to make sure that Python interpreter is version 3.7 or greater
-        python_version = sys.version_info
-        if python_version[0] &gt;= 3:
-            if python_version[1] &gt;= 7:
-                pass
-            else:
-                raise RuntimeError(&#34;ERROR: Python 3.7 or greater is &#34;
-                                   &#34;required for use of this program.&#34;)
-
-        # save input parameters as instance variables
-        self.com_port = com_port
-        self.pico_instance_id = pico_instance_id
-        self.sleep_tune = sleep_tune
-        self.shutdown_on_exception = shutdown_on_exception
-        self.reset_on_shutdown = reset_on_shutdown
-
-        # create a deque to receive and process data from the pico
-        self.the_deque = deque()
-
-        # The report_dispatch dictionary is used to process
-        # incoming report messages by looking up the report message
-        # and executing its associated processing method.
-
-        self.report_dispatch = {}
-
-        # To add a command to the command dispatch table, append here.
-        self.report_dispatch.update(
-            {PrivateConstants.LOOP_COMMAND: self._report_loop_data})
-        self.report_dispatch.update(
-            {PrivateConstants.DEBUG_PRINT: self._report_debug_data})
-        self.report_dispatch.update(
-            {PrivateConstants.DIGITAL_REPORT: self._digital_message})
-        self.report_dispatch.update(
-            {PrivateConstants.ANALOG_REPORT: self._analog_message})
-        self.report_dispatch.update(
-            {PrivateConstants.FIRMWARE_REPORT: self._firmware_message})
-        self.report_dispatch.update(
-            {PrivateConstants.UNIQUE_ID_REPORT: self._report_unique_id})
-        self.report_dispatch.update(
-            {PrivateConstants.SERVO_UNAVAILABLE: self._servo_unavailable})
-        self.report_dispatch.update(
-            {PrivateConstants.I2C_READ_REPORT: self._i2c_read_report})
-        self.report_dispatch.update(
-            {PrivateConstants.I2C_WRITE_FAILED: self._i2c_write_failed})
-        self.report_dispatch.update(
-            {PrivateConstants.I2C_READ_FAILED: self._i2c_read_failed})
-        self.report_dispatch.update(
-            {PrivateConstants.SONAR_DISTANCE: self._sonar_distance_report})
-        self.report_dispatch.update({PrivateConstants.DHT_REPORT: self._dht_report})
-        self.report_dispatch.update({PrivateConstants.SPI_REPORT: self._spi_report})
-
-        # up to 16 pwm pins may be simultaneously active
-        self.pwm_active_count = 0
-
-        # dictionaries to store the callbacks for each pin
-        self.analog_callbacks = {}
-
-        self.digital_callbacks = {}
-
-        self.i2c_callback = None
-        self.i2c_callback2 = None
-
-        self.i2c_0_active = False
-        self.i2c_1_active = False
-
-        # spi
-        self.spi_callback = None
-        self.spi_callback2 = None
-
-        self.spi_0_active = False
-        self.spi_1_active = False
-
-        # the trigger pin will be the key to retrieve
-        # the callback for a specific HC-SR04
-        self.sonar_callbacks = {}
-
-        self.sonar_count = 0
-
-        self.dht_callbacks = {}
-
-        self.dht_count = 0
-
-        # serial port in use
-        self.serial_port = None
-
-        # flag to indicate we are in shutdown mode
-        self.shutdown_flag = False
-
-        # debug loopback callback method
-        self.loop_back_callback = None
-
-        # flag to indicate the start of a new report
-        # self.new_report_start = True
-
-        # firmware version to be stored here
-        self.firmware_version = []
-
-        # reported pico_id
-        self.reported_pico_id = []
-
-        # flag to indicate if i2c was previously enabled
-        self.i2c_enabled = False
-
-        # Create a dictionary to store the pins in use.
-        # Notice that gpio pins 23, 24 and 25 are not included
-        # because the Pico does not support these GPIOs.
-
-        # This dictionary is a list of gpio pins updated with the pin mode when a pin mode
-        # is set.
-        # It is created initially using a dictionary comprehension.
-        self.pico_pins = {gpio_pin: PrivateConstants.AT_MODE_NOT_SET for gpio_pin in
-                          range(23)}
-
-        # skip over unavailable pins
-        for pin in range(26, 29):
-            self.pico_pins[pin] = PrivateConstants.AT_MODE_NOT_SET
-
-        # creating a list of available sda and scl pins for i2c. If assigned the pins
-        # value will be set to either 0 or 1 depending upon the i2c selected.
-        self.i2c_sda_pins = {n: 255 for n in range(2, 21, 2)}
-        self.i2c_sda_pins[26] = 255
-
-        self.i2c_scl_pins = {n: 255 for n in range(3, 22, 2)}
-        self.i2c_scl_pins[27] = 255
-
-        # create a dictionary that holds all the servo ranges
-        self.servo_ranges = {gpio_pin: [1000, 2000] for gpio_pin in
-                             range(23)}
-
-        # skip over unavailable pins
-        for gpio_pin in range(25, 29):
-            self.servo_ranges[gpio_pin] = [1000, 2000]
-
-        self.the_reporter_thread.start()
-        self.the_data_receive_thread.start()
-
-        # neopixel data
-        self.number_of_pixels = None
-
-        self.neopixels_initiated = False
-
-        print(f&#34;TelemetrixRpiPico:  Version {PrivateConstants.TELEMETRIX_VERSION}\n\n&#34;
-              f&#34;Copyright (c) 2020-2021 Alan Yorinks All Rights Reserved.\n&#34;)
-
-        # using the serial link
-
-        if not self.com_port:
-            # user did not specify a com_port
-            try:
-                self._find_pico()
-            except KeyboardInterrupt:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-        else:
-            # com_port specified - set com_port and baud rate
-            try:
-                self._manual_open()
-            except KeyboardInterrupt:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-
-        if self.serial_port:
-            print(
-                f&#34;Serial compatible device found and connected to&#34;
-                f&#34; {self.serial_port.port}&#34;)
-
-            self.serial_port.reset_input_buffer()
-            self.serial_port.reset_output_buffer()
-
-        # no com_port found - raise a runtime exception
-        else:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(&#39;No pico Found or User Aborted Program&#39;)
-
-        # allow the threads to run
-        self._run_threads()
-
-        print(&#39;Retrieving pico ID...&#39;)
-        self._get_pico_id()
-        # time.sleep(.2)
-        print(f&#39;Pico Unique ID: {self.reported_pico_id}&#39;)
-
-        if self.pico_instance_id:
-            if self.reported_pico_id != self.pico_instance_id:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(f&#39;Incorrect pico ID: {self.reported_pico_id}&#39;)
-            else:
-                print(&#39;Valid pico ID Found.&#39;)
-        # get pico firmware version and print it
-        print(&#39;\nRetrieving Telemetrix4pico firmware ID...&#39;)
-        self._get_firmware_version()
-        # time.sleep(.3)
-        if not self.firmware_version:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(f&#39;Telemetrix4pico firmware version&#39;)
-
-        else:
-            print(f&#39;Telemetrix4pico firmware version: {self.firmware_version[0]}.&#39;
-                  f&#39;{self.firmware_version[1]}&#39;)
-        command = [PrivateConstants.ENABLE_ALL_REPORTS]
-        self._send_command(command)
-
-        # Have the server reset its data structures
-        command = [PrivateConstants.RESET_DATA]
-        self._send_command(command)
-
-    def _find_pico(self):
-        &#34;&#34;&#34;
-        This method will search all potential serial ports for a pico
-        board using its USB PID and VID.
-        &#34;&#34;&#34;
-
-        # a list of serial ports to be checked
-        serial_ports = []
-
-        print(&#39;Opening all potential serial ports...&#39;)
-        the_ports_list = list_ports.comports()
-        for port in the_ports_list:
-            if port.pid is None:
-                continue
-            if port.pid != 10 or port.vid != 11914:
-                continue
-            try:
-                self.serial_port = serial.Serial(port.device, 115200,
-                                                 timeout=1, writeTimeout=0)
-            except SerialException:
-                continue
-            # create a list of serial ports that we opened
-            # make sure this is a pico board
-            if port.pid == 10 and port.vid == 11914:
-                serial_ports.append(self.serial_port)
-
-                # display to the user
-                print(&#39;\t&#39; + port.device)
-
-                # clear out the serial buffers
-                self.serial_port.reset_input_buffer()
-                self.serial_port.reset_output_buffer()
-
-    def _manual_open(self):
-        &#34;&#34;&#34;
-        Com port was specified by the user - try to open up that port
-
-        &#34;&#34;&#34;
-        # if port is not found, a serial exception will be thrown
-        try:
-            print(f&#39;Opening {self.com_port}...&#39;)
-            self.serial_port = serial.Serial(self.com_port, 115200,
-                                             timeout=1, writeTimeout=0)
-
-            self._run_threads()
-            # time.sleep(self.pico_wait)
-
-            self._get_pico_id()
-            if self.pico_instance_id:
-                if self.reported_pico_id != self.pico_instance_id:
-                    if self.shutdown_on_exception:
-                        self.shutdown()
-                    raise RuntimeError(f&#39;Incorrect pico ID: {self.reported_pico_id}&#39;)
-            print(&#39;Valid pico ID Found.&#39;)
-            # get pico firmware version and print it
-            print(&#39;\nRetrieving Telemetrix4pico firmware ID...&#39;)
-            self._get_firmware_version()
-
-            if not self.firmware_version:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(f&#39;Telemetrix4pico Sketch Firmware Version Not Found&#39;)
-
-            else:
-                print(f&#39;Telemetrix4pico firmware version: {self.firmware_version[0]}.&#39;
-                      f&#39;{self.firmware_version[1]}&#39;)
-        except KeyboardInterrupt:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(&#39;User Hit Control-C&#39;)
-
-    def pwm_write(self, pin, duty_cycle=0, raw=False):
-        &#34;&#34;&#34;
-        Set the specified pin to the specified value.
-
-        :param pin: pico GPIO pin number
-
-        :param duty_cycle: if the raw parameter is False, then this is expressed
-                           as a percentage between 0 and 100
-
-                           if the raw parameter is True, then the valid range
-                           of values is from 0 - 19999
-
-       :param raw: Sets how the duty-cycle parameter is perceived.
-
-        &#34;&#34;&#34;
-        if self.pico_pins[pin] != PrivateConstants.AT_PWM_OUTPUT \
-                and self.pico_pins[pin] != PrivateConstants.AT_SERVO:
-            raise RuntimeError(&#39;pwm_write: You must set the pin mode before performing &#39;
-                               &#39;a PWM write.&#39;)
-        if raw:
-            if not (0 &lt;= duty_cycle &lt; PrivateConstants.MAX_RAW_DUTY_CYCLE):
-                raise RuntimeError(&#39;Raw PWM duty cycle out of range&#39;)
-            # else:
-            #     dc = duty_cycle
-        else:
-            if not (0 &lt;= duty_cycle &lt;= 99):
-                raise RuntimeError(&#39;Raw PWM duty cycle percentage of range&#39;)
-            # calculate percentage of duty cycle
-            else:
-                duty_cycle = ((PrivateConstants.MAX_RAW_DUTY_CYCLE * duty_cycle) // 100)
-                # print(duty_cycle)
-
-        value_msb = duty_cycle &gt;&gt; 8
-        value_lsb = duty_cycle &amp; 0x00ff
-
-        command = [PrivateConstants.PWM_WRITE, pin, value_msb, value_lsb]
-        self._send_command(command)
-
-    def digital_write(self, pin, value):
-        &#34;&#34;&#34;
-        Set the specified pin to the specified value.
-
-        :param pin: pico GPIO pin number
-
-        :param value: pin value (1 or 0)
-
-        &#34;&#34;&#34;
-        if self.pico_pins[pin] != PrivateConstants.AT_OUTPUT:
-            raise RuntimeError(&#39;pwm_write: You must set the pin mode before performing &#39;
-                               &#39;a digital write.&#39;)
-        command = [PrivateConstants.DIGITAL_WRITE, pin, value]
-        self._send_command(command)
-
-    def disable_all_reporting(self):
-        &#34;&#34;&#34;
-        Disable reporting for all digital and analog input pins
-        &#34;&#34;&#34;
-        command = [PrivateConstants.MODIFY_REPORTING,
-                   PrivateConstants.REPORTING_DISABLE_ALL, 0]
-        self._send_command(command)
-
-    def disable_analog_reporting(self, pin):
-        &#34;&#34;&#34;
-        Disables analog reporting for a single analog pin.
-
-        :param pin: Analog pin number. For example for ADC, the number is 0.
-
-        &#34;&#34;&#34;
-        command = [PrivateConstants.MODIFY_REPORTING,
-                   PrivateConstants.REPORTING_ANALOG_DISABLE, pin]
-        self._send_command(command)
-
-    def disable_digital_reporting(self, pin):
-        &#34;&#34;&#34;
-        Disables digital reporting for a single digital input.
-
-        :param pin: GPIO Pin number.
-
-        &#34;&#34;&#34;
-        command = [PrivateConstants.MODIFY_REPORTING,
-                   PrivateConstants.REPORTING_DIGITAL_DISABLE, pin]
-        self._send_command(command)
-
-    def enable_analog_reporting(self, pin):
-        &#34;&#34;&#34;
-        Enables analog reporting for the specified pin.
-
-        :param pin: Analog pin number. For example for ADC0, the number is 0.
-
-
-        &#34;&#34;&#34;
-        command = [PrivateConstants.MODIFY_REPORTING,
-                   PrivateConstants.REPORTING_ANALOG_ENABLE, pin]
-        self._send_command(command)
-
-    def enable_digital_reporting(self, pin):
-        &#34;&#34;&#34;
-        Enable reporting on the specified digital pin.
-
-        :param pin: GPIO Pin number.
-        &#34;&#34;&#34;
-
-        command = [PrivateConstants.MODIFY_REPORTING,
-                   PrivateConstants.REPORTING_DIGITAL_ENABLE, pin]
-        self._send_command(command)
-
-    def _get_pico_id(self):
-        &#34;&#34;&#34;
-        Retrieve pico-telemetrix pico id
-
-        &#34;&#34;&#34;
-        command = [PrivateConstants.RETRIEVE_PICO_UNIQUE_ID]
-        self._send_command(command)
-        # provide time for the reply
-        time.sleep(.5)
-
-    def _get_firmware_version(self):
-        &#34;&#34;&#34;
-        This method retrieves the
-        pico-telemetrix firmware version
-
-        &#34;&#34;&#34;
-        command = [PrivateConstants.GET_FIRMWARE_VERSION]
-        self._send_command(command)
-        # provide time for the reply
-        time.sleep(.5)
-
-    # TBD
-    def i2c_read(self, address, register, number_of_bytes,
-                 callback=None, i2c_port=0, no_stop=False):
-        &#34;&#34;&#34;
-        Read the specified number of bytes from the specified register for
-        the i2c device.
-
-
-        :param address: i2c device address
-
-        :param register: i2c register (or None if no register selection is needed)
-
-        :param number_of_bytes: number of bytes to be read
-
-        :param callback: Required callback function to report i2c data as a
-                   result of read command
-
-       :param i2c_port: 0 = port 0, 1 = port 1
-
-       :param no_stop: If true, master retains control of the bus at the end of the
-                       transfer (no Stop is issued), and the next transfer will
-                       begin with a Restart rather than a Start.
-
-
-        callback returns a data list:
-        [I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
-        data bytes, time-stamp]
-
-        I2C_READ_REPORT = 10
-
-        &#34;&#34;&#34;
-
-        if not callback:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(&#39;I2C Read: A callback function must be specified.&#39;)
-
-        # i2c_port = 0 for port 0
-        if i2c_port == 0:
-            if not self.i2c_0_active:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(
-                    &#39;I2C Write: set_pin_mode_i2c never called for i2c port 0.&#39;)
-            else:
-                self.i2c_callback = callback
-
-        else:
-            if not i2c_port == 1:
-                if not self.i2c_0_active:
-                    if self.shutdown_on_exception:
-                        self.shutdown()
-                    raise RuntimeError(
-                        &#39;I2C Write: set_pin_mode_i2c never called for i2c port 1.&#39;)
-                else:
-                    self.i2c_callback2 = callback
-
-        command = [PrivateConstants.I2C_READ, i2c_port, address, register,
-                   number_of_bytes, no_stop]
-
-        # no register specified
-        if not register:
-            command[3] = PrivateConstants.I2C_NO_REGISTER
-
-        self._send_command(command)
-
-    # TBD
-    def i2c_write(self, address, args, i2c_port=0, no_stop=False):
-        &#34;&#34;&#34;
-        Write data to an i2c device.
-
-        :param address: i2c device address
-
-        :param args: A variable number of bytes to be sent to the device
-                     passed in as a list.
-                     NOTE: THIS MUST BE IN THE FORM OF A LIST.
-
-        :param i2c_port: 0= port 0, 1 = port 1
-
-        :param no_stop: If true, master retains control of the bus at the end of the
-                       transfer (no Stop is issued), and the next transfer will
-                       begin with a Restart rather than a Start.
-
-        &#34;&#34;&#34;
-        if not i2c_port:
-            if not self.i2c_0_active:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(
-                    &#39;I2C Write: set_pin_mode i2c never called for i2c port 0.&#39;)
-
-        elif i2c_port:
-            if not self.i2c_1_active:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(
-                    &#39;I2C Write: set_pin_mode i2c never called for i2c port 2.&#39;)
-
-        if type(args) != list:
-            raise RuntimeError(&#39;args must be in the form of a list&#39;)
-
-        command = [PrivateConstants.I2C_WRITE, i2c_port, address, len(args), no_stop]
-
-        for item in args:
-            command.append(item)
-
-        self._send_command(command)
-
-    def neo_pixel_set_value(self, pixel_number, r=0, g=0, b=0, auto_show=False):
-        &#34;&#34;&#34;
-        Set the selected pixel in the pixel array on the Pico to
-        the value provided.
-
-        :param pixel_number: pixel number
-
-        :param r: red value 0-255
-
-        :param g: green value 0-255
-
-        :param b: blue value 0-255
-
-        :param auto_show: call show automatically
-
-        &#34;&#34;&#34;
-        if not self.neopixels_initiated:
-            raise RuntimeError(&#39;You must call set_pin_mode_neopixel first&#39;)
-
-        if pixel_number &gt; self.number_of_pixels:
-            raise RuntimeError(&#39;Pixel number is out of legal range&#39;)
-
-        if r and g and b not in range(256):
-            raise RuntimeError(&#39;Pixel value must be in the range of 0-255&#39;)
-
-        command = [PrivateConstants.SET_NEO_PIXEL, pixel_number, r, g, b, auto_show]
-        self._send_command(command)
-
-        if auto_show:
-            self.neopixel_show()
-
-    def neopixel_clear(self, auto_show=True):
-        &#34;&#34;&#34;
-        Clear all pixels
-
-        :param auto_show: call show automatically
-
-        &#34;&#34;&#34;
-        if not self.neopixels_initiated:
-            raise RuntimeError(&#39;You must call set_pin_mode_neopixel first&#39;)
-        command = [PrivateConstants.CLEAR_ALL_NEO_PIXELS, auto_show]
-        self._send_command(command)
-        if auto_show:
-            self.neopixel_show()
-
-    def neopixel_fill(self, r=0, g=0, b=0, auto_show=True):
-        &#34;&#34;&#34;
-        Fill all pixels with specified value
-
-        :param r: 0-255
-
-        :param g: 0-255
-
-        :param b: 0-255
-
-        :param auto_show: call show automatically
-        &#34;&#34;&#34;
-        if not self.neopixels_initiated:
-            raise RuntimeError(&#39;You must call set_pin_mode_neopixel first&#39;)
-        if r and g and b not in range(256):
-            raise RuntimeError(&#39;Pixel value must be in the range of 0-255&#39;)
-        command = [PrivateConstants.FILL_ALL_NEO_PIXELS, r, g, b, auto_show]
-        self._send_command(command)
-
-        if auto_show:
-            self.neopixel_show()
-
-    def neopixel_show(self):
-        &#34;&#34;&#34;
-        Write the NeoPixel buffer stored in the Pico to the NeoPixel strip.
-
-        &#34;&#34;&#34;
-        if not self.neopixels_initiated:
-            raise RuntimeError(&#39;You must call set_pin_mode_neopixel first&#39;)
-        command = [PrivateConstants.SHOW_NEO_PIXELS]
-        self._send_command(command)
-
-    def loop_back(self, start_character, callback=None):
-        &#34;&#34;&#34;
-        This is a debugging method to send a character to the
-        pico device, and have the device loop it back.
-
-        :param start_character: The character to loop back. It should be
-                                an integer.
-
-        :param callback: Looped back character will appear in the callback method
-
-        &#34;&#34;&#34;
-        command = [PrivateConstants.LOOP_COMMAND, ord(start_character)]
-        self.loop_back_callback = callback
-        self._send_command(command)
-
-    def set_pin_mode_analog_input(self, adc_number, differential=0, callback=None):
-        &#34;&#34;&#34;
-        Set a pin as an analog input.
-
-        :param adc_number: ADC Number 0-4
-
-                           ADC numbers are mapped as following:
-                           ADC0 = GPIO 26 (Physical Pin 31)
-                           ADC1 = GPIO 27 (Physical Pin 32)
-                           ADC2 = GPIO 28 (Physical Pin 34)
-
-                           Internal Mapping
-                           ADC3 = GPIO 29 (Physical Pin 35) ADC Reference Voltage
-                           ADC4 = GPIO 30 (No Physical pin - mapped internally)
-                                          CPU temperature
-
-        :param differential: difference in previous to current value before
-                             report will be generated
-
-        :param callback: callback function
-
-
-        callback returns a data list:
-
-        [ANALOG_REPORT, pin_number, pin_value, raw_time_stamp]
-
-        The ANALOG_REPORT  = 3
-
-        &#34;&#34;&#34;
-        # make sure adc number is in range
-        if not 0 &lt;= adc_number &lt; 5:
-            raise RuntimeError(&#39;Invalid ADC Number&#39;)
-        self._set_pin_mode(adc_number, PrivateConstants.AT_ANALOG, differential,
-                           callback=callback)
-
-    def set_pin_mode_digital_input(self, pin_number, callback=None):
-        &#34;&#34;&#34;
-        Set a pin as a digital input.
-
-        :param pin_number: pico GPIO pin number
-
-        :param callback: callback function
-
-
-        callback returns a data list:
-
-        [DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]
-
-        DIGITAL_REPORT = 2
-
-        &#34;&#34;&#34;
-        self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT, callback=callback)
-
-    def set_pin_mode_digital_input_pullup(self, pin_number, callback=None):
-        &#34;&#34;&#34;
-        Set a pin as a digital input with pullup enabled.
-
-        :param pin_number: pico GPIO pin number
-
-        :param callback: callback function
-
-
-        callback returns a data list:
-
-        [DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]
-
-        The DIGITAL_REPORT = 2
-
-        &#34;&#34;&#34;
-        self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULLUP,
-                           callback=callback)
-
-    def set_pin_mode_digital_input_pull_down(self, pin_number, callback=None):
-        &#34;&#34;&#34;
-        Set a pin as a digital input with pull down enabled.
-
-        :param pin_number: pico GPIO pin number
-
-        :param callback: callback function
-
-
-        callback returns a data list:
-
-        [DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]
-
-        DIGITAL_REPORT= 2
-
-        &#34;&#34;&#34;
-        self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULL_DOWN,
-                           callback=callback)
-
-    def set_pin_mode_digital_output(self, pin_number):
-        &#34;&#34;&#34;
-        Set a pin as a digital output pin.
-
-        :param pin_number: pico GPIO pin number
-        &#34;&#34;&#34;
-
-        self._set_pin_mode(pin_number, PrivateConstants.AT_OUTPUT)
-
-    def set_pin_mode_neopixel(self, pin_number=28, num_pixels=8,
-                              fill_r=0, fill_g=0, fill_b=0):
-        &#34;&#34;&#34;
-        Initialize the pico for NeoPixel control. Fill with rgb values specified.
-
-        Default: Set all the pixels to off.
-
-        :param pin_number: neopixel GPIO control pin
-
-        :param num_pixels: number of pixels in the strip
-
-        :param fill_r: initial red fill value 0-255
-
-        :param fill_g: initial green fill value 0-255
-
-        :param fill_b: initial blue fill value 0-255
-
-
-        &#34;&#34;&#34;
-        if fill_r or fill_g or fill_g not in range(256):
-            raise RuntimeError(&#39;Pixel value must be in the range of 0-255&#39;)
-
-        self.number_of_pixels = num_pixels
-
-        command = [PrivateConstants.INITIALIZE_NEO_PIXELS, pin_number,
-                   self.number_of_pixels, fill_r, fill_g, fill_b]
-
-        self._send_command(command)
-
-        self.pico_pins[pin_number] = PrivateConstants.AT_NEO_PIXEL
-
-        self.neopixels_initiated = True
-
-    def set_pin_mode_pwm_output(self, pin_number):
-        &#34;&#34;&#34;
-        Enable a pin as a PWM pin. Maximum number of PWMs is 16.
-        The frequency is fixed at 50 hz.
-
-        Note: There are up to 16 pins that can be assigned as
-        PWM. Servo pins share the 16 PWM pins.
-
-
-        :param pin_number: pico GPIO pin number
-
-        &#34;&#34;&#34;
-
-        if pin_number in self.pico_pins:
-            self.pico_pins[pin_number] = PrivateConstants.AT_PWM_OUTPUT
-            if self.pwm_active_count &gt;= 15:
-                raise RuntimeError(
-                    &#39;pwm or servo set mode: number of active PWM pins is at maximum&#39;)
-
-            self.pwm_active_count += 1
-
-            self._set_pin_mode(pin_number, PrivateConstants.AT_PWM_OUTPUT)
-        else:
-            raise RuntimeError(&#39;Gpio Pin Number is invalid&#39;)
-
-    def set_pin_mode_i2c(self, i2c_port=0, sda_gpio=4, scl_gpio=5):
-        &#34;&#34;&#34;
-        Establish the standard pico i2c pins for i2c utilization.
-
-        :param i2c_port: 0 = i2c0, 1 = i2c1
-
-        :param sda_gpio: gpio pin assigned to SDA
-
-        :param scl_gpio: gpio pin assigned to SCL
-
-
-        NOTES:
-               1. THIS METHOD MUST BE CALLED BEFORE ANY I2C REQUEST IS MADE &lt;br&gt;
-               2. Callbacks are set within the individual i2c read methods of this
-              API.
-
-              See i2c_read, and i2c_write
-
-        &#34;&#34;&#34;
-        # determine if the i2c port is specified correctly
-        if i2c_port not in [0, 1]:
-            raise RuntimeError(&#39;i2c port must be either a 0 or 1&#39;)
-        # determine if the sda and scl gpio&#39;s are valid
-        if sda_gpio not in self.i2c_sda_pins:
-            raise RuntimeError(f&#39;GPIO {sda_gpio} is an invalid i2c SDA GPIO&#39;)
-        if scl_gpio not in self.i2c_scl_pins:
-            raise RuntimeError(f&#39;GPIO {scl_gpio} is an invalid i2c SCL GPIO&#39;)
-
-        # are both GPIOs available?
-        if not self.i2c_sda_pins[sda_gpio] == 255:
-            raise RuntimeError(f&#39;GPIO SDA pin {sda_gpio} is already in use.&#39;)
-        if not self.i2c_scl_pins[scl_gpio] == 255:
-            raise RuntimeError(f&#39;GPIO SCL pin {scl_gpio} is already in use.&#39;)
-        # both pins available - mark the sda and scl dictionaries appropriately
-        self.i2c_sda_pins[sda_gpio] = self.i2c_scl_pins[scl_gpio] = i2c_port
-
-        # now mark the pico_pins dictionary for these pins
-        self.pico_pins[sda_gpio] = self.pico_pins[scl_gpio] = PrivateConstants.AT_I2C
-
-        # determine if the specified sda or scl pin has already been
-        # assigned.
-
-        # test for i2c port 0
-        if not i2c_port:
-            self.i2c_0_active = True
-        # port 1
-        else:
-            self.i2c_1_active = True
-
-        command = [PrivateConstants.I2C_BEGIN, i2c_port, sda_gpio, scl_gpio]
-        self._send_command(command)
-
-    def set_pin_mode_dht(self, pin, callback=None):
-        &#34;&#34;&#34;
-
-      :param pin: connection pin
-
-      :param callback: callback function
-
-      callback returns a data list:
-
-    DHT REPORT, DHT_DATA=1, PIN, Humidity,  Temperature (c),Time]
-
-    DHT_REPORT =  12
-
-        &#34;&#34;&#34;
-
-        if not callback:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(&#39;set_pin_mode_dht: A Callback must be specified&#39;)
-
-        if self.dht_count &lt; PrivateConstants.MAX_DHTS:
-            self.dht_callbacks[pin] = callback
-            self.dht_count += 1
-            self.pico_pins[pin] = PrivateConstants.AT_DHT
-            command = [PrivateConstants.DHT_NEW, pin]
-            self._send_command(command)
-        else:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(
-                f&#39;Maximum Number Of DHTs Exceeded - set_pin_mode_dht fails for pin {pin}&#39;)
-
-    # noinspection PyRedundantParentheses
-    def set_pin_mode_servo(self, pin_number, min_pulse=1000, max_pulse=2000):
-        &#34;&#34;&#34;
-
-        Attach a pin to a servo motor
-
-        Servo mode is a specialized version of PWM Output mode.
-        There are 16 PWM pins shared between the Servo and PWM Output modes.
-
-        :param pin_number: pin
-
-        :param min_pulse: minimum pulse width in microseconds
-
-        :param max_pulse: maximum pulse width in microseconds
-
-        &#34;&#34;&#34;
-
-        self._set_pin_mode(pin_number, PrivateConstants.AT_SERVO, min_pulse, max_pulse)
-        self.pico_pins[pin_number] = PrivateConstants.AT_SERVO
-
-    def set_pin_mode_spi(self, spi_port=0, miso=16, mosi=19, clock_pin=18,
-                         clk_frequency=500000, chip_select_list=None,
-                         qualify_pins=True):
-        &#34;&#34;&#34;
-        Specify the SPI port, SPI pins, clock frequency and an optional
-        list of chip select pins. The SPI port is configured as a &#34;master&#34;.
-
-        :param spi_port: 0 = spi0, 1 = spi1
-
-        :param miso: SPI data receive pin
-
-        :param mosi: SPI data transmit pin
-
-        :param clock_pin: clock pin
-
-        :param clk_frequency: clock frequency in Hz.
-
-        :param chip_select_list: this is a list of pins to be used for chip select.
-                           The pins will be configured as output, and set to high
-                           ready to be used for chip select.
-                           NOTE: You must specify the chips select pins here!
-
-        :param qualify_pins: If true validate
-
-                            for spi0:
-                                 MOSI=19
-
-                                 MISO=16
-
-                                 CLOCK=18
-
-                             for spi1:
-
-                                 MOSI=15
-
-                                 MISO=12
-
-                                 CLOCK=14
-
-        cammand message: [command, spi port, mosi, miso, clock, freq msb,
-                          freq 3, freq 2, freq 1, number of cs pins, cs pins...]
-        &#34;&#34;&#34;
-        # determine if the spi port is specified correctly
-        if spi_port not in [0, 1]:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(&#39;spi port must be either a 0 or 1&#39;)
-
-        # determine if the spi gpio&#39;s are valid if qualify_pin is True.
-        if qualify_pins:
-            if spi_port == 0:
-                if mosi != 19:
-                    if self.shutdown_on_exception:
-                        self.shutdown()
-                    raise RuntimeError(&#39;For spi0 mosi must be 19.&#39;)
-                if miso != 16:
-                    if self.shutdown_on_exception:
-                        self.shutdown()
-                    raise RuntimeError(&#39;For spi0 miso must be 16.&#39;)
-                if clock_pin != 18:
-                    if self.shutdown_on_exception:
-                        self.shutdown()
-                    raise RuntimeError(&#39;For spi0 clock must be 18.&#39;)
-            else:
-                if mosi != 15:
-                    if self.shutdown_on_exception:
-                        self.shutdown()
-                    raise RuntimeError(&#39;For spi1 mosi must be 15.&#39;)
-                if miso != 12:
-                    if self.shutdown_on_exception:
-                        self.shutdown()
-                    raise RuntimeError(&#39;For spi1 miso must be 12.&#39;)
-                if clock_pin != 14:
-                    if self.shutdown_on_exception:
-                        self.shutdown()
-                    raise RuntimeError(&#39;For spi0 clock must be 14.&#39;)
-
-        # check if mosi, miso or clock pins have already been assigned
-        if self.pico_pins[mosi] != PrivateConstants.AT_MODE_NOT_SET:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(&#39;MOSI pin currently in use&#39;)
-        if self.pico_pins[miso] != PrivateConstants.AT_MODE_NOT_SET:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(&#39;MISO pin currently in use&#39;)
-        if self.pico_pins[clock_pin] != PrivateConstants.AT_MODE_NOT_SET:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(&#39;Clock Pin pin currently in use&#39;)
-
-        if type(chip_select_list) != list:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(&#39;chip_select_list must be in the form of a list&#39;)
-        if not chip_select_list:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(&#39;Chip select pins were not specified&#39;)
-        # validate chip select pins
-        for pin in chip_select_list:
-            if self.pico_pins[pin] != PrivateConstants.AT_MODE_NOT_SET:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(f&#39;SPI Chip select pin {pin} is already in use!&#39;)
-
-        # test for spi port 0
-        if not spi_port:
-            self.spi_0_active = True
-        # port 1
-        else:
-            self.spi_1_active = True
-
-        # freq_msb = clk_frequency &gt;&gt; 8
-        # freq_lsb = clk_frequency &amp; 0x00ff
-        freq_bytes = clk_frequency.to_bytes(4, byteorder=&#39;big&#39;)
-
-        self.pico_pins[mosi] = PrivateConstants.AT_SPI
-        self.pico_pins[miso] = PrivateConstants.AT_SPI
-        self.pico_pins[clock_pin] = PrivateConstants.AT_SPI
-
-        command = [PrivateConstants.SPI_INIT, spi_port, mosi, miso, clock_pin]
-
-        for i in range(len(freq_bytes)):
-            command.append(freq_bytes[i])
-
-        command.append(len(chip_select_list))
-
-        for pin in chip_select_list:
-            command.append(pin)
-            self.pico_pins[pin] = PrivateConstants.AT_SPI
-
-        self._send_command(command)
-
-    def servo_write(self, pin_number, value):
-        &#34;&#34;&#34;
-        Write the value to the specified servo
-
-        :param pin_number: GPIO pin number
-
-        :param value: value between 0 and 180
-
-        &#34;&#34;&#34;
-
-        if self.pico_pins[pin_number] != PrivateConstants.AT_SERVO:
-            raise RuntimeError(&#39;You must call set_pin_mode_servo before trying to &#39;
-                               &#39;write a value to a servo or servo was detached.&#39;)
-
-        # get the min and max for the servo and calculate the duty-cycle
-        min_duty = self.servo_ranges[pin_number][PrivateConstants.MIN_SERVO_DUTY_CYCLE]
-        max_duty = self.servo_ranges[pin_number][PrivateConstants.MAX_SERVO_DUTY_CYCLE]
-
-        servo_range = max_duty - min_duty
-
-        duty_cycle = int(value / 180 * servo_range) + min_duty
-
-        # use a raw pwm write from the calculated values
-        self.pwm_write(pin_number, duty_cycle, True)
-
-    def set_pin_mode_sonar(self, trigger_pin, echo_pin, callback=None):
-        &#34;&#34;&#34;
-        :param trigger_pin:  Sensor trigger gpio pin
-
-        :param echo_pin: Sensor echo gpio pin
-
-        :param callback: callback
-
-       callback returns a data list:
-
-       [ SONAR_DISTANCE, trigger_pin, distance_value, time_stamp]
-
-       SONAR_DISTANCE =  11
-
-        &#34;&#34;&#34;
-
-        if not callback:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(&#39;set_pin_mode_sonar: A Callback must be specified&#39;)
-
-        if self.sonar_count &lt; PrivateConstants.MAX_SONARS:
-            self.sonar_callbacks[trigger_pin] = callback
-            self.sonar_count += 1
-            self.pico_pins[trigger_pin] = self.pico_pins[echo_pin] = \
-                PrivateConstants.AT_SONAR
-
-            command = [PrivateConstants.SONAR_NEW, trigger_pin, echo_pin]
-            self._send_command(command)
-        else:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(&#39;Maximum number of supported sonar devices exceeded.&#39;)
-
-    def spi_cs_control(self, chip_select_pin, select):
-        &#34;&#34;&#34;
-        Control an SPI chip select line
-        :param chip_select_pin: pin connected to CS
-
-        :param select: 0=select, 1=deselect
-        &#34;&#34;&#34;
-
-        if self.pico_pins[chip_select_pin] != PrivateConstants.AT_SPI:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(f&#39;spi_read_blocking: Invalid chip select pin&#39;
-                               f&#39; {chip_select_pin}.&#39;)
-        command = [PrivateConstants.SPI_CS_CONTROL, chip_select_pin, select]
-        self._send_command(command)
-
-    def spi_read_blocking(self, number_of_bytes, spi_port=0, call_back=None,
-                          repeated_tx_data=0):
-        &#34;&#34;&#34;
-        Read the specified number of bytes from the specified SPI port and
-        call the callback function with the reported data.
-
-        :param number_of_bytes: Number of bytes to read
-
-        :param spi_port: SPI port 0 or 1
-
-        :param call_back: Required callback function to report spi data as a
-                   result of read command
-
-        :param repeated_tx_data: repeated data to send
-
-        callback returns a data list:
-        [SPI_READ_REPORT, spi_port, count of data bytes, data bytes, time-stamp]
-
-        SPI_READ_REPORT = 13
-
-        &#34;&#34;&#34;
-        if not spi_port:
-            if not self.spi_0_active:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(
-                    &#39;spi_read_blocking: set_pin_mode_spi never called for spi port 0.&#39;)
-
-        elif spi_port:
-            if not self.spi_1_active:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(
-                    &#39;spi_read_blocking: set_pin_mode_spi never called for spi port 1.&#39;)
-
-        if not call_back:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(&#39;spi_read_blocking: A Callback must be specified&#39;)
-        if spi_port == 0:
-            self.spi_callback = call_back
-        else:
-            self.spi_callback2 = call_back
-
-        command = [PrivateConstants.SPI_READ_BLOCKING, spi_port, number_of_bytes,
-                   repeated_tx_data]
-        self._send_command(command)
-
-    def spi_set_format(self, spi_port=0, data_bits=8, spi_polarity=0, spi_phase=0):
-        &#34;&#34;&#34;
-        Configure how the SPI serializes and de-serializes data on the wire.
-
-        :param spi_port: SPI port 0 or 1
-
-        :param data_bits: Number of data bits per transfer. Valid range = 4-16
-
-        :param spi_polarity: clock polarity. 0 or 1.
-
-        :param spi_phase: clock phase. 0 or 1.
-        &#34;&#34;&#34;
-
-        if not spi_port:
-            if not self.spi_0_active:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(
-                    &#39;spi_set_format: set_pin_mode_spi never called for spi port 0.&#39;)
-
-        elif spi_port:
-            if not self.spi_1_active:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(
-                    &#39;spi_set_format: set_pin_mode_spi never called for spi port 1.&#39;)
-
-        command = [PrivateConstants.SPI_SET_FORMAT, spi_port, data_bits,
-                   spi_polarity, spi_phase]
-        self._send_command(command)
-
-    def spi_write_blocking(self, bytes_to_write, spi_port=0):
-        &#34;&#34;&#34;
-        Write a list of bytes to the SPI device.
-
-        :param bytes_to_write: A list of bytes to write. This must be in the form of a
-        list.
-
-        :param spi_port: SPI port 0 or 1
-
-        &#34;&#34;&#34;
-        if not spi_port:
-            if not self.spi_0_active:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(
-                    &#39;spi_write_blocking: set_pin_mode_spi never called for spi port 0.&#39;)
-
-        elif spi_port:
-            if not self.spi_1_active:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(
-                    &#39;spi_write_blocking: set_pin_mode_spi never called for spi port 1.&#39;)
-        command = [PrivateConstants.SPI_WRITE_BLOCKING, spi_port,
-                   len(bytes_to_write)]
-
-        for data in bytes_to_write:
-            command.append(data)
-
-        self._send_command(command)
-
-    def get_pico_pins(self):
-        &#34;&#34;&#34;
-        This method returns the pico_pins dictionary
-
-        Pin Modes MAP:
-
-            DIGITAL_INPUT = 0
-
-            DIGITAL_OUTPUT = 1
-
-            PWM_OUTPUT = 2
-
-            DIGITAL_INPUT_PULLUP = 3
-
-            DIGITAL_INPUT_PULL_DOWN = 4
-
-            ANALOG_INPUT = 5
-
-            SERVO = 6
-
-            SONAR = 7
-
-            DHT = 8
-
-            I2C = 9
-
-            NEO_PIXEL = 10
-
-            AT_MODE_NOT_SET = 255
-
-        :return: pico_pins
-        &#34;&#34;&#34;
-        return self.pico_pins
-
-    def _set_pin_mode(self, pin_number, pin_state, differential=0, value_range=0,
-                      callback=None):
-
-        &#34;&#34;&#34;
-        A private method to set the various pin modes.
-
-        :param pin_number: pico pin number
-
-        :param pin_state: INPUT/OUTPUT/ANALOG/PWM/PULLUP
-
-        :param differential: for analog inputs - threshold
-                             value to be achieved for report to
-                             be generated
-
-                           : for servo we overload this variable to mean the minimum
-                             duty cycle
-
-        :param value_range: for servo this is the maximum duty cycle
-
-        :param callback: A reference to a call back function to be
-                         called when pin data value changes
-
-        &#34;&#34;&#34;
-        # Map ADC to GPIO pin numbers
-        if pin_state == PrivateConstants.AT_ANALOG:
-            self.pico_pins[26 + pin_number] = PrivateConstants.AT_ANALOG
-        else:
-            if pin_number in self.pico_pins:
-                self.pico_pins[pin_number] = pin_state
-            else:
-                raise RuntimeError(&#39;Gpio Pin Number is invalid&#39;)
-
-        if callback:
-            if pin_state == PrivateConstants.AT_INPUT:
-                self.digital_callbacks[pin_number] = callback
-            elif pin_state == PrivateConstants.AT_INPUT_PULLUP:
-                self.digital_callbacks[pin_number] = callback
-            elif pin_state == PrivateConstants.AT_INPUT_PULL_DOWN:
-                self.digital_callbacks[pin_number] = callback
-            elif pin_state == PrivateConstants.AT_ANALOG:
-                self.analog_callbacks[pin_number] = callback
-
-            else:
-                print(&#39;{} {}&#39;.format(&#39;set_pin_mode: callback ignored for &#39;
-                                     &#39;pin state:&#39;, pin_state))
-
-        if pin_state == PrivateConstants.AT_INPUT:
-            command = [PrivateConstants.SET_PIN_MODE, pin_number,
-                       PrivateConstants.AT_INPUT, 1]
-
-        elif pin_state == PrivateConstants.AT_INPUT_PULLUP:
-            command = [PrivateConstants.SET_PIN_MODE, pin_number,
-                       PrivateConstants.AT_INPUT_PULLUP, 1]
-
-        elif pin_state == PrivateConstants.AT_INPUT_PULL_DOWN:
-            command = [PrivateConstants.SET_PIN_MODE, pin_number,
-                       PrivateConstants.AT_INPUT_PULL_DOWN, 1]
-
-        elif pin_state == PrivateConstants.AT_OUTPUT:
-            command = [PrivateConstants.SET_PIN_MODE, pin_number,
-                       PrivateConstants.AT_OUTPUT]
-
-        elif pin_state == PrivateConstants.AT_ANALOG:
-            command = [PrivateConstants.SET_PIN_MODE, pin_number,
-                       PrivateConstants.AT_ANALOG,
-                       differential &gt;&gt; 8, differential &amp; 0xff, 1]
-
-        elif pin_state == PrivateConstants.AT_PWM_OUTPUT:
-            command = [PrivateConstants.SET_PIN_MODE, pin_number,
-                       PrivateConstants.AT_PWM_OUTPUT]
-
-        elif pin_state == PrivateConstants.AT_SERVO:
-            # we reuse the PWM_OUTPUT command
-            command = [PrivateConstants.SET_PIN_MODE, pin_number,
-                       PrivateConstants.AT_PWM_OUTPUT]
-            self.servo_ranges[pin_number] = [differential, value_range]
-
-        else:
-            if self.shutdown_on_exception:
-                self.shutdown()
-            raise RuntimeError(&#39;Unknown pin state&#39;)
-
-        if pin_state == PrivateConstants.AT_ANALOG:
-            if pin_number == 0:
-                self.pico_pins[26] = PrivateConstants.AT_ANALOG
-            elif pin_number == 1:
-                self.pico_pins[27] = PrivateConstants.AT_ANALOG
-            elif pin_number == 13:
-                self.pico_pins[28] = PrivateConstants.AT_ANALOG
-
-        else:
-            self.pico_pins[pin_number] = pin_state
-
-        if command:
-            self._send_command(command)
-
-    def shutdown(self):
-        &#34;&#34;&#34;
-        This method attempts an orderly shutdown
-        If any exceptions are thrown, they are ignored.
-        &#34;&#34;&#34;
-
-        self.shutdown_flag = True
-
-        self._stop_threads()
-
-        # try:
-        command = [PrivateConstants.STOP_ALL_REPORTS]
-        self._send_command(command)
-        time.sleep(.2)
-        if self.reset_on_shutdown:
-            command = [PrivateConstants.RESET_BOARD]
-            self._send_command(command)
-            time.sleep(.2)
-        self.serial_port.close()
-        self.serial_port = None
-
-    &#39;&#39;&#39;
-    report message handlers
-    &#39;&#39;&#39;
-
-    def _analog_message(self, data):
-        &#34;&#34;&#34;
-        This is a private message handler method.
-        It is a message handler for analog messages.
-
-        :param data: message data
-
-        &#34;&#34;&#34;
-        pin = data[0]
-        value = (data[1] &lt;&lt; 8) + data[2]
-        # set the current value in the pin structure
-        time_stamp = time.time()
-        # self.digital_pins[pin].event_time = time_stamp
-        if self.analog_callbacks[pin]:
-            message = [PrivateConstants.ANALOG_REPORT, pin, value, time_stamp]
-            self.analog_callbacks[pin](message)
-
-    # TBD
-    def _dht_report(self, data):
-        &#34;&#34;&#34;
-        This is the dht report handler method.
-
-        :param data:
-
-                                data[0] = report sub type - DHT_REPORT
-
-                                data[1] = pin number
-
-                                data[2] = humidity
-
-                                data[3] = temperature
-
-                                data[4] = timestamp
-
-
-        &#34;&#34;&#34;
-        cb = self.dht_callbacks[data[0]]
-
-        cb_list = [PrivateConstants.DHT_REPORT, data[0],
-                   (data[1] + (data[2] / 100)), (data[3] + (data[4] / 100)), time.time()]
-        cb(cb_list)
-
-    def _digital_message(self, data):
-        &#34;&#34;&#34;
-        This is a private message handler method.
-        It is a message handler for Digital Messages.
-
-        :param data: digital message
-
-        &#34;&#34;&#34;
-        pin = data[0]
-        value = data[1]
-
-        time_stamp = time.time()
-        if self.digital_callbacks[pin]:
-            message = [PrivateConstants.DIGITAL_REPORT, pin, value, time_stamp]
-            self.digital_callbacks[pin](message)
-
-    def _firmware_message(self, data):
-        &#34;&#34;&#34;
-        Telemetrix4pico firmware version message
-        :param data: data[0] = major number, data[1] = minor number
-        &#34;&#34;&#34;
-
-        self.firmware_version = [data[0], data[1]]
-
-    def _i2c_read_report(self, data):
-        &#34;&#34;&#34;
-        Execute callback for i2c reads.
-
-        :param data: [I2C_READ_REPORT, i2c_port, i2c_address,
-        register, number of bytes read, bytes read..., time-stamp]
-        &#34;&#34;&#34;
-
-        cb_list = [PrivateConstants.I2C_READ_REPORT, data[0], data[1]] + data[2:]
-
-        cb_list.append(time.time())
-
-        if cb_list[1]:
-            self.i2c_callback2(cb_list)
-        else:
-            self.i2c_callback(cb_list)
-
-    def _i2c_write_failed(self, data):
-        &#34;&#34;&#34;
-        I2c write attempt failed
-
-        :param data: data[0] = i2c_device
-        &#34;&#34;&#34;
-        if self.shutdown_on_exception:
-            self.shutdown()
-        raise RuntimeError(
-            f&#39;i2c Write Failed for I2C port {data[0]}&#39;)
-        while True:
-            time.sleep(1)
-
-    def _i2c_read_failed(self, data):
-        &#34;&#34;&#34;
-        I2c read failed
-
-        :param data: data[0] = i2c device
-        &#34;&#34;&#34;
-        if self.shutdown_on_exception:
-            self.shutdown()
-        raise RuntimeError(
-            f&#39;i2c Read Failed for I2C port {data[0]}&#39;)
-        while True:
-            time.sleep(.1)
-
-    def _report_unique_id(self, data):
-        &#34;&#34;&#34;
-        Reply to are_u_there message
-        :param data: pico id
-        &#34;&#34;&#34;
-
-        for i in range(len(data)):
-            self.reported_pico_id.append(data[i])
-
-    def _report_debug_data(self, data):
-        &#34;&#34;&#34;
-        Print debug data sent from pico
-        :param data: data[0] is a byte followed by 2
-                     bytes that comprise an integer
-        :return:
-        &#34;&#34;&#34;
-        value = (data[1] &lt;&lt; 8) + data[2]
-        print(f&#39;DEBUG ID: {data[0]} Value: {value}&#39;)
-
-    def _report_loop_data(self, data):
-        &#34;&#34;&#34;
-        Print data that was looped back
-        :param data: byte of loop back data
-        :return:
-        &#34;&#34;&#34;
-        if self.loop_back_callback:
-            self.loop_back_callback(data)
-
-    def _send_command(self, command):
-        &#34;&#34;&#34;
-        This is a private utility method.
-
-
-        :param command:  command data in the form of a list
-
-        &#34;&#34;&#34;
-        # the length of the list is added at the head
-        command.insert(0, len(command))
-        # print(command)
-        send_message = bytes(command)
-
-        if self.serial_port:
-            try:
-                self.serial_port.write(send_message)
-            except SerialException:
-                if self.shutdown_on_exception:
-                    self.shutdown()
-                raise RuntimeError(&#39;write fail in _send_command&#39;)
-
-    # TBD
-    def _servo_unavailable(self, report):
-        &#34;&#34;&#34;
-        Message if no servos are available for use.
-        :param report: pin number
-        &#34;&#34;&#34;
-        if self.shutdown_on_exception:
-            self.shutdown()
-        raise RuntimeError(
-            f&#39;Servo Attach For Pin {report[0]} Failed: No Available Servos&#39;)
-
-    def _sonar_distance_report(self, report):
-        &#34;&#34;&#34;
-
-        :param report: data[0] = trigger pin, data[1] and data[2] = distance
-
-        callback report format: [PrivateConstants.SONAR_DISTANCE, trigger_pin,
-        distance  in centimeters, time_stamp]
-        &#34;&#34;&#34;
-
-        # get callback from pin number
-        cb = self.sonar_callbacks[report[0]]
-
-        # build report data
-        if report[1] == 0 and report[2] == 0:
-            cb_list = [PrivateConstants.SONAR_DISTANCE, report[0],
-                       0, time.time()]
-        else:
-            cb_list = [PrivateConstants.SONAR_DISTANCE, report[0],
-                       (report[1] + (report[2] / 100)), time.time()]
-
-        cb(cb_list)
-
-    def _spi_report(self, report):
-        &#34;&#34;&#34;
-        Execute callback for spi reads.
-
-        :param report: [spi_port, number of bytes read, data]
-
-        &#34;&#34;&#34;
-
-        cb_list = [PrivateConstants.SPI_REPORT, report[0], report[1]] + report[2:]
-
-        cb_list.append(time.time())
-
-        if cb_list[1]:
-            self.spi_callback2(cb_list)
-        else:
-            self.spi_callback(cb_list)
-
-    def _run_threads(self):
-        self.run_event.set()
-
-    def _is_running(self):
-        return self.run_event.is_set()
-
-    def _stop_threads(self):
-        self.run_event.clear()
-
-    def _reporter(self):
-        &#34;&#34;&#34;
-        This is the reporter thread. It continuously pulls data from
-        the deque. When a full message is detected, that message is
-        processed.
-        &#34;&#34;&#34;
-        self.run_event.wait()
-
-        while self._is_running() and not self.shutdown_flag:
-            if len(self.the_deque):
-                # response_data will be populated with the received data for the report
-                response_data = []
-                packet_length = self.the_deque.popleft()
-
-                if packet_length:
-                    # get all the data for the report and place it into response_data
-                    for i in range(packet_length):
-                        while not len(self.the_deque):
-                            time.sleep(self.sleep_tune)
-                        data = self.the_deque.popleft()
-                        response_data.append(data)
-
-                    # get the report type and look up its dispatch method
-                    # here we pop the report type off of response_data
-                    report_type = response_data.pop(0)
-
-                    # retrieve the report handler from the dispatch table
-                    dispatch_entry = self.report_dispatch.get(report_type)
-
-                    # if there is additional data for the report,
-                    # it will be contained in response_data
-                    # noinspection PyArgumentList
-                    dispatch_entry(response_data)
-                    continue
-
-                else:
-                    if self.shutdown_on_exception:
-                        self.shutdown()
-                    raise RuntimeError(
-                        &#39;A report with a packet length of zero was received.&#39;)
-            else:
-                time.sleep(self.sleep_tune)
-
-    def _serial_receiver(self):
-        &#34;&#34;&#34;
-        Thread to continuously check for incoming data.
-        When a byte comes in, place it onto the deque.
-        &#34;&#34;&#34;
-        self.run_event.wait()
-
-        while self._is_running() and not self.shutdown_flag:
-            # we can get an OSError: [Errno9] Bad file descriptor when shutting down
-            # just ignore it
-            try:
-                if self.serial_port.inWaiting():
-                    c = self.serial_port.read()
-                    self.the_deque.append(ord(c))
-                else:
-                    time.sleep(self.sleep_tune)
-                    # continue
-            except OSError:
-                pass</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -1758,25 +63,9 @@ class TelemetrixRpiPico(threading.Thread):
 <dl>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico"><code class="flex name class">
 <span>class <span class="ident">TelemetrixRpiPico</span></span>
-<span>(</span><span>com_port=None, pico_instance_id=None, sleep_tune=1e-06, shutdown_on_exception=True, reset_on_shutdown=True)</span>
+<span>(</span><span>com_port=None,<br>pico_instance_id=None,<br>sleep_tune=1e-06,<br>shutdown_on_exception=True,<br>reset_on_shutdown=True)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This class exposes and implements a Telemetrix type
-API for the Raspberry Pi Pico.
-It uses threading to accommodate concurrency.
-It includes the public API methods as well as
-a set of private methods.</p>
-<p>:param com_port: e.g. COM3 or /dev/ttyACM0.
-Only use if you wish to bypass auto com port
-detection.</p>
-<p>:param pico_instance_id: If not specified, than don't do id check.
-Else contains a board' s pico unique ID.
-This is passed as an array.</p>
-<p>:param sleep_tune: A tuning parameter (typically not changed by user)</p>
-<p>:param shutdown_on_exception: call shutdown before raising
-a RunTimeError exception, or
-receiving a KeyboardInterrupt exception</p>
-<p>:para reset_on_shutdown: Reset the board upon shutdown</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1944,7 +233,7 @@ receiving a KeyboardInterrupt exception</p>
                           range(23)}
 
         # skip over unavailable pins
-        for pin in range(26, 29):
+        for pin in range(25, 29):
             self.pico_pins[pin] = PrivateConstants.AT_MODE_NOT_SET
 
         # creating a list of available sda and scl pins for i2c. If assigned the pins
@@ -2285,8 +574,8 @@ receiving a KeyboardInterrupt exception</p>
                 self.i2c_callback = callback
 
         else:
-            if not i2c_port == 1:
-                if not self.i2c_0_active:
+            if i2c_port == 1:
+                if not self.i2c_1_active:
                     if self.shutdown_on_exception:
                         self.shutdown()
                     raise RuntimeError(
@@ -2367,8 +656,9 @@ receiving a KeyboardInterrupt exception</p>
         if pixel_number &gt; self.number_of_pixels:
             raise RuntimeError(&#39;Pixel number is out of legal range&#39;)
 
-        if r and g and b not in range(256):
-            raise RuntimeError(&#39;Pixel value must be in the range of 0-255&#39;)
+        for color in [r, g, b]:
+            if not 0 &lt;= color &lt;= 255:
+                raise RuntimeError(&#39;RGB values must be in the range of 0-255&#39;)
 
         command = [PrivateConstants.SET_NEO_PIXEL, pixel_number, r, g, b, auto_show]
         self._send_command(command)
@@ -2404,8 +694,11 @@ receiving a KeyboardInterrupt exception</p>
         &#34;&#34;&#34;
         if not self.neopixels_initiated:
             raise RuntimeError(&#39;You must call set_pin_mode_neopixel first&#39;)
-        if r and g and b not in range(256):
-            raise RuntimeError(&#39;Pixel value must be in the range of 0-255&#39;)
+
+        for color in [r, g, b]:
+            if not 0 &lt;= color &lt;= 255:
+                raise RuntimeError(&#39;RGB values must be in the range of 0-255&#39;)
+
         command = [PrivateConstants.FILL_ALL_NEO_PIXELS, r, g, b, auto_show]
         self._send_command(command)
 
@@ -2556,8 +849,9 @@ receiving a KeyboardInterrupt exception</p>
 
 
         &#34;&#34;&#34;
-        if fill_r or fill_g or fill_g not in range(256):
-            raise RuntimeError(&#39;Pixel value must be in the range of 0-255&#39;)
+        for color in [fill_r, fill_g, fill_b]:
+            if not 0 &lt;= color &lt;= 255:
+                raise RuntimeError(&#39;RGB values must be in the range of 0-255&#39;)
 
         self.number_of_pixels = num_pixels
 
@@ -2738,7 +1032,7 @@ receiving a KeyboardInterrupt exception</p>
 
                                  CLOCK=14
 
-        cammand message: [command, spi port, mosi, miso, clock, freq msb,
+        command message: [command, spi port, mosi, miso, clock, freq msb,
                           freq 3, freq 2, freq 1, number of cs pins, cs pins...]
         &#34;&#34;&#34;
         # determine if the spi port is specified correctly
@@ -3453,6 +1747,22 @@ receiving a KeyboardInterrupt exception</p>
             except OSError:
                 pass</code></pre>
 </details>
+<div class="desc"><p>This class exposes and implements a Telemetrix type
+API for the Raspberry Pi Pico.
+It uses threading to accommodate concurrency.
+It includes the public API methods as well as
+a set of private methods.</p>
+<p>:param com_port: e.g. COM3 or /dev/ttyACM0.
+Only use if you wish to bypass auto com port
+detection.</p>
+<p>:param pico_instance_id: If not specified, than don't do id check.
+Else contains a board' s pico unique ID.
+This is passed as an array.</p>
+<p>:param sleep_tune: A tuning parameter (typically not changed by user)</p>
+<p>:param shutdown_on_exception: call shutdown before raising
+a RunTimeError exception, or
+receiving a KeyboardInterrupt exception</p>
+<p>:para reset_on_shutdown: Reset the board upon shutdown</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>threading.Thread</li>
@@ -3463,9 +1773,6 @@ receiving a KeyboardInterrupt exception</p>
 <span>def <span class="ident">digital_write</span></span>(<span>self, pin, value)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set the specified pin to the specified value.</p>
-<p>:param pin: pico GPIO pin number</p>
-<p>:param value: pin value (1 or 0)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3485,12 +1792,14 @@ receiving a KeyboardInterrupt exception</p>
     command = [PrivateConstants.DIGITAL_WRITE, pin, value]
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Set the specified pin to the specified value.</p>
+<p>:param pin: pico GPIO pin number</p>
+<p>:param value: pin value (1 or 0)</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.disable_all_reporting"><code class="name flex">
 <span>def <span class="ident">disable_all_reporting</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Disable reporting for all digital and analog input pins</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3503,13 +1812,12 @@ receiving a KeyboardInterrupt exception</p>
                PrivateConstants.REPORTING_DISABLE_ALL, 0]
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Disable reporting for all digital and analog input pins</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.disable_analog_reporting"><code class="name flex">
 <span>def <span class="ident">disable_analog_reporting</span></span>(<span>self, pin)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Disables analog reporting for a single analog pin.</p>
-<p>:param pin: Analog pin number. For example for ADC, the number is 0.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3525,13 +1833,13 @@ receiving a KeyboardInterrupt exception</p>
                PrivateConstants.REPORTING_ANALOG_DISABLE, pin]
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Disables analog reporting for a single analog pin.</p>
+<p>:param pin: Analog pin number. For example for ADC, the number is 0.</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.disable_digital_reporting"><code class="name flex">
 <span>def <span class="ident">disable_digital_reporting</span></span>(<span>self, pin)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Disables digital reporting for a single digital input.</p>
-<p>:param pin: GPIO Pin number.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3547,13 +1855,13 @@ receiving a KeyboardInterrupt exception</p>
                PrivateConstants.REPORTING_DIGITAL_DISABLE, pin]
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Disables digital reporting for a single digital input.</p>
+<p>:param pin: GPIO Pin number.</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.enable_analog_reporting"><code class="name flex">
 <span>def <span class="ident">enable_analog_reporting</span></span>(<span>self, pin)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Enables analog reporting for the specified pin.</p>
-<p>:param pin: Analog pin number. For example for ADC0, the number is 0.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3570,13 +1878,13 @@ receiving a KeyboardInterrupt exception</p>
                PrivateConstants.REPORTING_ANALOG_ENABLE, pin]
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Enables analog reporting for the specified pin.</p>
+<p>:param pin: Analog pin number. For example for ADC0, the number is 0.</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.enable_digital_reporting"><code class="name flex">
 <span>def <span class="ident">enable_digital_reporting</span></span>(<span>self, pin)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Enable reporting on the specified digital pin.</p>
-<p>:param pin: GPIO Pin number.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3592,38 +1900,13 @@ receiving a KeyboardInterrupt exception</p>
                PrivateConstants.REPORTING_DIGITAL_ENABLE, pin]
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Enable reporting on the specified digital pin.</p>
+<p>:param pin: GPIO Pin number.</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.get_pico_pins"><code class="name flex">
 <span>def <span class="ident">get_pico_pins</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This method returns the pico_pins dictionary</p>
-<p>Pin Modes MAP:</p>
-<pre><code>DIGITAL_INPUT = 0
-
-DIGITAL_OUTPUT = 1
-
-PWM_OUTPUT = 2
-
-DIGITAL_INPUT_PULLUP = 3
-
-DIGITAL_INPUT_PULL_DOWN = 4
-
-ANALOG_INPUT = 5
-
-SERVO = 6
-
-SONAR = 7
-
-DHT = 8
-
-I2C = 9
-
-NEO_PIXEL = 10
-
-AT_MODE_NOT_SET = 255
-</code></pre>
-<p>:return: pico_pins</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3662,26 +1945,38 @@ AT_MODE_NOT_SET = 255
     &#34;&#34;&#34;
     return self.pico_pins</code></pre>
 </details>
+<div class="desc"><p>This method returns the pico_pins dictionary</p>
+<p>Pin Modes MAP:</p>
+<pre><code>DIGITAL_INPUT = 0
+
+DIGITAL_OUTPUT = 1
+
+PWM_OUTPUT = 2
+
+DIGITAL_INPUT_PULLUP = 3
+
+DIGITAL_INPUT_PULL_DOWN = 4
+
+ANALOG_INPUT = 5
+
+SERVO = 6
+
+SONAR = 7
+
+DHT = 8
+
+I2C = 9
+
+NEO_PIXEL = 10
+
+AT_MODE_NOT_SET = 255
+</code></pre>
+<p>:return: pico_pins</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.i2c_read"><code class="name flex">
 <span>def <span class="ident">i2c_read</span></span>(<span>self, address, register, number_of_bytes, callback=None, i2c_port=0, no_stop=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Read the specified number of bytes from the specified register for
-the i2c device.</p>
-<p>:param address: i2c device address</p>
-<p>:param register: i2c register (or None if no register selection is needed)</p>
-<p>:param number_of_bytes: number of bytes to be read</p>
-<p>:param callback: Required callback function to report i2c data as a
-result of read command</p>
-<p>:param i2c_port: 0 = port 0, 1 = port 1</p>
-<p>:param no_stop: If true, master retains control of the bus at the end of the
-transfer (no Stop is issued), and the next transfer will
-begin with a Restart rather than a Start.</p>
-<p>callback returns a data list:
-[I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
-data bytes, time-stamp]</p>
-<p>I2C_READ_REPORT = 10</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3733,8 +2028,8 @@ data bytes, time-stamp]</p>
             self.i2c_callback = callback
 
     else:
-        if not i2c_port == 1:
-            if not self.i2c_0_active:
+        if i2c_port == 1:
+            if not self.i2c_1_active:
                 if self.shutdown_on_exception:
                     self.shutdown()
                 raise RuntimeError(
@@ -3751,20 +2046,26 @@ data bytes, time-stamp]</p>
 
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Read the specified number of bytes from the specified register for
+the i2c device.</p>
+<p>:param address: i2c device address</p>
+<p>:param register: i2c register (or None if no register selection is needed)</p>
+<p>:param number_of_bytes: number of bytes to be read</p>
+<p>:param callback: Required callback function to report i2c data as a
+result of read command</p>
+<p>:param i2c_port: 0 = port 0, 1 = port 1</p>
+<p>:param no_stop: If true, master retains control of the bus at the end of the
+transfer (no Stop is issued), and the next transfer will
+begin with a Restart rather than a Start.</p>
+<p>callback returns a data list:
+[I2C_READ_REPORT, i2c_port, i2c_device_address, count of data bytes,
+data bytes, time-stamp]</p>
+<p>I2C_READ_REPORT = 10</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.i2c_write"><code class="name flex">
 <span>def <span class="ident">i2c_write</span></span>(<span>self, address, args, i2c_port=0, no_stop=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Write data to an i2c device.</p>
-<p>:param address: i2c device address</p>
-<p>:param args: A variable number of bytes to be sent to the device
-passed in as a list.
-NOTE: THIS MUST BE IN THE FORM OF A LIST.</p>
-<p>:param i2c_port: 0= port 0, 1 = port 1</p>
-<p>:param no_stop: If true, master retains control of the bus at the end of the
-transfer (no Stop is issued), and the next transfer will
-begin with a Restart rather than a Start.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3810,16 +2111,20 @@ begin with a Restart rather than a Start.</p></div>
 
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Write data to an i2c device.</p>
+<p>:param address: i2c device address</p>
+<p>:param args: A variable number of bytes to be sent to the device
+passed in as a list.
+NOTE: THIS MUST BE IN THE FORM OF A LIST.</p>
+<p>:param i2c_port: 0= port 0, 1 = port 1</p>
+<p>:param no_stop: If true, master retains control of the bus at the end of the
+transfer (no Stop is issued), and the next transfer will
+begin with a Restart rather than a Start.</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.loop_back"><code class="name flex">
 <span>def <span class="ident">loop_back</span></span>(<span>self, start_character, callback=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This is a debugging method to send a character to the
-pico device, and have the device loop it back.</p>
-<p>:param start_character: The character to loop back. It should be
-an integer.</p>
-<p>:param callback: Looped back character will appear in the callback method</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3839,18 +2144,16 @@ an integer.</p>
     self.loop_back_callback = callback
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>This is a debugging method to send a character to the
+pico device, and have the device loop it back.</p>
+<p>:param start_character: The character to loop back. It should be
+an integer.</p>
+<p>:param callback: Looped back character will appear in the callback method</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.neo_pixel_set_value"><code class="name flex">
 <span>def <span class="ident">neo_pixel_set_value</span></span>(<span>self, pixel_number, r=0, g=0, b=0, auto_show=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set the selected pixel in the pixel array on the Pico to
-the value provided.</p>
-<p>:param pixel_number: pixel number</p>
-<p>:param r: red value 0-255</p>
-<p>:param g: green value 0-255</p>
-<p>:param b: blue value 0-255</p>
-<p>:param auto_show: call show automatically</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3877,8 +2180,9 @@ the value provided.</p>
     if pixel_number &gt; self.number_of_pixels:
         raise RuntimeError(&#39;Pixel number is out of legal range&#39;)
 
-    if r and g and b not in range(256):
-        raise RuntimeError(&#39;Pixel value must be in the range of 0-255&#39;)
+    for color in [r, g, b]:
+        if not 0 &lt;= color &lt;= 255:
+            raise RuntimeError(&#39;RGB values must be in the range of 0-255&#39;)
 
     command = [PrivateConstants.SET_NEO_PIXEL, pixel_number, r, g, b, auto_show]
     self._send_command(command)
@@ -3886,13 +2190,18 @@ the value provided.</p>
     if auto_show:
         self.neopixel_show()</code></pre>
 </details>
+<div class="desc"><p>Set the selected pixel in the pixel array on the Pico to
+the value provided.</p>
+<p>:param pixel_number: pixel number</p>
+<p>:param r: red value 0-255</p>
+<p>:param g: green value 0-255</p>
+<p>:param b: blue value 0-255</p>
+<p>:param auto_show: call show automatically</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.neopixel_clear"><code class="name flex">
 <span>def <span class="ident">neopixel_clear</span></span>(<span>self, auto_show=True)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Clear all pixels</p>
-<p>:param auto_show: call show automatically</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3911,16 +2220,13 @@ the value provided.</p>
     if auto_show:
         self.neopixel_show()</code></pre>
 </details>
+<div class="desc"><p>Clear all pixels</p>
+<p>:param auto_show: call show automatically</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.neopixel_fill"><code class="name flex">
 <span>def <span class="ident">neopixel_fill</span></span>(<span>self, r=0, g=0, b=0, auto_show=True)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Fill all pixels with specified value</p>
-<p>:param r: 0-255</p>
-<p>:param g: 0-255</p>
-<p>:param b: 0-255</p>
-<p>:param auto_show: call show automatically</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3939,20 +2245,27 @@ the value provided.</p>
     &#34;&#34;&#34;
     if not self.neopixels_initiated:
         raise RuntimeError(&#39;You must call set_pin_mode_neopixel first&#39;)
-    if r and g and b not in range(256):
-        raise RuntimeError(&#39;Pixel value must be in the range of 0-255&#39;)
+
+    for color in [r, g, b]:
+        if not 0 &lt;= color &lt;= 255:
+            raise RuntimeError(&#39;RGB values must be in the range of 0-255&#39;)
+
     command = [PrivateConstants.FILL_ALL_NEO_PIXELS, r, g, b, auto_show]
     self._send_command(command)
 
     if auto_show:
         self.neopixel_show()</code></pre>
 </details>
+<div class="desc"><p>Fill all pixels with specified value</p>
+<p>:param r: 0-255</p>
+<p>:param g: 0-255</p>
+<p>:param b: 0-255</p>
+<p>:param auto_show: call show automatically</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.neopixel_show"><code class="name flex">
 <span>def <span class="ident">neopixel_show</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Write the NeoPixel buffer stored in the Pico to the NeoPixel strip.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3967,19 +2280,12 @@ the value provided.</p>
     command = [PrivateConstants.SHOW_NEO_PIXELS]
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Write the NeoPixel buffer stored in the Pico to the NeoPixel strip.</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.pwm_write"><code class="name flex">
 <span>def <span class="ident">pwm_write</span></span>(<span>self, pin, duty_cycle=0, raw=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set the specified pin to the specified value.</p>
-<p>:param pin: pico GPIO pin number</p>
-<p>:param duty_cycle: if the raw parameter is False, then this is expressed
-as a percentage between 0 and 100</p>
-<pre><code>                if the raw parameter is True, then the valid range
-                of values is from 0 - 19999
-</code></pre>
-<p>:param raw: Sets how the duty-cycle parameter is perceived.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4022,14 +2328,19 @@ as a percentage between 0 and 100</p>
     command = [PrivateConstants.PWM_WRITE, pin, value_msb, value_lsb]
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Set the specified pin to the specified value.</p>
+<p>:param pin: pico GPIO pin number</p>
+<p>:param duty_cycle: if the raw parameter is False, then this is expressed
+as a percentage between 0 and 100</p>
+<pre><code>                if the raw parameter is True, then the valid range
+                of values is from 0 - 19999
+</code></pre>
+<p>:param raw: Sets how the duty-cycle parameter is perceived.</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.servo_write"><code class="name flex">
 <span>def <span class="ident">servo_write</span></span>(<span>self, pin_number, value)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Write the value to the specified servo</p>
-<p>:param pin_number: GPIO pin number</p>
-<p>:param value: value between 0 and 180</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4059,30 +2370,14 @@ as a percentage between 0 and 100</p>
     # use a raw pwm write from the calculated values
     self.pwm_write(pin_number, duty_cycle, True)</code></pre>
 </details>
+<div class="desc"><p>Write the value to the specified servo</p>
+<p>:param pin_number: GPIO pin number</p>
+<p>:param value: value between 0 and 180</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_analog_input"><code class="name flex">
 <span>def <span class="ident">set_pin_mode_analog_input</span></span>(<span>self, adc_number, differential=0, callback=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set a pin as an analog input.</p>
-<p>:param adc_number: ADC Number 0-4</p>
-<pre><code>               ADC numbers are mapped as following:
-               ADC0 = GPIO 26 (Physical Pin 31)
-               ADC1 = GPIO 27 (Physical Pin 32)
-               ADC2 = GPIO 28 (Physical Pin 34)
-
-               Internal Mapping
-               ADC3 = GPIO 29 (Physical Pin 35) ADC Reference Voltage
-               ADC4 = GPIO 30 (No Physical pin - mapped internally)
-                              CPU temperature
-</code></pre>
-<p>:param differential: difference in previous to current value before
-report will be generated</p>
-<p>:param callback: callback function</p>
-<p>callback returns a data list:</p>
-<p>[ANALOG_REPORT, pin_number, pin_value, raw_time_stamp]</p>
-<p>The ANALOG_REPORT
-= 3</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4122,18 +2417,30 @@ report will be generated</p>
     self._set_pin_mode(adc_number, PrivateConstants.AT_ANALOG, differential,
                        callback=callback)</code></pre>
 </details>
+<div class="desc"><p>Set a pin as an analog input.</p>
+<p>:param adc_number: ADC Number 0-4</p>
+<pre><code>               ADC numbers are mapped as following:
+               ADC0 = GPIO 26 (Physical Pin 31)
+               ADC1 = GPIO 27 (Physical Pin 32)
+               ADC2 = GPIO 28 (Physical Pin 34)
+
+               Internal Mapping
+               ADC3 = GPIO 29 (Physical Pin 35) ADC Reference Voltage
+               ADC4 = GPIO 30 (No Physical pin - mapped internally)
+                              CPU temperature
+</code></pre>
+<p>:param differential: difference in previous to current value before
+report will be generated</p>
+<p>:param callback: callback function</p>
+<p>callback returns a data list:</p>
+<p>[ANALOG_REPORT, pin_number, pin_value, raw_time_stamp]</p>
+<p>The ANALOG_REPORT
+= 3</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_dht"><code class="name flex">
 <span>def <span class="ident">set_pin_mode_dht</span></span>(<span>self, pin, callback=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>:param pin: connection pin</p>
-<p>:param callback: callback function</p>
-<p>callback returns a data list:</p>
-<p>DHT REPORT, DHT_DATA=1, PIN, Humidity,
-Temperature (c),Time]</p>
-<p>DHT_REPORT =
-12</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4170,17 +2477,18 @@ DHT_REPORT =  12
         raise RuntimeError(
             f&#39;Maximum Number Of DHTs Exceeded - set_pin_mode_dht fails for pin {pin}&#39;)</code></pre>
 </details>
+<div class="desc"><p>:param pin: connection pin</p>
+<p>:param callback: callback function</p>
+<p>callback returns a data list:</p>
+<p>DHT REPORT, DHT_DATA=1, PIN, Humidity,
+Temperature (c),Time]</p>
+<p>DHT_REPORT =
+12</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_digital_input"><code class="name flex">
 <span>def <span class="ident">set_pin_mode_digital_input</span></span>(<span>self, pin_number, callback=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set a pin as a digital input.</p>
-<p>:param pin_number: pico GPIO pin number</p>
-<p>:param callback: callback function</p>
-<p>callback returns a data list:</p>
-<p>[DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]</p>
-<p>DIGITAL_REPORT = 2</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4203,17 +2511,17 @@ DHT_REPORT =  12
     &#34;&#34;&#34;
     self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT, callback=callback)</code></pre>
 </details>
+<div class="desc"><p>Set a pin as a digital input.</p>
+<p>:param pin_number: pico GPIO pin number</p>
+<p>:param callback: callback function</p>
+<p>callback returns a data list:</p>
+<p>[DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]</p>
+<p>DIGITAL_REPORT = 2</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_digital_input_pull_down"><code class="name flex">
 <span>def <span class="ident">set_pin_mode_digital_input_pull_down</span></span>(<span>self, pin_number, callback=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set a pin as a digital input with pull down enabled.</p>
-<p>:param pin_number: pico GPIO pin number</p>
-<p>:param callback: callback function</p>
-<p>callback returns a data list:</p>
-<p>[DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]</p>
-<p>DIGITAL_REPORT= 2</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4237,17 +2545,17 @@ DHT_REPORT =  12
     self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULL_DOWN,
                        callback=callback)</code></pre>
 </details>
+<div class="desc"><p>Set a pin as a digital input with pull down enabled.</p>
+<p>:param pin_number: pico GPIO pin number</p>
+<p>:param callback: callback function</p>
+<p>callback returns a data list:</p>
+<p>[DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]</p>
+<p>DIGITAL_REPORT= 2</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_digital_input_pullup"><code class="name flex">
 <span>def <span class="ident">set_pin_mode_digital_input_pullup</span></span>(<span>self, pin_number, callback=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set a pin as a digital input with pullup enabled.</p>
-<p>:param pin_number: pico GPIO pin number</p>
-<p>:param callback: callback function</p>
-<p>callback returns a data list:</p>
-<p>[DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]</p>
-<p>The DIGITAL_REPORT = 2</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4271,13 +2579,17 @@ DHT_REPORT =  12
     self._set_pin_mode(pin_number, PrivateConstants.AT_INPUT_PULLUP,
                        callback=callback)</code></pre>
 </details>
+<div class="desc"><p>Set a pin as a digital input with pullup enabled.</p>
+<p>:param pin_number: pico GPIO pin number</p>
+<p>:param callback: callback function</p>
+<p>callback returns a data list:</p>
+<p>[DIGITAL_REPORT, pin_number, pin_value, raw_time_stamp]</p>
+<p>The DIGITAL_REPORT = 2</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_digital_output"><code class="name flex">
 <span>def <span class="ident">set_pin_mode_digital_output</span></span>(<span>self, pin_number)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set a pin as a digital output pin.</p>
-<p>:param pin_number: pico GPIO pin number</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4291,22 +2603,13 @@ DHT_REPORT =  12
 
     self._set_pin_mode(pin_number, PrivateConstants.AT_OUTPUT)</code></pre>
 </details>
+<div class="desc"><p>Set a pin as a digital output pin.</p>
+<p>:param pin_number: pico GPIO pin number</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_i2c"><code class="name flex">
 <span>def <span class="ident">set_pin_mode_i2c</span></span>(<span>self, i2c_port=0, sda_gpio=4, scl_gpio=5)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Establish the standard pico i2c pins for i2c utilization.</p>
-<p>:param i2c_port: 0 = i2c0, 1 = i2c1</p>
-<p>:param sda_gpio: gpio pin assigned to SDA</p>
-<p>:param scl_gpio: gpio pin assigned to SCL</p>
-<h2 id="notes">Notes</h2>
-<ol>
-<li>THIS METHOD MUST BE CALLED BEFORE ANY I2C REQUEST IS MADE <br></li>
-<li>Callbacks are set within the individual i2c read methods of this
-API.</li>
-</ol>
-<p>See i2c_read, and i2c_write</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4363,18 +2666,22 @@ API.</li>
     command = [PrivateConstants.I2C_BEGIN, i2c_port, sda_gpio, scl_gpio]
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Establish the standard pico i2c pins for i2c utilization.</p>
+<p>:param i2c_port: 0 = i2c0, 1 = i2c1</p>
+<p>:param sda_gpio: gpio pin assigned to SDA</p>
+<p>:param scl_gpio: gpio pin assigned to SCL</p>
+<h2 id="notes">Notes</h2>
+<ol>
+<li>THIS METHOD MUST BE CALLED BEFORE ANY I2C REQUEST IS MADE <br></li>
+<li>Callbacks are set within the individual i2c read methods of this
+API.</li>
+</ol>
+<p>See i2c_read, and i2c_write</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_neopixel"><code class="name flex">
 <span>def <span class="ident">set_pin_mode_neopixel</span></span>(<span>self, pin_number=28, num_pixels=8, fill_r=0, fill_g=0, fill_b=0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initialize the pico for NeoPixel control. Fill with rgb values specified.</p>
-<p>Default: Set all the pixels to off.</p>
-<p>:param pin_number: neopixel GPIO control pin</p>
-<p>:param num_pixels: number of pixels in the strip</p>
-<p>:param fill_r: initial red fill value 0-255</p>
-<p>:param fill_g: initial green fill value 0-255</p>
-<p>:param fill_b: initial blue fill value 0-255</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4398,8 +2705,9 @@ API.</li>
 
 
     &#34;&#34;&#34;
-    if fill_r or fill_g or fill_g not in range(256):
-        raise RuntimeError(&#39;Pixel value must be in the range of 0-255&#39;)
+    for color in [fill_r, fill_g, fill_b]:
+        if not 0 &lt;= color &lt;= 255:
+            raise RuntimeError(&#39;RGB values must be in the range of 0-255&#39;)
 
     self.number_of_pixels = num_pixels
 
@@ -4412,16 +2720,18 @@ API.</li>
 
     self.neopixels_initiated = True</code></pre>
 </details>
+<div class="desc"><p>Initialize the pico for NeoPixel control. Fill with rgb values specified.</p>
+<p>Default: Set all the pixels to off.</p>
+<p>:param pin_number: neopixel GPIO control pin</p>
+<p>:param num_pixels: number of pixels in the strip</p>
+<p>:param fill_r: initial red fill value 0-255</p>
+<p>:param fill_g: initial green fill value 0-255</p>
+<p>:param fill_b: initial blue fill value 0-255</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_pwm_output"><code class="name flex">
 <span>def <span class="ident">set_pin_mode_pwm_output</span></span>(<span>self, pin_number)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Enable a pin as a PWM pin. Maximum number of PWMs is 16.
-The frequency is fixed at 50 hz.</p>
-<p>Note: There are up to 16 pins that can be assigned as
-PWM. Servo pins share the 16 PWM pins.</p>
-<p>:param pin_number: pico GPIO pin number</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4451,17 +2761,16 @@ PWM. Servo pins share the 16 PWM pins.</p>
     else:
         raise RuntimeError(&#39;Gpio Pin Number is invalid&#39;)</code></pre>
 </details>
+<div class="desc"><p>Enable a pin as a PWM pin. Maximum number of PWMs is 16.
+The frequency is fixed at 50 hz.</p>
+<p>Note: There are up to 16 pins that can be assigned as
+PWM. Servo pins share the 16 PWM pins.</p>
+<p>:param pin_number: pico GPIO pin number</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_servo"><code class="name flex">
 <span>def <span class="ident">set_pin_mode_servo</span></span>(<span>self, pin_number, min_pulse=1000, max_pulse=2000)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Attach a pin to a servo motor</p>
-<p>Servo mode is a specialized version of PWM Output mode.
-There are 16 PWM pins shared between the Servo and PWM Output modes.</p>
-<p>:param pin_number: pin</p>
-<p>:param min_pulse: minimum pulse width in microseconds</p>
-<p>:param max_pulse: maximum pulse width in microseconds</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4485,19 +2794,17 @@ There are 16 PWM pins shared between the Servo and PWM Output modes.</p>
     self._set_pin_mode(pin_number, PrivateConstants.AT_SERVO, min_pulse, max_pulse)
     self.pico_pins[pin_number] = PrivateConstants.AT_SERVO</code></pre>
 </details>
+<div class="desc"><p>Attach a pin to a servo motor</p>
+<p>Servo mode is a specialized version of PWM Output mode.
+There are 16 PWM pins shared between the Servo and PWM Output modes.</p>
+<p>:param pin_number: pin</p>
+<p>:param min_pulse: minimum pulse width in microseconds</p>
+<p>:param max_pulse: maximum pulse width in microseconds</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_sonar"><code class="name flex">
 <span>def <span class="ident">set_pin_mode_sonar</span></span>(<span>self, trigger_pin, echo_pin, callback=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>:param trigger_pin:
-Sensor trigger gpio pin</p>
-<p>:param echo_pin: Sensor echo gpio pin</p>
-<p>:param callback: callback</p>
-<p>callback returns a data list:</p>
-<p>[ SONAR_DISTANCE, trigger_pin, distance_value, time_stamp]</p>
-<p>SONAR_DISTANCE =
-11</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4536,40 +2843,19 @@ Sensor trigger gpio pin</p>
             self.shutdown()
         raise RuntimeError(&#39;Maximum number of supported sonar devices exceeded.&#39;)</code></pre>
 </details>
+<div class="desc"><p>:param trigger_pin:
+Sensor trigger gpio pin</p>
+<p>:param echo_pin: Sensor echo gpio pin</p>
+<p>:param callback: callback</p>
+<p>callback returns a data list:</p>
+<p>[ SONAR_DISTANCE, trigger_pin, distance_value, time_stamp]</p>
+<p>SONAR_DISTANCE =
+11</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.set_pin_mode_spi"><code class="name flex">
-<span>def <span class="ident">set_pin_mode_spi</span></span>(<span>self, spi_port=0, miso=16, mosi=19, clock_pin=18, clk_frequency=500000, chip_select_list=None, qualify_pins=True)</span>
+<span>def <span class="ident">set_pin_mode_spi</span></span>(<span>self,<br>spi_port=0,<br>miso=16,<br>mosi=19,<br>clock_pin=18,<br>clk_frequency=500000,<br>chip_select_list=None,<br>qualify_pins=True)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Specify the SPI port, SPI pins, clock frequency and an optional
-list of chip select pins. The SPI port is configured as a "master".</p>
-<p>:param spi_port: 0 = spi0, 1 = spi1</p>
-<p>:param miso: SPI data receive pin</p>
-<p>:param mosi: SPI data transmit pin</p>
-<p>:param clock_pin: clock pin</p>
-<p>:param clk_frequency: clock frequency in Hz.</p>
-<p>:param chip_select_list: this is a list of pins to be used for chip select.
-The pins will be configured as output, and set to high
-ready to be used for chip select.
-NOTE: You must specify the chips select pins here!</p>
-<p>:param qualify_pins: If true validate</p>
-<pre><code>                for spi0:
-                     MOSI=19
-
-                     MISO=16
-
-                     CLOCK=18
-
-                 for spi1:
-
-                     MOSI=15
-
-                     MISO=12
-
-                     CLOCK=14
-</code></pre>
-<p>cammand message: [command, spi port, mosi, miso, clock, freq msb,
-freq 3, freq 2, freq 1, number of cs pins, cs pins&hellip;]</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4613,7 +2899,7 @@ freq 3, freq 2, freq 1, number of cs pins, cs pins&hellip;]</p></div>
 
                              CLOCK=14
 
-    cammand message: [command, spi port, mosi, miso, clock, freq msb,
+    command message: [command, spi port, mosi, miso, clock, freq msb,
                       freq 3, freq 2, freq 1, number of cs pins, cs pins...]
     &#34;&#34;&#34;
     # determine if the spi port is specified correctly
@@ -4708,13 +2994,40 @@ freq 3, freq 2, freq 1, number of cs pins, cs pins&hellip;]</p></div>
 
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Specify the SPI port, SPI pins, clock frequency and an optional
+list of chip select pins. The SPI port is configured as a "master".</p>
+<p>:param spi_port: 0 = spi0, 1 = spi1</p>
+<p>:param miso: SPI data receive pin</p>
+<p>:param mosi: SPI data transmit pin</p>
+<p>:param clock_pin: clock pin</p>
+<p>:param clk_frequency: clock frequency in Hz.</p>
+<p>:param chip_select_list: this is a list of pins to be used for chip select.
+The pins will be configured as output, and set to high
+ready to be used for chip select.
+NOTE: You must specify the chips select pins here!</p>
+<p>:param qualify_pins: If true validate</p>
+<pre><code>                for spi0:
+                     MOSI=19
+
+                     MISO=16
+
+                     CLOCK=18
+
+                 for spi1:
+
+                     MOSI=15
+
+                     MISO=12
+
+                     CLOCK=14
+</code></pre>
+<p>command message: [command, spi port, mosi, miso, clock, freq msb,
+freq 3, freq 2, freq 1, number of cs pins, cs pins&hellip;]</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.shutdown"><code class="name flex">
 <span>def <span class="ident">shutdown</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This method attempts an orderly shutdown
-If any exceptions are thrown, they are ignored.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4740,14 +3053,13 @@ If any exceptions are thrown, they are ignored.</p></div>
     self.serial_port.close()
     self.serial_port = None</code></pre>
 </details>
+<div class="desc"><p>This method attempts an orderly shutdown
+If any exceptions are thrown, they are ignored.</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_cs_control"><code class="name flex">
 <span>def <span class="ident">spi_cs_control</span></span>(<span>self, chip_select_pin, select)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Control an SPI chip select line
-:param chip_select_pin: pin connected to CS</p>
-<p>:param select: 0=select, 1=deselect</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4768,21 +3080,14 @@ If any exceptions are thrown, they are ignored.</p></div>
     command = [PrivateConstants.SPI_CS_CONTROL, chip_select_pin, select]
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Control an SPI chip select line
+:param chip_select_pin: pin connected to CS</p>
+<p>:param select: 0=select, 1=deselect</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_read_blocking"><code class="name flex">
 <span>def <span class="ident">spi_read_blocking</span></span>(<span>self, number_of_bytes, spi_port=0, call_back=None, repeated_tx_data=0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Read the specified number of bytes from the specified SPI port and
-call the callback function with the reported data.</p>
-<p>:param number_of_bytes: Number of bytes to read</p>
-<p>:param spi_port: SPI port 0 or 1</p>
-<p>:param call_back: Required callback function to report spi data as a
-result of read command</p>
-<p>:param repeated_tx_data: repeated data to send</p>
-<p>callback returns a data list:
-[SPI_READ_REPORT, spi_port, count of data bytes, data bytes, time-stamp]</p>
-<p>SPI_READ_REPORT = 13</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4835,16 +3140,21 @@ result of read command</p>
                repeated_tx_data]
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Read the specified number of bytes from the specified SPI port and
+call the callback function with the reported data.</p>
+<p>:param number_of_bytes: Number of bytes to read</p>
+<p>:param spi_port: SPI port 0 or 1</p>
+<p>:param call_back: Required callback function to report spi data as a
+result of read command</p>
+<p>:param repeated_tx_data: repeated data to send</p>
+<p>callback returns a data list:
+[SPI_READ_REPORT, spi_port, count of data bytes, data bytes, time-stamp]</p>
+<p>SPI_READ_REPORT = 13</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_set_format"><code class="name flex">
 <span>def <span class="ident">spi_set_format</span></span>(<span>self, spi_port=0, data_bits=8, spi_polarity=0, spi_phase=0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Configure how the SPI serializes and de-serializes data on the wire.</p>
-<p>:param spi_port: SPI port 0 or 1</p>
-<p>:param data_bits: Number of data bits per transfer. Valid range = 4-16</p>
-<p>:param spi_polarity: clock polarity. 0 or 1.</p>
-<p>:param spi_phase: clock phase. 0 or 1.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4880,15 +3190,16 @@ result of read command</p>
                spi_polarity, spi_phase]
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Configure how the SPI serializes and de-serializes data on the wire.</p>
+<p>:param spi_port: SPI port 0 or 1</p>
+<p>:param data_bits: Number of data bits per transfer. Valid range = 4-16</p>
+<p>:param spi_polarity: clock polarity. 0 or 1.</p>
+<p>:param spi_phase: clock phase. 0 or 1.</p></div>
 </dd>
 <dt id="telemetrix_rpi_pico.telemetrix_rpi_pico.TelemetrixRpiPico.spi_write_blocking"><code class="name flex">
 <span>def <span class="ident">spi_write_blocking</span></span>(<span>self, bytes_to_write, spi_port=0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Write a list of bytes to the SPI device.</p>
-<p>:param bytes_to_write: A list of bytes to write. This must be in the form of a
-list.</p>
-<p>:param spi_port: SPI port 0 or 1</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4924,6 +3235,10 @@ list.</p>
 
     self._send_command(command)</code></pre>
 </details>
+<div class="desc"><p>Write a list of bytes to the SPI device.</p>
+<p>:param bytes_to_write: A list of bytes to write. This must be in the form of a
+list.</p>
+<p>:param spi_port: SPI port 0 or 1</p></div>
 </dd>
 </dl>
 </dd>
@@ -4931,7 +3246,6 @@ list.</p>
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -4987,7 +3301,7 @@ list.</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>
